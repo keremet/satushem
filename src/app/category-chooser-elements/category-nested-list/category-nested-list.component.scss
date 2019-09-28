@@ -1,0 +1,24 @@
+.list-group-scrollable {
+  overflow-y: auto;
+}
+
+.list-limit-height {
+  max-height: 250px;
+}
+
+.select-item {
+  width: 100%;
+  cursor: default;
+  user-select: none;
+}
+
+.select-item:hover, .list-head:hover {
+  background-color: rgb(0, 164, 212);
+  color: rgb(255, 255, 255);
+}
+
+.list-head {
+  background-color: rgb(255, 255, 255);
+  cursor: default;
+  user-select: none;
+}

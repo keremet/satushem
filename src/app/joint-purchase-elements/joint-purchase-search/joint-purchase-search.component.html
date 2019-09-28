@@ -1,0 +1,58 @@
+<div class="container mb-1 mt-1">
+  <div class="row">
+    <div class="col-lg-3">
+      <button
+        type="button"
+        class="btn btn-main"
+        (click)="openAddJointPurchase()"
+      >
+        Создать закупку
+      </button>
+    </div>
+  </div>
+</div>
+<section class="features-icons pt-3">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <h4>Фильтры</h4>
+        <div class="list-group">
+          <div class="list-group-item">
+            <label for="category">Категории</label>
+            <app-good-category-chooser
+              id="category"
+              [category]="category"
+              [showAll]="true"
+              (categoryChanged)="filterByCategory($event)"
+            ></app-good-category-chooser>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div *ngIf="!ready">
+          <h4 class="text-center">Ищем...</h4>
+        </div>
+        <div *ngIf="noResults && ready">
+          <h4 class="text-center">Ничего не найдено</h4>
+        </div>
+        <div *ngIf="!noResults && ready">
+          <h4 class="text-center">Результаты поиска</h4>
+          <ul class="list-group">
+            <li *ngFor="let purchase of purchases" class="list-group-item">
+              <app-joint-purchase-list [purchase]="purchase"></app-joint-purchase-list>
+            </li>
+          </ul>
+          <ngb-pagination
+            class="d-flex justify-content-center paginat"
+            [boundaryLinks]="true"
+            [collectionSize]="total"
+            [pageSize]="page_size"
+            [(page)]="page_number"
+            [maxSize]="5"
+            (pageChange)="moveToPage()"
+          ></ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

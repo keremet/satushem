@@ -1,0 +1,37 @@
+<div class="profilepos">
+  <div>
+    <div class="card-title">
+      <h4>Мои совместные закупки</h4>
+    </div>
+  </div>
+
+  <div *ngIf="purchases" class="card">
+    <div class="card-body">
+      <div *ngFor="let purchase of purchases">
+        <div class="purchase">
+          <div class="row">
+            <h5 class="purchase-title col-12 col-md-4">
+              {{purchase.name}}
+            </h5>
+            <div class="col-12 col-md-5">
+              <p class="mb-1">Дата завершения приема заказов: {{purchase.date | russianLocaleDate}}</p>
+              <p class="mb-1">Состояние:
+                <span *ngIf="purchase.state === 0">открыта</span>
+                <span *ngIf="purchase.state === 1"><b>сбор заказов закончен</b></span>
+                <span *ngIf="purchase.state === 2" class="text-danger"><b>закрыта</b></span>
+              </p>
+            </div>
+            <div class="col-12 col-md-3">
+              <button
+                type="button"
+                [routerLink]="['/purchase', purchase._id]"
+                class="btn btn-main"
+              >Открыть</button>
+            </div>
+          </div>
+        </div>
+        <hr *ngIf="!(purchases.length == 1)">
+      </div>
+    </div>
+  </div>
+</div>

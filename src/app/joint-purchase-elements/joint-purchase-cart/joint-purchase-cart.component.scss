@@ -1,0 +1,157 @@
+header.storehead {
+  position: relative;
+  background-color: #343a40;
+  background: url('../../../assets/img/bg.png') repeat;
+  padding-top: 3rem;
+  padding-bottom: 9rem;
+}
+
+header.storebackground {
+  position: relative;
+  background-color: #a7e2ff;
+  background-size: cover;
+  overflow: hidden;
+  padding-top: 3rem;
+  padding-bottom: 9rem;
+}
+
+.good {
+  display: flex;
+  justify-content: center;
+}
+
+.storeoverlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0.5;
+  transition: .5s ease;
+  background-color: #000000;
+}
+header h1 {
+  font-size: 5rem;
+  padding-bottom: 2.8rem;
+  color: #FFF;
+}
+
+.btn-store-edit {
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'CircleRounded';
+  text-align: center;
+  border-radius: 4px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.btn-block-edit {
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  background: transparent;
+  border: none;
+  font-family: 'CircleRounded';
+  cursor: pointer;
+}
+
+.text-edit-store-name {
+  background: transparent;
+  height: 5rem;
+  padding-top: 48px;
+  margin-left: -12px;
+  border: none;
+  font-family: 'CircleRounded';
+  font-size: 5rem;
+  padding-bottom: 6.3rem;
+  color: #feffd7;
+}
+
+.text-edit-short-description {
+  background: transparent;
+  border: none;
+  font-family: 'CircleRounded';
+  color: #feffd7;
+}
+
+.shortdescriptiontext {
+  color: #FFF;
+  padding-top: 10px;
+  padding-left: 12px;
+}
+
+.map {
+  height: 600px;
+}
+
+.input {
+  border: 1px solid silver;
+  border-radius: 5px;
+
+  font-size: 15px;
+  font-weight: lighter;
+  text-align: center;
+
+  padding: 10px;
+  z-index: 100;
+  width: 250px;
+}
+
+agm-map {
+  height: 300px;
+}
+
+.storeinfo {
+  display: inline-block;
+}
+
+.face {
+  display: inline-block;
+}
+
+.face-delete {
+  display: inline-block;
+  float: right;
+}
+
+.text-user {
+  background: #FFFFFF;
+  border: 1px solid #D4D4D4;
+  border-radius: 4px 0 0 4px;
+  width: 60%;
+  text-indent: 10px;
+  height: 31px;
+}
+
+.add-user-element {
+  padding-bottom: 20px;
+}
+
+.container-map {
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+}
+
+.card-body > a {
+  color: #556c75 !important;
+}
+
+a.img-holder {
+  display: block;
+  height: 200px;
+  overflow: hidden;
+
+  .card-img-top {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}

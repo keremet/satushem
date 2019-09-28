@@ -1,0 +1,91 @@
+.card-body {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.purchase-title {
+  display: inline-block;
+}
+
+.purchase {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.card-title {
+  display: inline-block;
+}
+
+.card-right {
+  display: inline-block;
+  float: right;
+}
+
+.btn-delete {
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  background: #E84441;
+  border: 1px solid #E42724;
+  color: #fff;
+  font-family: 'CircleRounded';
+  text-align: center;
+  padding: 0px 15px;
+  border-radius: 4px 4px 4px 4px;
+  height: 31px;
+}
+
+.btn-delete:hover {
+  background: #E42724;
+  color: #fff;
+}
+
+.btn-delete:focus {
+  background-color: #E42724;
+  color: #fff;
+}
+
+.btn-edit {
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  background: #00B5EB;
+  border: 1px solid #008EB9;
+  color: #fff;
+  font-family: 'CircleRounded';
+  text-align: center;
+  padding: 0px 15px;
+  border-radius: 0 0 0 0;
+  height: 31px;
+}
+
+.btn-edit:hover {
+  background: #00A2D1;
+  color: #fff;
+}
+
+.btn-edit:focus {
+  background-color: #00A2D1;
+  color: #fff;
+}
+
+.btn-open {
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  background: #00B5EB;
+  border: 1px solid #008EB9;
+  color: #fff;
+  font-family: 'CircleRounded';
+  text-align: center;
+  padding: 0px 15px;
+  border-radius: 4px 0 0 4px;
+  height: 31px;
+}
+
+.btn-open:hover {
+  background: #00A2D1;
+  color: #fff;
+}
+
+.btn-open:focus {
+  background-color: #00A2D1;
+  color: #fff;
+}

@@ -1,0 +1,36 @@
+/* Side on which show menu */
+
+.node-menu {
+  top: -0.5rem;
+  left: auto;
+}
+
+.l2r-node-menu {
+  left: 100%;
+  @extend .node-menu;
+}
+
+.r2l-node-menu {
+  right: 100%;
+  @extend .node-menu;
+}
+
+div.l2r-node-menu {
+  list-style: none;
+}
+
+div.l2r-node-menu app-internal-category-node {
+  display: block;
+  position: relative;
+  float: left;
+}
+
+div.r2l-node-menu {
+  list-style: none;
+}
+
+div.r2l-node-menu app-internal-category-node {
+  display: block;
+  position: relative;
+  float: left;
+}

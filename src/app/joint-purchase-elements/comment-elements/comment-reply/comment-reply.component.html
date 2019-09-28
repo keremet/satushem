@@ -1,0 +1,11 @@
+<div class="d-block p-3 bg-light mb-2">
+  <textarea
+    class="form-control mb-2"
+    [(ngModel)]="reply"
+  ></textarea>
+  <button
+    class="btn btn-main"
+    (click)="onSend()"
+    [disabled]="!valid"
+  >Отправить</button>
+</div>

@@ -1,0 +1,66 @@
+<div class="modal-header">
+  <h4 class="modal-title" *ngIf="!fakeUser">Присоединение к закупке</h4>
+  <h4 class="modal-title" *ngIf="fakeUser">Добавление незарегистрированного участника</h4>
+  <button type="button" class="close" aria-label="Close"
+          (click)="dismiss()"><span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form
+    [formGroup]="form"
+    novalidate
+  >
+    <div class="form-group">
+      <label for="volume">Количество товара</label>
+      <div class="input-group">
+        <input
+          type="text"
+          [dropSpecialCharacters]="false"
+          mask="0*.0*"
+          name="volume"
+          id="volume"
+          class="form-control text-modal"
+          [ngClass]="volume.errors ? 'is-invalid': 'is-valid'"
+          formControlName="volume"
+          required
+        >
+        <div class="input-group-append">
+          <span class="input-group-text">{{ measurementUnit }}</span>
+          <span class="input-group-text">{{ cost | fixedFloat: 2 }} ₽</span>
+        </div>
+      </div>
+      <div class="invalid-feedback d-block" *ngIf="volume.errors && volume.errors.min">
+        Минимальный объем заказа: {{ minimum }} {{ measurementUnit }}
+      </div>
+      <div class="invalid-feedback d-block" *ngIf="volume.errors && volume.errors.max">
+        Максимальный объем заказа: {{ maximum }} {{ measurementUnit }}
+      </div>
+    </div>
+
+    <div class="form-group" *ngIf="fakeUser">
+      <label for="user">Имя участника</label>
+      <input
+        type="text"
+        id="user"
+        class="form-control text-modal"
+        placeholder="Участник"
+        [ngClass]="userLogin.errors ? 'is-invalid': 'is-valid'"
+        formControlName="userLogin"
+        required
+      >
+      <div class="invalid-feedback" [hidden]="!(userLogin.errors && userLogin.errors.required)">
+        Введите имя участника
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button
+    type="submit"
+    class="btn btn-main"
+    (click)="joinToPurchase()"
+    [disabled]="!form.valid || btnDisabled"
+  >{{fakeUser ? 'Добавить' : 'Присоединится'}}</button>
+</div>

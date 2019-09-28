@@ -1,0 +1,46 @@
+<div class="d-block mb-1" id="comment_{{comment.id}}">
+  <div class="d-block p-1" [ngClass]="{'bg-light': comment.user === currentUser.login}">
+    <b>{{comment.user}}</b>
+    <span class="ml-2 text-secondary font-weight-light">{{comment.date | date:'dd.MM.yyyy HH:mm'}}</span>
+    <span
+      *ngIf="isLoggedIn && comment.user !== currentUser.login"
+      class="ml-2 btn-chat"
+      ngbPopover="Связаться по чату"
+      triggers="mouseenter:mouseleave"
+      (click)="openChat()"
+    >
+      <i class="fa fa-comment"></i>
+    </span>
+    <!--<a-->
+      <!--*ngIf="parent"-->
+      <!--class="ml-2"-->
+      <!--[ngx-scroll-to]="'#comment_' + parent"-->
+    <!--&gt;<i class="fa fa-chevron-circle-up"></i></a>-->
+  </div>
+  <div class="d-block p-1 preserve-line-breaks font-weight-normal">{{comment.body}}</div>
+</div>
+
+<div
+  *ngIf="settings.canReply"
+  class="d-inline-block mb-1 p-1"
+  (click)="replyVisible = !replyVisible"
+>
+  <a [routerLink]="">Ответить</a>
+</div>
+
+<app-comment-reply
+  *ngIf="replyVisible && settings.canReply"
+  [comment]="comment"
+  (sent)="onSend()"
+></app-comment-reply>
+
+<div class="d-block" [ngClass]="{'ml-3': level <= 6, 'ml-md-4': level <= 8}">
+  <app-comment-branch
+    *ngFor="let item of comment.children"
+    [comment]="item"
+    [parent]="comment.id"
+    [level]="level + 1"
+    [settings]="settings"
+    (commentSent)="commentSent.emit()"
+  ></app-comment-branch>
+</div>

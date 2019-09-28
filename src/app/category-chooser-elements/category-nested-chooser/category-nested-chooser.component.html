@@ -1,0 +1,14 @@
+<div class="category-chooser">
+  <div
+    class="dropdown-menu"
+    *ngIf="data.length > 0"
+  >
+    <app-internal-category-node
+      [level]="0"
+      *ngFor="let child of data"
+      class="w-100"
+      [data]="child"
+      (selected)="childrenSelected($event)"
+    ></app-internal-category-node>
+  </div>
+</div>

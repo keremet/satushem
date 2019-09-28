@@ -1,0 +1,284 @@
+<div class="modal-header">
+  <h4 class="modal-title">Создать совместную закупку</h4>
+  <button type="button" class="close" aria-label="Close"
+          (click)="dismiss()"><span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <form
+    [formGroup]="form"
+    novalidate
+  >
+    <div class="row">
+      <div class="col-12 col-lg-6">
+        <div class="form-group">
+          <label for="name">Название закупки</label>
+          <input
+            type="text"
+            id="name"
+            class="form-control text-modal"
+            placeholder="Закупка"
+            [ngClass]="name.errors ? 'is-invalid': 'is-valid'"
+            formControlName="name"
+            required
+            [readonly]="good"
+          >
+          <div class="invalid-feedback" [hidden]="!(name.errors && name.errors.required)">
+            Введите название закупки
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Изображение</label><br>
+          <div *ngIf="!pictureUrl">
+            <label
+              class="btn btn-main"
+              *ngIf="!pictureUrl"
+            >
+              Добавить изображение
+              <input
+                id="picture"
+                type="file"
+                (change)="imageChange($event)"
+                style="display: none;"
+                accept=".png,.jpg,.jpeg"
+                formControlName="picturePath"
+              >
+            </label>
+          </div>
+          <div class="picture-preview-container" *ngIf="pictureUrl">
+            <img [src]="pictureUrl" class="picture-preview-image">
+            <label
+              *ngIf="!good"
+              class="picture-preview-button"
+              (click)="deleteImage()"
+            ><span aria-hidden="true">X</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Описание закупки</label>
+          <textarea
+            id="description"
+            class="form-control text-modal"
+            placeholder="Описание"
+            [ngClass]="description.errors ? 'is-invalid': 'is-valid'"
+            formControlName="description"
+          ></textarea>
+          <!--<div class="invalid-feedback" [hidden]="!(description.errors && description.errors.required)">-->
+            <!--Введите описание закупки-->
+          <!--</div>-->
+        </div>
+
+        <div class="form-group">
+          <label for="address">Адрес места выдачи товара</label>
+          <input
+            type="text"
+            id="address"
+            class="form-control text-modal"
+            placeholder="Адрес"
+            [ngClass]="address.errors ? 'is-invalid': 'is-valid'"
+            formControlName="address"
+            required
+          >
+          <div class="invalid-feedback" [hidden]="!(address.errors && address.errors.required)">
+            Введите адрес
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="date">Дата завершения приема заказов</label>
+          <div class="input-group">
+            <input
+              id="date"
+              [ngModel]="date.value | russianLocaleDate"
+              [ngModelOptions]="{standalone: true}"
+              [ngClass]="date.errors ? 'is-invalid': 'is-valid'"
+              readonly
+              placeholder="01.01.2018"
+              class="form-control"
+            >
+            <input
+              class="d-none"
+              ngbDatepicker
+              [minDate]="today | ngbDate"
+              #d="ngbDatepicker"
+              formControlName="date"
+              required
+            >
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                (click)="d.toggle()"
+                type="button"
+                ngbPopover="Выбрать дату"
+                triggers="mouseenter:mouseleave"
+              >
+                <i class="fa fa-calendar"></i>
+              </button>
+            </div>
+          </div>
+          <div class="invalid-feedback d-block" *ngIf="date.errors && date.errors.required">
+            Укажите дату завершения закупки
+          </div>
+        </div>
+
+        <div formGroupName="payment">
+          <div class="form-group">
+            <label for="payment_type">Способ оплаты</label>
+            <select
+              id="payment_type"
+              class="custom-select"
+              [ngClass]="paymentType.errors ? 'is-invalid': 'is-valid'"
+              [formControl]="paymentType"
+              required
+            >
+              <option [ngValue]="0" disabled>Через сайт</option>
+              <option [ngValue]="1">Напрямую организатору</option>
+              <option [ngValue]="2">В момент выдачи товара</option>
+            </select>
+            <div class="invalid-feedback" [hidden]="!(paymentType.errors && paymentType.errors.required)">
+              Выберите способ оплаты
+            </div>
+          </div>
+
+          <div class="form-group" *ngIf="paymentType.value === 1">
+            <label for="payment_info">Платежная информация</label>
+            <textarea
+              id="payment_info"
+              class="form-control text-modal"
+              [ngClass]="form.controls['payment'].errors ? 'is-invalid': 'is-valid'"
+              formControlName="paymentInfo"
+            ></textarea>
+            <div
+              class="invalid-feedback"
+              [hidden]="!(form.controls['payment'].errors && form.controls['payment'].errors.required)">
+              Введите платежную информацию
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-6">
+        <div class="form-group">
+          <label for="category">Категория товара</label>
+          <app-good-category-chooser
+            id="category"
+            [category]="category.value"
+            (categoryChanged)="updateCategory($event)"
+            [readonly]="good"
+          ></app-good-category-chooser>
+          <div class="invalid-feedback d-block" *ngIf="category.errors && category.errors.required">
+            Выберите категорию товара
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="volume">Количество товара</label>
+          <input
+            type="text"
+            [dropSpecialCharacters]="false"
+            mask="0*.0*"
+            name="volume"
+            id="volume"
+            class="form-control text-modal"
+            placeholder="100"
+            [ngClass]="volume.errors ? 'is-invalid': 'is-valid'"
+            formControlName="volume"
+            required
+          >
+          <div class="invalid-feedback" [hidden]="!(volume.errors && volume.errors.required)">
+            Введите количество товара
+          </div>
+          <div class="invalid-feedback" [hidden]="!(volume.errors && volume.errors.max)" *ngIf="good">
+            Максимальное количество товара: {{good.volume}}
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="minVolume">Минимальный объем заказа</label>
+          <input
+            type="text"
+            [dropSpecialCharacters]="false"
+            mask="0*.0*"
+            name="minVolume"
+            id="minVolume"
+            class="form-control text-modal"
+            placeholder="0"
+            [ngClass]="minVolume.errors ? 'is-invalid': 'is-valid'"
+            formControlName="minVolume"
+            required
+            [readonly]="good"
+          >
+          <div class="invalid-feedback" [hidden]="!(minVolume.errors && minVolume.errors.required)">
+            Введите объем минимального заказа
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="measurement_unit">Единица измерения</label>
+          <app-measurement-unit-chooser
+            id="measurement_unit"
+            [unit]="measurementUnit.value"
+            (unitChanged)="updateUnit($event)"
+          ></app-measurement-unit-chooser>
+          <div class="invalid-feedback d-block" *ngIf="measurementUnit.errors && measurementUnit.errors.required">
+            Укажите единицу измерения
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="price">Цена за единицу измерения</label>
+          <div class="input-group">
+            <input
+              type="text"
+              [dropSpecialCharacters]="false"
+              mask="0*.00"
+              id="price"
+              class="form-control text-modal"
+              placeholder="10"
+              [ngClass]="pricePerUnit.errors ? 'is-invalid': 'is-valid'"
+              formControlName="pricePerUnit"
+              required
+              [readonly]="good"
+            >
+            <div class="input-group-append">
+              <span class="input-group-text">Итого: </span>
+              <span class="input-group-text">{{ total | fixedFloat: 2 }} ₽</span>
+            </div>
+            <div class="invalid-feedback" [hidden]="!(pricePerUnit.errors && pricePerUnit.errors.required)">
+              Укажите цену за единицу измерения
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div
+            class="custom-control custom-checkbox"
+          >
+            <input
+              type="checkbox"
+              class="custom-control-input"
+              id="isPublic"
+              formControlName="isPublic"
+            >
+            <label
+              class="custom-control-label"
+              for="isPublic"
+            >Закупка отображается в поисковой выдаче</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal-footer">
+  <button
+    type="submit"
+    class="btn btn-main"
+    (click)="createPurchase()"
+    [disabled]="!form.valid || btnDisabled"
+  >Создать</button>
+</div>

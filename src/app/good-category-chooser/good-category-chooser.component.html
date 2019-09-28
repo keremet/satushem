@@ -1,0 +1,37 @@
+<div class="dropdown" (clickOutside)="hideMenu()">
+  <div
+    class="custom-select"
+    [ngClass]="readonly ? 'custom-select-readonly': ''"
+    (click)="toggleMenu()"
+  >{{selected_category['name']}}</div>
+  <div class="dropdown-content" *ngIf="menu_visible">
+    <app-category-nested-list
+      [data]="categories | async"
+      [showAll]="showAll"
+      (selected)="selectCategory($event)"
+    ></app-category-nested-list>
+    <!--<div class="list-group">-->
+      <!--<div class="list-group-item">-->
+        <!--<div class="form-group">-->
+          <!--<label for="new_category">Нет нужной?</label>-->
+          <!--<div class="input-group">-->
+            <!--<input-->
+              <!--[(ngModel)]="new_category_name"-->
+              <!--id="new_category"-->
+              <!--type="text"-->
+              <!--class="form-control text-modal">-->
+            <!--<div class="input-group-append">-->
+              <!--<button-->
+                <!--type="button"-->
+                <!--class="btn btn-primary"-->
+                <!--(click)="test()"-->
+              <!--&gt;-->
+                <!--Добавить-->
+              <!--</button>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<div class="modal-header">
+  <h4 class="modal-title">Выбор совместной закупки</h4>
+  <button type="button" class="close" aria-label="Close"
+          (click)="dismiss()"><span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+  <div *ngIf="!ready">
+    <h4 class="text-center">Ищем...</h4>
+  </div>
+  <div *ngIf="noResults && ready">
+    <h4 class="text-center">Ничего не найдено</h4>
+  </div>
+  <div class="purchase-list" *ngIf="!noResults && ready">
+    <ul class="list-group">
+      <li *ngFor="let purchase of purchases" class="list-group-item">
+        <div class="d-flex justify-content-start">
+          <div class="good-logo">
+            <a href="javascript:void(0)" (click)="openPurchase(purchase._id)">
+              <img [src]="purchase.picture" class="store-img">
+            </a>
+          </div>
+
+          <div class="desc-good d-flex flex-column">
+            <a href="javascript:void(0)" class="links pl-1" style="margin-right: 10px;" (click)="openPurchase(purchase._id)">
+              <h5>{{ purchase.name }}</h5>
+            </a>
+            <div class="row p-1">
+              <div class="col-12 col-md-7">
+                <p>{{purchase.description}}</p>
+                <div class="card-price">
+                  {{ purchase?.price_per_unit | fixedFloat: 2 }} ₽/{{purchase.measurement_unit.name}}
+                </div>
+                <p *ngIf="purchase.state === 1" class="text-danger">Прием заказов завершен</p>
+              </div>
+              <div class="col-12 col-md-5">
+                <p class="mb-1">Объем: {{purchase.volume}} {{purchase.measurement_unit.name}}</p>
+                <p class="mb-1">Осталось: {{purchase.remaining_volume}} {{purchase.measurement_unit.name}}</p>
+                <p class="mb-1">Прием заказов завершается {{purchase.date | russianLocaleDate}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

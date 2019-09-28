@@ -1,0 +1,109 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+  <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent"
+          (click)="isCollapsed = !isCollapsed"
+          [attr.aria-expanded]="!isCollapsed"
+          aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent" [ngbCollapse]="isCollapsed">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="">Главная</a>
+      </li>
+      <li class="nav-item" *ngIf="!token">
+        <a class="nav-link" (click)="openModalLogin()">Вход</a>
+      </li>
+      <li class="nav-item" *ngIf="token">
+        <a class="nav-link" *ngIf="data.user" routerLink="/profile">Профиль ({{ data.user.login }})</a>
+      </li>
+      <li class="nav-item" *ngIf="token">
+        <a class="nav-link" (click)="logout()">Выход</a>
+      </li>
+    </ul>
+    <a *ngIf="!token" (click)="openModalRegistration()">
+      <button class="btn btn-main">Регистрация</button>
+    </a>
+
+  </div>
+</nav>
+<div id="header-search-bar" class="search bg-gray">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 search-container">
+        <div class="input-group">
+          <!--<div ngbDropdown class="btn-cats d-none d-md-block" (clickOutside)="categoryMenuCollapsed = true">-->
+            <!--<a-->
+              <!--data-toggle="dropdown"-->
+              <!--aria-expanded="false"-->
+              <!--ngbDropdownToggle-->
+              <!--id="categoriesMenu"-->
+              <!--(click)="categoryMenuCollapsed = !categoryMenuCollapsed"-->
+            <!--&gt;-->
+              <!--<i class="fa fa-bars"></i> Категории-->
+            <!--</a>-->
+            <!--<app-category-nested-chooser-->
+              <!--[data]="categoryTree | async"-->
+              <!--[ngbCollapse]="categoryMenuCollapsed"-->
+              <!--(selected)="openSearchByCategory($event)"-->
+            <!--&gt;</app-category-nested-chooser>-->
+          <!--</div>-->
+          <div class="search-wrap">
+            <input
+              type="text"
+              class="text-search"
+              placeholder="Введите название закупки"
+              [(ngModel)]="query"
+              (input)="onSearchChange($event.target.value)"
+              (keyup.enter)="openSearch()"
+            />
+            <button type="button" class="btn btn-search input-group-append" (click)="openSearch()">
+              <i class="fa fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<ng2-toasty [position]="'bottom-right'"></ng2-toasty>
+<router-outlet></router-outlet>
+
+<!-- Footer -->
+<footer class="footer bg-dark">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 h-100 text-center text-lg-left my-auto">
+        <!--<ul class="list-inline mb-2">-->
+          <!--<li class="list-inline-item">-->
+            <!--<a class="footer-link" href="#">О нас</a>-->
+          <!--</li>-->
+          <!--<li class="list-inline-item">&sdot;</li>-->
+          <!--<li class="list-inline-item">-->
+            <!--<a class="footer-link" href="#">Контакты</a>-->
+          <!--</li>-->
+          <!--<li class="list-inline-item">&sdot;</li>-->
+          <!--<li class="list-inline-item">-->
+            <!--<a class="footer-link" href="#">Правила использования</a>-->
+          <!--</li>-->
+          <!--<li class="list-inline-item">&sdot;</li>-->
+          <!--<li class="list-inline-item">-->
+            <!--<a class="footer-link" href="#">Политика конфиденциальности</a>-->
+          <!--</li>-->
+        <!--</ul>-->
+        <p class="text-muted copyright mb-4 mb-lg-0">&copy; 2019. Сатушем.</p>
+      </div>
+      <div class="col-lg-4 h-100 text-center text-lg-right my-auto">
+        <ul class="list-inline mb-0">
+          <li class="list-inline-item">
+            <a class="footer-link" href="https://vk.com/orv_org_ru">
+              <i class="fa fa-vk fa-2x fa-fw"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>

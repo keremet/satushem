@@ -1,0 +1,10 @@
+@import "../category-chooser-common";
+
+div.category-chooser {
+  position: relative;
+}
+
+div.category-chooser > div.dropdown-menu {
+  display: block;
+  position: absolute;
+}

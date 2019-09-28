@@ -1,0 +1,46 @@
+a {
+    cursor: pointer;
+}
+
+.city-menu {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.city-menu-content {
+  position: absolute;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.list-group-scrollable {
+  max-height: 200px;
+  min-width: 400px;
+  overflow-y: scroll;
+}
+
+.select-item {
+  width: 100%;
+}
+
+.select-item:hover {
+  background-color: rgb(0, 164, 212);
+  color: rgb(255, 255, 255);
+}
+
+.city-menu-item {
+  display: inline-block;
+}
+
+.city-dropdown {
+  padding-left: 3px;
+}
+
+.dropdown-toggle::after {
+  display:none;
+}
+
+.copyright {
+  color: #FFFFFF !important;
+}

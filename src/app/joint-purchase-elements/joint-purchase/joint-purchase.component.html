@@ -1,0 +1,820 @@
+<div class="container mt-3">
+  <ngx-spinner
+    bdColor="rgba(255,255,255,0.8)"
+    size="large"
+    color="#00b5eb"
+    type="ball-pulse"
+    loadingText="Загрузка закупки"
+  ></ngx-spinner>
+
+  <div *ngIf="ready">
+    <ngb-alert
+      [dismissible]="false"
+      *ngIf="!isPaymentApproved && isParticipant && purchaseInfo.payment_type === 1"
+    >
+      Ваш платеж еще не подтвержден организатором
+    </ngb-alert>
+    <ngb-alert type="danger" [dismissible]="false" *ngIf="isBanned">
+      Организатор заблокировал вас. Вы не можете участвовать в закупке
+    </ngb-alert>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <img class="card-img-top good-img" [src]="purchaseInfo.picture || 'assets/img/box.svg'" alt="Card image cap">
+            <div class="good-img-container" *ngIf="isCreator && !isGoodPurchase">
+              <div class="base-good-img-overlay">
+              </div>
+              <label class="good-img-overlay">
+                <img class="camera" src="assets/img/camera.png">
+                <input type="file" (change)="purchaseImageChange($event)" style="display: none;"
+                       accept=".png,.jpg,.jpeg">
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 mt-3 mt-md-0">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title" *ngIf="!editMode.name">
+              {{ purchaseInfo.name }}
+              <label *ngIf="isCreator && !isGoodPurchase" (click)="editMode.name = true" class="btn-edit"
+              >изменить</label>
+            </h3>
+            <div *ngIf="editMode.name" class="form-group">
+              <label for="name">Название закупки</label>
+              <input id="name" type="text" [(ngModel)]="editModeInfo.name" class="form-control text-good card-title">
+              <button type="button" class="btn btn-main" (click)="updateName()">Обновить</button>
+              <button type="button" class="btn btn-detach ml-1" (click)="disableEditMode('name')">Отмена</button>
+            </div>
+
+            <h5 *ngIf="!editMode.price_per_unit">
+              {{ purchaseInfo.price_per_unit | fixedFloat: 2 }} ₽/{{ measurementUnit }}
+              <label *ngIf="isCreator && !isGoodPurchase" (click)="editMode.price_per_unit = true" class="btn-edit">
+                изменить
+              </label>
+            </h5>
+            <div *ngIf="editMode.price_per_unit" class="form-group">
+              <label for="volume">Цена за единицу товара</label>
+              <input
+                id="price_per_unit"
+                type="text"
+                [(ngModel)]="editModeInfo.price_per_unit"
+                class="form-control text-good card-title"
+                [dropSpecialCharacters]="false"
+                mask="0*.00"
+              >
+              <button type="button" class="btn btn-main" (click)="updatePricePerUnit()">Обновить</button>
+              <button
+                type="button"
+                class="btn btn-detach ml-1"
+                (click)="disableEditMode('price_per_unit')"
+              >Отмена</button>
+
+            </div>
+
+            <h5 *ngIf="!editMode.volume">
+              Количество товара: {{ purchaseInfo.volume }} {{ measurementUnit }}
+              <label *ngIf="isCreator" (click)="editMode.volume = true" class="btn-edit">
+                изменить
+              </label>
+            </h5>
+            <div *ngIf="editMode.volume" class="form-group">
+              <label for="volume">Количество товара</label>
+              <input
+                id="volume"
+                type="text"
+                [(ngModel)]="editModeInfo.volume"
+                class="form-control text-good card-title"
+                [dropSpecialCharacters]="false"
+                mask="0*.0*"
+              >
+              <button type="button" class="btn btn-main" (click)="updateVolume()">Обновить</button>
+              <button type="button" class="btn btn-detach ml-1" (click)="disableEditMode('volume')">Отмена</button>
+            </div>
+
+            <h5 *ngIf="!editMode.min_volume">
+              Минимальный объем заказа: {{ purchaseInfo.min_volume }} {{ measurementUnit }}
+              <label *ngIf="isCreator && !isGoodPurchase" (click)="editMode.min_volume = true" class="btn-edit">
+                изменить
+              </label>
+            </h5>
+            <div *ngIf="editMode.min_volume" class="form-group">
+              <label for="min_volume">Минимальный объем заказа</label>
+              <input
+                id="min_volume"
+                type="text"
+                [(ngModel)]="editModeInfo.min_volume"
+                class="form-control text-good card-title"
+                [dropSpecialCharacters]="false"
+                mask="0*.0*"
+              >
+              <button type="button" class="btn btn-main" (click)="updateMinVolume()">Обновить</button>
+              <button type="button" class="btn btn-detach ml-1" (click)="disableEditMode('min_volume')">Отмена</button>
+            </div>
+
+            <h5>
+              Заказано: {{ purchaseInfo.stats.ordered }} {{ measurementUnit }}
+            </h5>
+
+            <h5>
+              Осталось: {{ purchaseInfo.stats.remaining }} {{ measurementUnit }}
+            </h5>
+
+            <h5 *ngIf="!editMode.date">
+              Прием заказов завершается: {{ purchaseInfo.date | russianLocaleDate }}
+              <label *ngIf="isCreator" (click)="editMode.date = true" class="btn-edit">
+                изменить
+              </label>
+            </h5>
+            <div *ngIf="editMode.date" class="form-group">
+              <label for="date">Прием заказов завершается: {{ editModeInfo.date | russianLocaleDate }}</label>
+              <ngb-datepicker
+                id="date"
+                [minDate]="today | ngbDate"
+                [(ngModel)]="editModeInfo.date"
+              ></ngb-datepicker><br>
+              <button type="button" class="btn btn-main mt-3" (click)="updateDate()">Обновить</button>
+              <button type="button" class="btn btn-detach ml-1 mt-3" (click)="disableEditMode('date')">Отмена</button>
+            </div>
+
+            <p class="card-text" *ngIf="!isParticipant && isOpened && isLoggedIn && !isBanned">
+              <button class="btn btn-main" (click)="joinToPurchase()" *ngIf="haveEnoughRemainingVolume">
+                Присоединится к закупке
+              </button>
+              <span *ngIf="!haveEnoughRemainingVolume" class="text-danger">
+                <b>Товара осталось недостаточно для минимального заказа</b>
+              </span>
+            </p>
+            <p class="text-danger" *ngIf="!isLoggedIn && isOpened">
+              <a href="javascript:void(0)" class="font-weight-bold text-danger" (click)="fastLogIn()">Войдите</a> или
+              <a href="javascript:void(0)" class="font-weight-bold text-danger" (click)="fastSignUp()">зарегистрируйтесь</a>, чтобы участвовать в закупке
+            </p>
+            <p class="card-text text-danger" *ngIf="!isLoggedIn && isCollected">
+              Прием заказов завершен
+            </p>
+            <p class="card-text text-danger" *ngIf="!isLoggedIn && isClosed">
+              Закупка закрыта
+            </p>
+            <p class="card-text" *ngIf="isParticipant">
+              <button class="btn btn-detach" (click)="detachFromPurchase()">
+                Отказаться от участия
+              </button>
+            </p>
+            <div *ngIf="purchaseInfo" class="card-text">
+              <div *ngIf="!editMode.category">
+                Категория: {{ purchaseInfo.category.name }}
+                <label *ngIf="isCreator && !isGoodPurchase" (click)="editMode.category = true" class="btn-edit">
+                  изменить
+                </label>
+              </div>
+              <div *ngIf="editMode.category" class="form-group">
+                <label for="category">Категория</label>
+                <app-good-category-chooser
+                  id="category"
+                  [category]="editModeInfo.category"
+                  (categoryChanged)="editModeInfo.category = $event"
+                ></app-good-category-chooser>
+                <button
+                  type="button"
+                  class="btn btn-main mt-3"
+                  (click)="updateCategory()"
+                >Обновить</button>
+                <button
+                  type="button"
+                  class="btn btn-detach mt-3 ml-1"
+                  (click)="disableEditMode('category')"
+                >Отмена</button>
+              </div>
+            </div>
+            <p class="card-text mt-2" *ngIf="isGoodPurchase">
+              <a [routerLink]="['/good', purchaseInfo.good._id]">Посмотреть товар в магазине</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="row additional">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="tab01">
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs">
+                <li class="nav-item p-b-10">
+                  <a class="nav-link tabs" [class.active]="additionalTabPane === 'description'" data-toggle="tab"
+                     (click)="switchTab('description')"
+                     role="tab">Описание</a>
+                </li>
+
+                <li class="nav-item p-b-10" *ngIf="isCreator">
+                  <a class="nav-link tabs" [class.active]="additionalTabPane === 'participants'" data-toggle="tab"
+                     (click)="switchTab('participants')"
+                     role="tab">Участники</a>
+                </li>
+
+                <li class="nav-item p-b-10">
+                  <a class="nav-link tabs" [class.active]="additionalTabPane === 'history'" data-toggle="tab"
+                     (click)="switchTab('history')"
+                     role="tab">История изменений</a>
+                </li>
+
+                <li class="nav-item p-b-10" *ngIf="isCreator">
+                  <a class="nav-link tabs" [class.active]="additionalTabPane === 'black_list'" data-toggle="tab"
+                     (click)="switchTab('black_list')"
+                     role="tab">Черный список</a>
+                </li>
+
+                <li class="nav-item p-b-10">
+                  <a class="nav-link tabs" [class.active]="additionalTabPane === 'comments'" data-toggle="tab"
+                     (click)="switchTab('comments')"
+                     role="tab">Комментарии</a>
+                </li>
+              </ul>
+
+              <div class="tab-content p-t-43" *ngIf="additionalTabPane === 'description'">
+                <div class="row">
+                  <div class="col-12 col-md-6">
+                    <h5>О закупке
+                      <label *ngIf="isCreator && !editMode.description" (click)="editMode.description = true" class="btn-edit">
+                      изменить
+                      </label>
+                    </h5>
+                    <div *ngIf="!editMode.description">
+                      <p *ngIf="purchaseInfo.description" class="preserve-line-breaks"
+                      >{{purchaseInfo.description}}</p>
+                      <p *ngIf="!purchaseInfo.description" class="preserve-line-breaks"
+                      >Организатор не предоставил описание закупки</p>
+                    </div>
+                    <div *ngIf="editMode.description" class="form-group">
+                      <textarea
+                        id="description"
+                        class="form-control card-title"
+                        [(ngModel)]="editModeInfo.description"
+                      ></textarea>
+                      <button type="button" class="btn btn-main" (click)="updateDescription()">Обновить</button>
+                      <button
+                        type="button"
+                        class="btn btn-detach ml-1"
+                        (click)="disableEditMode('description')"
+                      >Отмена</button>
+                    </div>
+                    <h5>
+                      Адрес места выдачи товара
+                      <label *ngIf="isCreator && !editMode.address" (click)="editMode.address = true" class="btn-edit">
+                        изменить
+                      </label>
+                    </h5>
+                    <p *ngIf="!editMode.address">{{purchaseInfo.address}}</p>
+                    <div *ngIf="editMode.address" class="form-group">
+                      <textarea
+                        id="address"
+                        class="form-control card-title"
+                        [(ngModel)]="editModeInfo.address"
+                      ></textarea>
+                      <button type="button" class="btn btn-main" (click)="updateAddress()">Обновить</button>
+                      <button
+                        type="button"
+                        class="btn btn-detach ml-1"
+                        (click)="disableEditMode('address')"
+                      >Отмена</button>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-6">
+                    <h5>Сведения об организаторе</h5>
+                    <p>
+                      Пользователь: {{purchaseInfo.creator.login}}
+                    </p>
+                    <button
+                      type="button"
+                      class="btn btn-main mb-3"
+                      (click)="openChatWithCreator()"
+                      *ngIf="isLoggedIn && !isCreator"
+                    >
+                      Связаться по чату <i class="fa fa-comment"></i>
+                    </button>
+                    <div>
+                      <h5>Платежные данные
+                        <label
+                          *ngIf="isCreator && !editMode.payment_type"
+                          (click)="editMode.payment_type = true"
+                          class="btn-edit"
+                        >изменить</label>
+                      </h5>
+                      <div *ngIf="!editMode.payment_type">
+                        <p *ngIf="purchaseInfo.payment_type === 0">
+                          Перевод денежных средств осуществляется через сайт
+                        </p>
+                        <p *ngIf="purchaseInfo.payment_type === 1">
+                          Денежные средства переводятся напрямую организатору.
+                        </p>
+                        <p *ngIf="(isParticipant || isCreator) && purchaseInfo.payment_type === 1">
+                          <b>Платежная информация:</b><br>
+                          <span class="preserve-line-breaks">{{purchaseInfo.payment_info}}</span>
+                        </p>
+                        <p *ngIf="purchaseInfo.payment_type === 2">
+                          Оплата производится в момент выдачи товара
+                        </p>
+                      </div>
+                      <div *ngIf="editMode.payment_type" class="form-group">
+                        <label for="payment_type">Способ оплаты</label>
+                        <select
+                          id="payment_type"
+                          class="custom-select mb-2"
+                          [(ngModel)]="editModeInfo.payment_type"
+                        >
+                          <option [ngValue]="0" disabled>Через сайт</option>
+                          <option [ngValue]="1">Напрямую организатору</option>
+                          <option [ngValue]="2">В момент выдачи товара</option>
+                        </select>
+                        <div *ngIf="editModeInfo.payment_type === 1">
+                          <label for="payment_info">Платежная информация</label>
+                          <textarea
+                            id="payment_info"
+                            [(ngModel)]="editModeInfo.payment_info"
+                            class="form-control card-title"
+                          ></textarea>
+                        </div>
+                        <button type="button" class="btn btn-main" (click)="updatePaymentType()">Обновить</button>
+                        <button
+                          type="button"
+                          class="btn btn-detach ml-1"
+                          (click)="disableEditMode('payment_type') || disableEditMode('payment_info')"
+                        >Отмена</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-content p-t-43" *ngIf="additionalTabPane === 'participants'">
+                <div *ngIf="participants.length === 0" class="text-center"
+                >Участников нет</div>
+                <div *ngIf="participants.length > 0">
+                  <div class="list-group">
+                    <div class="list-group-item" *ngFor="let participant of participants; let i = index">
+                      <div class="row" *ngIf="!participant.user">
+                        <div class="col-12 col-md-3">
+                          {{ participant.fake_user.login }}
+                        </div>
+                        <div class="col-12 col-md-3">
+                          {{ participant.volume }} {{ measurementUnit }}
+                          ({{ participant.cost | fixedFloat: 2 }} ₽)
+                        </div>
+                        <div class="col-12 col-md-4">
+                          <div class="custom-control mb-md-0 mb-2 pl-0">
+                            <div *ngIf="participant.paid" (clickOutside)="toggles.paid[participant._id] = false">
+                              <div class="justify-content-start">
+                                <span>Платеж подтвержден</span>
+                              </div>
+                              <div class="justify-content-start">
+                                <div class="d-inline-flex flex-row">
+                                  <span class="mr-2">{{participant.paid | date:'dd.MM.yyyy'}}</span>
+                                  <a
+                                    href="javascript:void(0)"
+                                    class="mr-2 text-primary"
+                                    (click)="toggles.paid[participant._id] = !toggles.paid[participant._id]"
+                                  >
+                                    <i class="fa fa-edit mr-1"></i><span class="d-md-none">Изменить</span>
+                                  </a>
+                                  <a
+                                    href="javascript:void(0)"
+                                    class="mr-2 text-danger"
+                                    (click)="updateFakeUserPaymentState(participant, null)"
+                                  >
+                                    <i class="fa fa-times mr-1"></i><span class="d-md-none">Отменить</span>
+                                  </a>
+                                </div>
+                              </div>
+                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.paid[participant._id]">
+                                <ngb-datepicker
+                                  [ngModel]="today"
+                                  (select)="updateFakeUserPaymentState(participant, $event)"
+                                ></ngb-datepicker>
+                              </div>
+                            </div>
+                            <div *ngIf="!participant.paid" (clickOutside)="toggles.paid[participant._id] = false">
+                              <button
+                                type="button"
+                                class="btn btn-main btn-block btn-sm mb-2"
+                                (click)="toggles.paid[participant._id] = !toggles.paid[participant._id]"
+                              ><i class="fa fa-check"></i> Оплачено</button>
+                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.paid[participant._id]">
+                                <ngb-datepicker
+                                  [ngModel]="today"
+                                  (select)="updateFakeUserPaymentState(participant, $event)"
+                                ></ngb-datepicker>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="custom-control mb-md-0 mb-2 pl-0">
+                            <div *ngIf="participant.sent" (clickOutside)="toggles.sent[participant._id] = false">
+                              <div class="justify-content-start">
+                                <span>Товар отправлен</span>
+                              </div>
+                              <div class="justify-content-start">
+                                <div class="d-inline-flex flex-row">
+                                  <span class="mr-2">{{participant.sent | date:'dd.MM.yyyy'}}</span>
+                                  <a
+                                    href="javascript:void(0)"
+                                    class="mr-2 text-primary"
+                                    (click)="toggles.sent[participant._id] = !toggles.sent[participant._id]"
+                                  >
+                                    <i class="fa fa-edit mr-1"></i><span class="d-md-none">Изменить</span>
+                                  </a>
+                                  <a
+                                    href="javascript:void(0)"
+                                    class="mr-2 text-danger"
+                                    (click)="updateFakeUserOrderSentState(participant, null)"
+                                  >
+                                    <i class="fa fa-times mr-1"></i><span class="d-md-none">Отменить</span>
+                                  </a>
+                                </div>
+                              </div>
+                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.sent[participant._id]">
+                                <ngb-datepicker
+                                  [ngModel]="today"
+                                  (select)="updateFakeUserOrderSentState(participant, $event)"
+                                ></ngb-datepicker>
+                              </div>
+                            </div>
+                            <div *ngIf="!participant.sent" (clickOutside)="toggles.sent[participant._id] = false">
+                              <button
+                                type="button"
+                                class="btn btn-main btn-block btn-sm mb-2"
+                                (click)="toggles.sent[participant._id] = !toggles.sent[participant._id]"
+                              ><i class="fa fa-check"></i> Отправлено</button>
+                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.sent[participant._id]">
+                                <ngb-datepicker
+                                  [ngModel]="today"
+                                  (select)="updateFakeUserOrderSentState(participant, $event)"
+                                ></ngb-datepicker>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-2 justify-content-md-end">
+                          <div class="d-inline-flex flex-md-column flex-row">
+                            <button
+                              type="button"
+                              class="btn btn-detach mr-2 mr-md-0"
+                              (click)="detachFakeUserFromPurchase(participant.fake_user.login)"
+                              ngbPopover="Удалить участника"
+                              triggers="mouseenter:mouseleave"
+                            >
+                              <i class="fa fa-times"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row" *ngIf="participant.user">
+                        <div class="col-12 col-md-3">
+                          {{participant.user | prettyUserName}}
+                        </div>
+                        <div class="col-12 col-md-3">
+                          {{ participant.volume }} {{ measurementUnit }}
+                          ({{ participant.cost | fixedFloat: 2 }} ₽)
+                        </div>
+                        <div class="col-12 col-md-4">
+                          <div class="custom-control mb-md-0 mb-2 pl-0">
+                            <div *ngIf="participant.paid" (clickOutside)="toggles.paid[participant._id] = false">
+                              <div class="justify-content-start">
+                                <span>Платеж подтвержден</span>
+                              </div>
+                              <div class="justify-content-start">
+                                <div class="d-inline-flex flex-row">
+                                  <span class="mr-2">{{participant.paid | date:'dd.MM.yyyy'}}</span>
+                                  <a
+                                    href="javascript:void(0)"
+                                    class="mr-2 text-primary"
+                                    (click)="toggles.paid[participant._id] = !toggles.paid[participant._id]"
+                                  >
+                                    <i class="fa fa-edit mr-1"></i><span class="d-md-none">Изменить</span>
+                                  </a>
+                                  <a
+                                    href="javascript:void(0)"
+                                    class="mr-2 text-danger"
+                                    (click)="updatePaymentState(participant, null)"
+                                  >
+                                    <i class="fa fa-times mr-1"></i><span class="d-md-none">Отменить</span>
+                                  </a>
+                                </div>
+                              </div>
+                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.paid[participant._id]">
+                                <ngb-datepicker
+                                  [ngModel]="today"
+                                  (select)="updatePaymentState(participant, $event)"
+                                ></ngb-datepicker>
+                              </div>
+                            </div>
+                            <div *ngIf="!participant.paid" (clickOutside)="toggles.paid[participant._id] = false">
+                              <button
+                                type="button"
+                                class="btn btn-main btn-block btn-sm mb-2"
+                                (click)="toggles.paid[participant._id] = !toggles.paid[participant._id]"
+                              ><i class="fa fa-check"></i> Оплачено</button>
+                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.paid[participant._id]">
+                                <ngb-datepicker
+                                  [ngModel]="today"
+                                  (select)="updatePaymentState(participant, $event)"
+                                ></ngb-datepicker>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="custom-control mb-md-0 mb-2 pl-0">
+                            <div *ngIf="participant.sent" (clickOutside)="toggles.sent[participant._id] = false">
+                              <div class="justify-content-start">
+                                <span>Товар отправлен</span>
+                              </div>
+                              <div class="justify-content-start">
+                                <div class="d-inline-flex flex-row">
+                                  <span class="mr-2">{{participant.sent | date:'dd.MM.yyyy'}}</span>
+                                  <a
+                                    href="javascript:void(0)"
+                                    class="mr-2 text-primary"
+                                    (click)="toggles.sent[participant._id] = !toggles.sent[participant._id]"
+                                  >
+                                    <i class="fa fa-edit mr-1"></i><span class="d-md-none">Изменить</span>
+                                  </a>
+                                  <a
+                                    href="javascript:void(0)"
+                                    class="mr-2 text-danger"
+                                    (click)="updateOrderSentState(participant, null)"
+                                  >
+                                    <i class="fa fa-times mr-1"></i><span class="d-md-none">Отменить</span>
+                                  </a>
+                                </div>
+                              </div>
+                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.sent[participant._id]">
+                                <ngb-datepicker
+                                  [ngModel]="today"
+                                  (select)="updateOrderSentState(participant, $event)"
+                                ></ngb-datepicker>
+                              </div>
+                            </div>
+                            <div *ngIf="!participant.sent" (clickOutside)="toggles.sent[participant._id] = false">
+                              <button
+                                type="button"
+                                class="btn btn-main btn-block btn-sm mb-2"
+                                (click)="toggles.sent[participant._id] = !toggles.sent[participant._id]"
+                              ><i class="fa fa-check"></i> Отправлено</button>
+                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.sent[participant._id]">
+                                <ngb-datepicker
+                                  [ngModel]="today"
+                                  (select)="updateOrderSentState(participant, $event)"
+                                ></ngb-datepicker>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="custom-control custom-checkbox mb-md-0 mb-2">
+                            <input
+                              id="userDelivered_{{i}}"
+                              type="checkbox"
+                              class="custom-control-input"
+                              disabled
+                              [checked]="participant.delivered"
+                            >
+                            <label class="custom-control-label" for="userDelivered_{{i}}"
+                            >Товар доставлен</label>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-2 justify-content-md-end">
+                          <div class="d-inline-flex flex-md-column flex-row">
+                            <button
+                              *ngIf="currentUser._id !== participant.user._id"
+                              type="button"
+                              class="btn btn-main mb-md-2 mr-2 mr-md-0"
+                              (click)="openChatWithParticipant(participant.user._id)"
+                              ngbPopover="Связаться по чату"
+                              triggers="mouseenter:mouseleave"
+                            >
+                              <i class="fa fa-comment"></i>
+                            </button>
+                            <button
+                              *ngIf="currentUser._id !== participant.user._id"
+                              type="button"
+                              class="btn btn-detach mr-2 mr-md-0"
+                              (click)="addUserToBlackList(participant.user._id)"
+                              ngbPopover="Добавить участника в черный список"
+                              triggers="mouseenter:mouseleave"
+                            >
+                              <i class="fa fa-ban"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-main ml-auto mr-auto mt-2"
+                  (click)="joinToPurchase(true)"
+                >Добавить участника</button>
+              </div>
+
+              <div class="tab-content p-t-43" *ngIf="additionalTabPane === 'history'">
+                <div *ngIf="history">
+                  <div class="list-group">
+                    <div class="list-group-item" *ngFor="let item of visibleHistory">
+                      <h5>{{ item.date | date:'dd.MM.yyyy HH:mm' }}</h5>
+                      <p>
+                        <span
+                          *ngFor="let block of item.blocks"
+                          [ngClass]="{'font-weight-bold': block.bold}"
+                        >{{block.text}}</span>
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-main ml-auto mr-auto mt-2"
+                      *ngIf="visibleHistoryLength < history.length"
+                      (click)="showMoreHistoryItems()"
+                    >Показать еще</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-content p-t-43" *ngIf="additionalTabPane === 'black_list'">
+                <div *ngIf="blackList.length === 0" class="text-center"
+                >Список пуст</div>
+                <div *ngIf="blackList.length > 0">
+                  <div class="list-group">
+                    <div class="list-group-item" *ngFor="let user of blackList; let i = index">
+                      <div class="row">
+                        <div class="col-12 col-md-7 mb-2 mb-md-0">
+                          {{user.login}}
+                        </div>
+                        <div class="col-12 col-md-5 d-flex justify-content-md-end">
+                          <button
+                            type="button"
+                            class="btn btn-detach"
+                            (click)="removeUserFromBlackList(user._id)"
+                          >Разблокировать</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-content p-t-43" *ngIf="additionalTabPane === 'comments'">
+                <app-comment-branch
+                  *ngFor="let comment of comments"
+                  [comment]="comment"
+                  [level]="1"
+                  [settings]="commentSettings"
+                  (commentSent)="onCommentSent($event)"
+                ></app-comment-branch>
+                <div class="mt-3" *ngIf="isLoggedIn">
+                  <h4>Написать комментарий</h4>
+                  <app-comment-reply
+                    (sent)="onCommentSent()"
+                  ></app-comment-reply>
+                </div>
+                <ngb-alert type="danger" [dismissible]="false" *ngIf="!isLoggedIn">
+                  Только зарегистрированные пользователи могут оставлять комментарии.
+                </ngb-alert>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="isCreator">
+      <div class="col-lg-5 col-md-12 col-12 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">
+              Управление закупкой
+            </h4>
+            <p *ngIf="purchaseInfo.state === 0"
+            >Закупка <b>открыта</b>, идет прием заказов</p>
+            <p *ngIf="purchaseInfo.state === 1"
+            >Прием заказов <b>завершен</b></p>
+            <p *ngIf="purchaseInfo.state === 2"
+            >Закупка <span class="text-danger font-weight-bold">закрыта</span></p>
+            <div ngbDropdown class="d-inline-block">
+              <button
+                class="btn btn-main"
+                id="purchaseState"
+                ngbDropdownToggle
+                ngbPopover="Изменить состояние закупки"
+                triggers="mouseenter:mouseleave"
+              >Состояние закупки
+              </button>
+              <div ngbDropdownMenu aria-labelledby="purchaseState">
+                <button
+                  class="dropdown-item"
+                  *ngIf="purchaseInfo.state != 0"
+                  (click)="updateState(0)"
+                >Открыть закупку
+                </button>
+                <button
+                  class="dropdown-item"
+                  *ngIf="purchaseInfo.state != 1"
+                  (click)="updateState(1)"
+                >Завершить прием заказов
+                </button>
+                <button
+                  class="dropdown-item"
+                  *ngIf="purchaseInfo.state != 2"
+                  (click)="updateState(2)"
+                >Закрыть закупку
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group mt-3">
+              <div
+                class="custom-control custom-checkbox"
+              >
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="isPrivate"
+                  [(ngModel)]="purchaseInfo.is_public"
+                  (change)="updateIsPublicState()"
+                >
+                <label
+                  class="custom-control-label"
+                  for="isPrivate"
+                >Закупка отображается в поисковой выдаче</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7 col-md-12 col-12 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">
+                  Статистика
+                </h4>
+                <table class="table table-sm table-hover">
+                  <tbody>
+                  <tr>
+                    <td><div class="pl-0 d-inline-block">Осталось</div></td>
+                    <td>{{purchaseInfo.stats.remaining}} {{measurementUnit}}</td>
+                    <td>{{purchaseInfo.stats.remaining * pricePerUnit | fixedFloat: 2}} ₽</td>
+                  </tr>
+                  <tr>
+                    <td><div class="pl-0 d-inline-block">Заказано</div></td>
+                    <td>{{purchaseInfo.stats.ordered}} {{measurementUnit}}</td>
+                    <td>{{purchaseInfo.stats.ordered * pricePerUnit | fixedFloat: 2}} ₽</td>
+                  </tr>
+
+                  <tr>
+                    <td><div class="pl-2 d-inline-block">из них отправлено</div></td>
+                    <td>{{purchaseInfo.stats.sent}} {{measurementUnit}}</td>
+                    <td>{{purchaseInfo.stats.sent * pricePerUnit | fixedFloat: 2}} ₽</td>
+                  </tr>
+                  <tr>
+                    <td><div class="pl-2 d-inline-block">из них <b>не</b> отправлено</div></td>
+                    <td>{{purchaseInfo.stats.not_sent}} {{measurementUnit}}</td>
+                    <td>{{purchaseInfo.stats.not_sent * pricePerUnit | fixedFloat: 2}} ₽</td>
+                  </tr>
+
+                  <tr>
+                    <td><div class="pl-2 d-inline-block">из них оплачено</div></td>
+                    <td>{{purchaseInfo.stats.paid}} {{measurementUnit}}</td>
+                    <td>{{purchaseInfo.stats.paid * pricePerUnit | fixedFloat: 2}} ₽</td>
+                  </tr>
+                  <tr>
+                    <td><div class="pl-4 d-inline-block">из них отправлено</div></td>
+                    <td>{{purchaseInfo.stats.paid_and_sent}} {{measurementUnit}}</td>
+                    <td>{{purchaseInfo.stats.paid_and_sent * pricePerUnit | fixedFloat: 2}} ₽</td>
+                  </tr>
+                  <tr>
+                    <td><div class="pl-4 d-inline-block">из них <b>не</b> отправлено</div></td>
+                    <td>{{purchaseInfo.stats.paid_and_not_sent}} {{measurementUnit}}</td>
+                    <td>{{purchaseInfo.stats.paid_and_not_sent * pricePerUnit | fixedFloat: 2}} ₽</td>
+                  </tr>
+
+                  <tr>
+                    <td><div class="pl-2 d-inline-block">из них не оплачено</div></td>
+                    <td>{{purchaseInfo.stats.not_paid}} {{measurementUnit}}</td>
+                    <td>{{purchaseInfo.stats.not_paid * pricePerUnit | fixedFloat: 2}} ₽</td>
+                  </tr>
+                  <tr>
+                    <td><div class="pl-4 d-inline-block">из них отправлено</div></td>
+                    <td>{{purchaseInfo.stats.not_paid_and_sent}} {{measurementUnit}}</td>
+                    <td>{{purchaseInfo.stats.not_paid_and_sent * pricePerUnit | fixedFloat: 2}} ₽</td>
+                  </tr>
+                  <tr>
+                    <td><div class="pl-4 d-inline-block">из них <b>не</b> отправлено</div></td>
+                    <td>{{purchaseInfo.stats.not_paid_and_not_sent}} {{measurementUnit}}</td>
+                    <td>{{purchaseInfo.stats.not_paid_and_not_sent * pricePerUnit | fixedFloat: 2}} ₽</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+</div>

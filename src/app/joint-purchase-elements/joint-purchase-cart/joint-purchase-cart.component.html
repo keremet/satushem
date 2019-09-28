@@ -1,0 +1,23 @@
+<a class="img-holder" [routerLink]="['/purchase', purchase._id]">
+  <img class="card-img-top" [src]="purchase.picture || 'assets/img/box.svg'" alt="Card image cap">
+</a>
+<div class="card-body">
+  <a class="links" [routerLink]="['/purchase', purchase._id]">
+    <h5 class="card-title">{{purchase.name}}</h5>
+  </a>
+  <p *ngIf="purchase.description" class="card-text">{{purchase.description}}</p>
+  <div class="card-bottom">
+    <div class="card-price">
+      {{purchase.price_per_unit}} ₽/{{measurementUnit}}
+    </div>
+    <div class="card-icons">
+      <img height="15px" class="card-icon" src="assets/img/cart.svg" (click)="joinToPurchase()"/>
+      <div ngbDropdown class="d-inline-block">
+        <img height="15px" class="card-icon" id="dropdownBasic1" ngbDropdownToggle src="assets/img/more.svg"/>
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,19 @@
+<div class="internal-node dropdown-item clearfix" [ngStyle]="{'z-index': zIndex}">
+  <span
+    class="node-title float-left"
+    (click)="nodeSelected()"
+  >{{data.name}}</span>
+  <div
+    class="dropdown-menu mt-0"
+    [ngClass]="{'l2r-node-menu': !invertMenu, 'r2l-node-menu': invertMenu}"
+    *ngIf="data.children.length > 0"
+  >
+      <app-internal-category-node
+        [level]="level + 1"
+        *ngFor="let child of data.children"
+        class="w-100"
+        [data]="child"
+        (selected)="childrenSelected($event)"
+      ></app-internal-category-node>
+  </div>
+</div>

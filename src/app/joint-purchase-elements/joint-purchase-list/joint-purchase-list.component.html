@@ -1,0 +1,37 @@
+<div class="d-flex justify-content-start">
+  <div class="good-logo">
+    <a [routerLink]="['/purchase', purchase._id]">
+      <img [src]="purchase.picture || 'assets/img/box.svg'" class="store-img">
+    </a>
+  </div>
+
+  <div class="desc-good d-flex flex-column">
+    <a class="links" style="margin-right: 10px;" [routerLink]="['/purchase', purchase._id]">
+      <h5>{{ purchase.name }}</h5>
+    </a>
+    <div class="row">
+      <div class="col-12 col-md-7">
+        <p>{{purchase.description}}</p>
+        <div class="card-price">
+          {{ purchase.price_per_unit | fixedFloat: 2 }} ₽/{{measurementUnit}}
+        </div>
+        <p *ngIf="purchase.state === 1" class="text-danger">Прием заказов завершен</p>
+      </div>
+      <div class="col-12 col-md-5">
+        <p class="mb-1">Объем: {{purchase.volume}} {{measurementUnit}}</p>
+        <p class="mb-1">Осталось: {{purchase.remaining_volume}} {{measurementUnit}}</p>
+        <p class="mb-1">Прием заказов завершается {{date}}</p>
+      </div>
+    </div>
+<!--    <div class="d-inline-block">
+      <div class="d-inline-block">
+        <img height="15px" class="card-icon" src="assets/img/cart.svg" (click)="joinToPurchase()"/>
+        <div ngbDropdown class="d-inline-block">
+          <img height="15px" class="card-icon" id="dropdownBasic1" ngbDropdownToggle src="assets/img/more.svg"/>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          </div>
+        </div>
+      </div>
+    </div>-->
+  </div>
+</div>

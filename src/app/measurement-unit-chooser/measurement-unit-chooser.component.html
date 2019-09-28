@@ -1,0 +1,41 @@
+<div class="dropdown" (clickOutside)="hideMenu()">
+  <div
+    class="custom-select"
+    [ngClass]="readonly ? 'custom-select-readonly': '' "
+    (click)="toggleMenu()"
+  >{{selected_unit['name']}}</div>
+  <div class="dropdown-content" *ngIf="menu_visible">
+    <div class="list-group list-group-scrollable">
+      <div
+        class="list-group-item select-item"
+        *ngFor="let unit of units"
+        (click)="selectUnit(unit)"
+      >
+        {{unit.name}}
+      </div>
+    </div>
+    <div class="list-group">
+      <div class="list-group-item">
+        <div class="form-group">
+          <label for="new_unit">Нет нужной?</label>
+          <div class="input-group">
+            <input
+              [(ngModel)]="new_unit_name"
+              id="new_unit"
+              type="text"
+              class="form-control text-modal">
+            <div class="input-group-append">
+              <button
+                type="button"
+                class="btn btn-primary"
+                (click)="addNewUnit()"
+              >
+                Добавить
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
