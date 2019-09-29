@@ -4,6 +4,7 @@ import qs from 'qs';
 import {environment} from '../environments/environment';
 
 const API_URL = environment.apiUrl;
+const ORV_API_URL = 'http://orv.org.ru/satushem/api';
 
 @Injectable({providedIn: 'root'})
 export class RestApiService {
@@ -342,7 +343,7 @@ export class RestApiService {
   getAllGoodCategories() {
     return this
       .http
-      .get(`${API_URL}/api/category/get/good`, {
+      .get(`${ORV_API_URL}/get_cat_list.php`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -351,7 +352,7 @@ export class RestApiService {
   getGoodCategoryTree() {
     return this
       .http
-      .get(`${API_URL}/api/category/get/good/tree`, {
+      .get(`${ORV_API_URL}/get_cat_tree.php`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -514,12 +515,14 @@ export class RestApiService {
 
   searchJointPurchases(page: number, size: number, query: string, filter: string) {
     const params = new HttpParams()
+      .append('page', page.toString())
+      .append('size', size.toString())
       .append('query', query)
       .append('filter', filter);
 
     return this
       .http
-      .get(`${API_URL}/api/search/jointpurchases/${page}/${size}`, {
+      .get(`${ORV_API_URL}/jp_search.php`, {
         params: params,
         headers: this.getHeaders()
       })
