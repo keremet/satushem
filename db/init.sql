@@ -32,13 +32,13 @@ CREATE TABLE `member` (
   `visible_name` text COLLATE utf8_unicode_ci,
   `contacts` text COLLATE utf8_unicode_ci,
   `who_add_id` int(11),
-  `photo` text COLLATE utf8_unicode_ci NOT NULL,
+  `photo` text COLLATE utf8_unicode_ci,
    CONSTRAINT `member__who_add_id` FOREIGN KEY (`who_add_id`) REFERENCES `member` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `purchase` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` int(11) NOT NULL,
+  `name` text COLLATE utf8_unicode_ci NOT NULL,
   `category_id` int(11) NOT NULL,
   `state_id` int(11) NOT NULL,
   `payment_method_id` int(11) NOT NULL,
