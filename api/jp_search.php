@@ -22,10 +22,10 @@ while( $row = $stmt->fetch() ) {
 				, 'state' => 0
 				, 'payment_type' => 2
 				, 'payment_info' => ''
-				, 'history' => array(array('_id' => 1, 'parameter' => 'state', value => 0, date => '2019-09-24T20:09:49.723Z'))
+				, 'history' => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
 				, 'participants' => array()
 				, '__v' => 0
-				, 'recent'  => array(array('_id' => 1, 'parameter' => 'state', value => 0, date => '2019-09-24T20:09:49.723Z'))
+				, 'recent'  => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
 				, 'volume' => 1
 				, 'min_volume' => 1
 				, 'remaining_volume' => 1

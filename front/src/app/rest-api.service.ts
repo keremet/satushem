@@ -49,7 +49,7 @@ export class RestApiService {
   loginUser(body: any) {
     return this
       .http
-      .post(`${API_URL}/api/accounts/login`, body)
+      .post(`${ORV_API_URL}/login.php`, body)
       .toPromise();
   }
 
@@ -77,7 +77,7 @@ export class RestApiService {
   getUserProfile() {
     return this
       .http
-      .get(`${API_URL}/api/accounts/profile`, {
+      .get(`${ORV_API_URL}/profile.php`, {
         headers: this.getHeaders()
       })
       .toPromise();
