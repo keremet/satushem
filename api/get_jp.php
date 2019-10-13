@@ -1,27 +1,24 @@
 <?php
 include('headers.php');
 include('connect.php');
-
-parse_str($_GET['filter'], $filter);
-
 $stmt = $db->prepare(
-	"SELECT id, name
-	 FROM purchase
-	 WHERE 1=1 " . (isset($filter['category'])?"AND category_id=?":"")
-);
-$exec_param = array();
-if( isset($filter['category']) )
-	$exec_param[] = $filter['category'];
-$stmt->execute($exec_param);
-$purchases = array();
-while( $row = $stmt->fetch() ) {
-	$purchases[] = array('_id' => $row['id']
+	"SELECT p.id, p.name, p.category_id, c.name category_name
+	 FROM purchase p
+		JOIN category c ON c.id = p.category_id
+	 WHERE p.id = ?"
+	);
+$stmt->execute(array($_GET['id']));
+if( $row = $stmt->fetch() ) {
+	echo json_encode(
+		array('meta' => array('code' => 200, 'success' => true, 'message' => 'PURCHASE FOUND')
+			, 'data' => array('purchase' => 
+			array('_id' => $row['id']
 				, 'black_list' => array()
 				, 'is_public' => true
 				, 'name' => $row['name']
 				, 'picture' => ''
 				, 'description' => ''
-				, 'category' => ''
+				, 'category' => array('_id' => $row['category_id'], 'name' => $row['category_name'])
 				, 'creator' => ''
 				, 'address' => ''
 				, 'volume_dec' => array('$numberDecimal' => '1')
@@ -39,10 +36,8 @@ while( $row = $stmt->fetch() ) {
 				, 'volume' => 1
 				, 'min_volume' => 1
 				, 'remaining_volume' => 1
+				, 'stats' => array('ordered' => 0, 'remaining' => 1, 'paid' => 0, 'not_paid' => 0, 'paid_and_sent' => 0, 'paid_and_not_sent' => 0, 'not_paid_and_sent' => 0, 'not_paid_and_not_sent' => 0, 'sent' => 0, 'not_sent' => 0)
+	)))
 	);
 };
-echo json_encode(
-	array('meta' => array('code' => 200, 'success' => true, 'message' => 'FOUND')
-		, 'data' => array('purchases' => $purchases, 'total' => 10))
-);
 ?>

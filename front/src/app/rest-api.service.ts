@@ -489,7 +489,7 @@ export class RestApiService {
   addJointPurchase(body: any) {
     return this
       .http
-      .post(`${API_URL}/api/jointpurchases/add`, body, {
+      .post(`${ORV_API_URL}/add_jp.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -507,7 +507,7 @@ export class RestApiService {
   getJointPurchaseById(id: string) {
     return this
       .http
-      .get(`${API_URL}/api/jointpurchases/get/${id}`, {
+      .get(`${ORV_API_URL}/get_jp.php?id=${id}`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -750,7 +750,7 @@ export class RestApiService {
   getPurchaseCommentTree(id: string) {
     return this
       .http
-      .get(`${API_URL}/api/jointpurchases/comment/tree/${id}`, {
+      .get(`${ORV_API_URL}/get_jp_comment_tree.php?purchase_id=${id}`, {
         headers: this.getHeaders()
       })
       .toPromise();

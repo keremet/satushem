@@ -46,7 +46,7 @@ CREATE TABLE `purchase` (
   `category_id` int(11) NOT NULL,
   `state_id` int(11) NOT NULL,
   `payment_method_id` int(11) NOT NULL,
-  `unit_id` int(11),
+  `unit_id` int(11) NOT NULL,
   `creator_id` int(11) NOT NULL,
   `img` text COLLATE utf8_unicode_ci,
   `description` text COLLATE utf8_unicode_ci,
