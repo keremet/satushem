@@ -98,7 +98,7 @@ export class ModalLoginComponent implements OnInit {
         const resp = await this
           .rest
           .loginUser({
-            phone: '7' + this.phone.value,
+            login: this.phone.value,
             password: this.password.value
           });
 

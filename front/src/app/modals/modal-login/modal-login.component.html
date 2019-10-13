@@ -11,21 +11,17 @@
     novalidate
   >
     <div class="input-group login">
-      <div class="input-group-prepend">
-        <span class="input-group-text">+7</span>
-      </div>
       <input
         type="text"
         name="phone"
-        mask='9999999999'
         class="form-control text-modal"
-        placeholder="Телефон"
+        placeholder="Логин"
         [ngClass]="phoneErrors ? 'is-invalid': 'is-valid'"
         formControlName="phone"
         required
       >
       <div class="invalid-feedback d-block" *ngIf="error === 'NO SUCH USER'">
-        Пользователя с таким телефоном не существует
+        Пользователя с таким логином не существует
       </div>
     </div>
     <div class="form-group">
