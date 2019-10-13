@@ -17,7 +17,11 @@ CREATE TABLE `payment_method` (
 
 CREATE TABLE `unit` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` text COLLATE utf8_unicode_ci NOT NULL
+  `name` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT `unit__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  UNIQUE KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `event` (

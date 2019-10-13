@@ -759,7 +759,7 @@ export class RestApiService {
   getAllMeasurementUnits() {
     return this
       .http
-      .get(`${API_URL}/api/measurementunits/get`, {
+      .get(`${ORV_API_URL}/get_unit.php`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -768,7 +768,7 @@ export class RestApiService {
   addMeasurementUnit(body: any) {
     return this
       .http
-      .post(`${API_URL}/api/measurementunits/add`, body, {
+      .post(`${ORV_API_URL}/add_unit.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
