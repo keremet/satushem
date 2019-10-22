@@ -2,7 +2,7 @@
  * add_jp.php
  * This file is part of Satushem.
  *
- * Copyright (C) 2019
+ * Copyright (C) 2019 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
