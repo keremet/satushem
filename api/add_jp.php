@@ -1,3 +1,4 @@
+<?php
 /*
  * add_jp.php
  * This file is part of Satushem.
@@ -18,7 +19,6 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
 
-<?php
 include('headers.php');
 include('connect.php');
 $input = json_decode(file_get_contents('php://input'), true); 
