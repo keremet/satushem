@@ -1,6 +1,5 @@
 <?
 /*
- * add_jp.php
  * This file is part of Satushem.
  *
  * Copyright (C) 2019
