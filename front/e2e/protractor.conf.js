@@ -2,7 +2,6 @@
 // https://github.com/angular/protractor/blob/master/lib/config.ts
 
 /*
- * add_jp.php
  * This file is part of Satushem.
  *
  * Copyright (C) 2019
