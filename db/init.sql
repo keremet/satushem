@@ -72,7 +72,7 @@ CREATE TABLE `purchase_event` (
   `purchase_id` int(11) NOT NULL,
   `member_id` int(11) NOT NULL,
   `event_id` int(11) NOT NULL,
-  `d` date NOT NULL,
+  `d` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `amount` int(11),
   `comment` text COLLATE utf8_unicode_ci,
   CONSTRAINT `purchase_events__purchase_id` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,

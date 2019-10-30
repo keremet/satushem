@@ -558,13 +558,14 @@ export class RestApiService {
 
   joinToPurchase(id: string, volume: number) {
     const body = {
-      id: id,
+      purchase_id: id,
+      event_id: 1,
       volume: volume
     };
 
     return this
       .http
-      .put(`${API_URL}/api/jointpurchases/participants`, body, {
+      .put(`${ORV_API_URL}/add_jp_event.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -572,14 +573,15 @@ export class RestApiService {
 
   joinFakeUserToPurchase(id: string, login: string, volume: number) {
     const body = {
-      id: id,
+      purchase_id: id,
+      event_id: 2,
       volume: volume,
-      login: login
+      comment: login
     };
 
     return this
       .http
-      .put(`${API_URL}/api/jointpurchases/participants/fake`, body, {
+      .put(`${ORV_API_URL}/add_jp_event.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
