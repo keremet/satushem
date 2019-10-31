@@ -9,6 +9,20 @@ $stmt = $db->prepare(
 	);
 $stmt->execute(array($_GET['id']));
 if( $row = $stmt->fetch() ) {
+	$stmtP = $db->prepare(
+		"SELECT amount, member_id, comment, event_id
+		 FROM purchase_event
+		 WHERE purchase_id = ? AND event_id in (1, 2)
+		 ORDER BY d"
+	);
+	$stmtP->execute(array($_GET['id']));
+	$participants = array();
+	while( $rowP = $stmtP->fetch() ) {
+		$participants[] = ( 1 == $rowP['event_id'] )?
+			array('paid' => null, 'delivered' => false, 'sent' => null, 'volume' => $rowP['amount'], 'user' => $rowP['member_id']):
+			array('paid' => null, 'delivered' => false, 'sent' => null, 'volume' => $rowP['amount'], 'fake_user' => array('login' => $rowP['comment']));
+	}
+
 	echo json_encode(
 		array('meta' => array('code' => 200, 'success' => true, 'message' => 'PURCHASE FOUND')
 			, 'data' => array('purchase' => 
@@ -30,7 +44,7 @@ if( $row = $stmt->fetch() ) {
 				, 'payment_type' => 2
 				, 'payment_info' => ''
 				, 'history' => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
-				, 'participants' => array()
+				, 'participants' => $participants
 				, '__v' => 0
 				, 'recent'  => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
 				, 'volume' => 1

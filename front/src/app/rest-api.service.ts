@@ -232,7 +232,7 @@ export class RestApiService {
   getUserById(id: string) {
     return this
       .http
-      .get(`${API_URL}/api/users/find/id/${id}`, {
+      .get(`${ORV_API_URL}/get_member.php?id=${id}`, {
         headers: this.getHeaders()
       })
       .toPromise();
