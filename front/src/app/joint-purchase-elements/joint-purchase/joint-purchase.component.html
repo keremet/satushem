@@ -51,7 +51,7 @@
             </div>
 
             <h5 *ngIf="!editMode.price_per_unit">
-              {{ purchaseInfo.price_per_unit | fixedFloat: 2 }} ₽/{{ measurementUnit }}
+              {{ purchaseInfo.price_per_unit }} ₽/{{ measurementUnit }}
               <label *ngIf="isCreator && !isGoodPurchase" (click)="editMode.price_per_unit = true" class="btn-edit">
                 изменить
               </label>

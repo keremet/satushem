@@ -5,7 +5,7 @@ include('connect.php');
 parse_str($_GET['filter'], $filter);
 
 $stmt = $db->prepare(
-	"SELECT id, name
+	"SELECT id, name, TRIM(amount)+0 amount
 	 FROM purchase
 	 WHERE 1=1 " . (isset($filter['category'])?"AND category_id=?":"")
 );
@@ -36,9 +36,9 @@ while( $row = $stmt->fetch() ) {
 				, 'participants' => array()
 				, '__v' => 0
 				, 'recent'  => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
-				, 'volume' => 1
+				, 'volume' => $row['amount']
 				, 'min_volume' => 1
-				, 'remaining_volume' => 1
+				, 'remaining_volume' => $row['amount']
 	);
 };
 echo json_encode(

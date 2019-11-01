@@ -1,7 +1,7 @@
 <?php
 function select_jp($db, $id) {
 	$stmt = $db->prepare(
-		"SELECT p.id, p.name, p.category_id, c.name category_name
+		"SELECT p.id, p.name, p.category_id, c.name category_name, p.price, TRIM(p.amount)+0 amount
 		 FROM purchase p
 			JOIN category c ON c.id = p.category_id
 		 WHERE p.id = ?"
@@ -34,7 +34,7 @@ function select_jp($db, $id) {
 			, 'address' => ''
 			, 'volume_dec' => array('$numberDecimal' => '1')
 			, 'min_volume_dec' => array('$numberDecimal' => '1')
-			, 'price_per_unit' => 1
+			, 'price_per_unit' => $row['price']
 			, 'measurement_unit' => array('_id' => '1', 'name' => 'л', '__v' => 0)
 			, 'date' => '2019-09-23T21:00:00.000Z'
 			, 'state' => 0
@@ -44,10 +44,10 @@ function select_jp($db, $id) {
 			, 'participants' => $participants
 			, '__v' => 0
 			, 'recent'  => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
-			, 'volume' => 1
+			, 'volume' => $row['amount']
 			, 'min_volume' => 1
-			, 'remaining_volume' => 1
-			, 'stats' => array('ordered' => 0, 'remaining' => 1, 'paid' => 0, 'not_paid' => 0, 'paid_and_sent' => 0, 'paid_and_not_sent' => 0, 'not_paid_and_sent' => 0, 'not_paid_and_not_sent' => 0, 'sent' => 0, 'not_sent' => 0)
+			, 'remaining_volume' => $row['amount']
+			, 'stats' => array('ordered' => 0, 'remaining' => $row['amount'], 'paid' => 0, 'not_paid' => 0, 'paid_and_sent' => 0, 'paid_and_not_sent' => 0, 'not_paid_and_sent' => 0, 'not_paid_and_not_sent' => 0, 'sent' => 0, 'not_sent' => 0)
 		);
 	};
 
