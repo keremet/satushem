@@ -40,8 +40,8 @@ function select_jp($db, $id) {
 		$participants = array();
 		while( $rowP = $stmtP->fetch() ) {
 			$participants[] = ( 1 == $rowP['event_id'] )?
-				array('paid' => null, 'delivered' => false, 'sent' => null, 'volume' => $rowP['amount'], 'user' => $rowP['member_id']):
-				array('paid' => null, 'delivered' => false, 'sent' => null, 'volume' => $rowP['amount'], 'fake_user' => array('login' => $rowP['comment']));
+				array('paid' => null, 'delivered' => false, 'sent' => null, 'volume' => $rowP['amount'], '_id' => 'r'.$rowP['member_id'], 'user' => $rowP['member_id']):
+				array('paid' => null, 'delivered' => false, 'sent' => null, 'volume' => $rowP['amount'], '_id' => 'f'.$id.'_'.$rowP['comment'], 'fake_user' => array('login' => $rowP['comment']));
 		}
 
 		return array(
