@@ -614,16 +614,17 @@ export class RestApiService {
       .toPromise();
   }
 
-  updatePaymentPurchase(id: string, userId: string, date: Date) {
+  updatePaymentPurchase(id: string, userId: string, date: number) {
     const body = {
-      id: id,
+      purchase_id: id,
       user_id: userId,
+      event_id: 3,
       date: date
     };
 
     return this
       .http
-      .put(`${API_URL}/api/jointpurchases/payments/update`, body, {
+      .put(`${ORV_API_URL}/add_jp_event.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();

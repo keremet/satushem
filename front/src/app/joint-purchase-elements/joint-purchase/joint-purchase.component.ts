@@ -795,13 +795,12 @@ export class JointPurchaseComponent implements OnInit {
 
   async updatePaymentState(participant: any, date: NgbDateStruct) {
     this.toggles.paid[participant._id] = false;
-    const nativeDate = date ? new Date(date.year, date.month - 1, date.day) : null;
 
     try {
       const resp = await this.rest.updatePaymentPurchase(
         this.purchaseInfo['_id'],
-        participant['user']['_id'],
-        nativeDate
+        participant['user']['id'],
+        date ? date.year*10000 + date.month*100 + date.day : null
       );
 
       if (resp['meta'].success) {
