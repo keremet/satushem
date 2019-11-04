@@ -20,8 +20,10 @@
 function select_jp($db, $id) {
 	$stmt = $db->prepare(
 		"SELECT p.id, p.name, p.category_id, c.name category_name, p.price, TRIM(p.amount)+0 amount
+			, cr.id creator_id, cr.login creator_login
 		 FROM purchase p
 			JOIN category c ON c.id = p.category_id
+			JOIN member cr ON cr.id = p.creator_id
 		 WHERE p.id = ?"
 		);
 	$stmt->execute(array($id));
@@ -48,7 +50,7 @@ function select_jp($db, $id) {
 			, 'picture' => ''
 			, 'description' => ''
 			, 'category' => array('_id' => $row['category_id'], 'name' => $row['category_name'])
-			, 'creator' => ''
+			, 'creator' => array('id' => $row['creator_id'], 'login' => $row['creator_login'])
 			, 'address' => ''
 			, 'volume_dec' => array('$numberDecimal' => '1')
 			, 'min_volume_dec' => array('$numberDecimal' => '1')

@@ -39,7 +39,7 @@ export class OrdersComponent implements OnInit {
     this.purchaseOrders = purchases
       .map(purchase => {
         const index = purchase['participants']
-          .findIndex(participant => participant['user'] === this.data.user['_id']);
+          .findIndex(participant => participant['user'] === this.data.user['id']);
         const orderInfo = purchase['participants'][index];
         return {
           purchase: purchase,
@@ -57,7 +57,7 @@ export class OrdersComponent implements OnInit {
     try {
       await this.rest.updateDeliveryPurchase(
         order['purchase']['_id'],
-        this.data.user['_id'],
+        this.data.user['id'],
         status
       );
 

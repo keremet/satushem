@@ -111,14 +111,14 @@ export class JointPurchaseComponent implements OnInit {
   get isCreator(): boolean {
     return this.purchaseInfo &&
       this.data.user &&
-      this.purchaseInfo['creator']['_id'] === this.data.user['_id'];
+      this.purchaseInfo['creator']['id'] === this.data.user['id'];
   }
 
   get isParticipant(): boolean {
     if (this.purchaseInfo && this.data.user) {
       const index = this
         .purchaseInfo['participants']
-        .findIndex(participant => participant['user'] === this.data.user['_id']);
+        .findIndex(participant => participant['user'] === this.data.user['id']);
       return index !== -1;
     } else {
       return false;
@@ -128,7 +128,7 @@ export class JointPurchaseComponent implements OnInit {
   get isBanned(): boolean {
     return this.isLoggedIn &&
       this.purchaseInfo &&
-      this.purchaseInfo['black_list'].findIndex(user => user === this.data.user['_id']) !== -1;
+      this.purchaseInfo['black_list'].findIndex(user => user === this.data.user['id']) !== -1;
   }
 
   get isOpened(): boolean {
@@ -157,7 +157,7 @@ export class JointPurchaseComponent implements OnInit {
     if (this.purchaseInfo && this.data.user) {
       const index = this
         .purchaseInfo['participants']
-        .findIndex(participant => participant['user'] === this.data.user['_id']);
+        .findIndex(participant => participant['user'] === this.data.user['id']);
       if (index !== -1) {
         return this.purchaseInfo['participants'][index]['paid'];
       } else {

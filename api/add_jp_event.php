@@ -37,7 +37,7 @@ if( $stmt->execute(array($input['purchase_id'], $input['event_id'], $input['volu
 	$errInfo = $stmt->errorInfo();
 	http_response_code(500);
 	echo json_encode(
-		array('meta' => array('code' => 500, 'success' => false, 'message' => 'Ошибка при создании закупки'. implode($errInfo, ','))
+		array('meta' => array('code' => 500, 'success' => false, 'message' => 'Ошибка при добавлении события'. implode($errInfo, ','))
 			, 'data' => null)
 	);
 }

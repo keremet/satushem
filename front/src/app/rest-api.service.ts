@@ -590,10 +590,11 @@ export class RestApiService {
   detachFromPurchase(id: string) {
     return this
       .http
-      .request('DELETE', `${API_URL}/api/jointpurchases/participants`, {
+      .request('DELETE', `${ORV_API_URL}/del_jp_event.php`, {
         headers: this.getHeaders(),
         body: {
-          id: id
+          purchase_id: id,
+          event_id: 1
         }
       })
       .toPromise();
@@ -602,10 +603,11 @@ export class RestApiService {
   detachFakeUserFromPurchase(id: string, login: string) {
     return this
       .http
-      .request('DELETE', `${API_URL}/api/jointpurchases/participants/fake`, {
+      .request('DELETE', `${ORV_API_URL}/del_jp_event.php`, {
         headers: this.getHeaders(),
         body: {
-          id: id,
+          purchase_id: id,
+          event_id: 2,
           login: login
         }
       })

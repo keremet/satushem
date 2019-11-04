@@ -23,7 +23,7 @@ export class JointPurchasesComponent implements OnInit {
   async loadPurchasesInfo() {
     const resp = await this
       .rest
-      .getUserPurchases(this.data.user['_id']);
+      .getUserPurchases(this.data.user['id']);
 
     this.purchases = resp['data']['purchases'];
   }
