@@ -20,10 +20,12 @@
 function select_jp($db, $id) {
 	$stmt = $db->prepare(
 		"SELECT p.id, p.name, p.category_id, c.name category_name, p.price, TRIM(p.amount)+0 amount
-			, cr.id creator_id, cr.login creator_login
+			, p.creator_id, cr.login creator_login
+			, p.unit_id, unit.name unit_name
 		 FROM purchase p
 			JOIN category c ON c.id = p.category_id
 			JOIN member cr ON cr.id = p.creator_id
+			JOIN unit on unit.id = p.unit_id
 		 WHERE p.id = ?"
 		);
 	$stmt->execute(array($id));
@@ -55,7 +57,7 @@ function select_jp($db, $id) {
 			, 'volume_dec' => array('$numberDecimal' => '1')
 			, 'min_volume_dec' => array('$numberDecimal' => '1')
 			, 'price_per_unit' => $row['price']
-			, 'measurement_unit' => array('_id' => '1', 'name' => 'л', '__v' => 0)
+			, 'measurement_unit' => array('_id' => $row['unit_id'], 'name' => $row['unit_name'])
 			, 'date' => '2019-09-23T21:00:00.000Z'
 			, 'state' => 0
 			, 'payment_type' => 2
