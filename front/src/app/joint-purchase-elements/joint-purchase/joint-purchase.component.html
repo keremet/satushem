@@ -585,17 +585,7 @@
                         <div class="col-12 col-md-2 justify-content-md-end">
                           <div class="d-inline-flex flex-md-column flex-row">
                             <button
-                              *ngIf="currentUser._id !== participant.user._id"
-                              type="button"
-                              class="btn btn-main mb-md-2 mr-2 mr-md-0"
-                              (click)="openChatWithParticipant(participant.user._id)"
-                              ngbPopover="Связаться по чату"
-                              triggers="mouseenter:mouseleave"
-                            >
-                              <i class="fa fa-comment"></i>
-                            </button>
-                            <button
-                              *ngIf="currentUser._id !== participant.user._id"
+                              *ngIf="currentUser.id !== participant.user.id"
                               type="button"
                               class="btn btn-detach mr-2 mr-md-0"
                               (click)="addUserToBlackList(participant.user._id)"
