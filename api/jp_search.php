@@ -24,7 +24,7 @@ include('connect.php');
 parse_str($_GET['filter'], $filter);
 
 $stmt = $db->prepare(
-	"SELECT p.id, p.name, TRIM(p.amount)+0 amount, p.unit_id, unit.name unit_name
+	"SELECT p.id, p.name, TRIM(p.amount)+0 amount, p.unit_id, unit.name unit_name, p.price
 	 FROM purchase p
 		JOIN unit on unit.id = p.unit_id
 	 WHERE 1=1 " . (isset($filter['category'])?"AND category_id=?":"")
@@ -46,7 +46,7 @@ while( $row = $stmt->fetch() ) {
 				, 'address' => ''
 				, 'volume_dec' => array('$numberDecimal' => '1')
 				, 'min_volume_dec' => array('$numberDecimal' => '1')
-				, 'price_per_unit' => 1
+				, 'price_per_unit' => (int)($row['price'])
 				, 'measurement_unit' => array('_id' => $row['unit_id'], 'name' => $row['unit_name'])
 				, 'date' => '2019-09-23T21:00:00.000Z'
 				, 'state' => 0
