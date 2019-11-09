@@ -16,9 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
- 
-INSERT INTO `event` (`id`, `name`) VALUES
-(1, 'Присоединение к закупке'),
-(2, 'Присоединение незареганного'),
-(3, 'Оплата');
 
+INSERT INTO `unit` (`name`) VALUES
+('кг'),
+('л'),
+('шт');

@@ -21,7 +21,7 @@ CREATE TABLE `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` text COLLATE utf8_unicode_ci NOT NULL,
   `id_hi` int(11),
-  CONSTRAINT `category_id` FOREIGN KEY (`id_hi`) REFERENCES `category` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `category_id` FOREIGN KEY (`id_hi`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `state` (
@@ -32,15 +32,6 @@ CREATE TABLE `state` (
 CREATE TABLE `payment_method` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `unit` (
-  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `member_id` int(11) NOT NULL,
-  `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  CONSTRAINT `unit__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  UNIQUE KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `event` (
@@ -57,6 +48,15 @@ CREATE TABLE `member` (
   `who_add_id` int(11),
   `photo` text COLLATE utf8_unicode_ci,
    CONSTRAINT `member__who_add_id` FOREIGN KEY (`who_add_id`) REFERENCES `member` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `unit` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `name` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `member_id` int(11),
+  `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT `unit__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  UNIQUE KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `purchase` (
@@ -85,8 +85,8 @@ CREATE TABLE `black_list` (
   `member_id` int(11) NOT NULL,
   `d` date NOT NULL,
   `comment` text COLLATE utf8_unicode_ci,
-  CONSTRAINT `black_list__purchase_id` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT `black_list__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `black_list__purchase_id` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `black_list__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `purchase_event` (
@@ -96,8 +96,8 @@ CREATE TABLE `purchase_event` (
   `d` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `amount` decimal(30, 10),
   `comment` text COLLATE utf8_unicode_ci,
-  CONSTRAINT `purchase_events__purchase_id` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT `purchase_events__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `purchase_events__purchase_id` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `purchase_events__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `purchase_events__event_id` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -105,5 +105,5 @@ CREATE TABLE `token` (
   `id` varchar(64) NOT NULL PRIMARY KEY,
   `member_id` int(11) NOT NULL,
   `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  CONSTRAINT `token__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `token__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
