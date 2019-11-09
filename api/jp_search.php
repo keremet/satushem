@@ -27,11 +27,15 @@ $stmt = $db->prepare(
 	"SELECT p.id, p.name, TRIM(p.amount)+0 amount, p.unit_id, unit.name unit_name, p.price
 	 FROM purchase p
 		JOIN unit on unit.id = p.unit_id
-	 WHERE 1=1 " . (isset($filter['category'])?"AND category_id=?":"")
+	 WHERE 1=1" 
+	     . (isset($filter['category'])?" AND category_id=?":"")
+	     . (isset($_GET['query'])?" AND upper(p.name) like upper(?)":"")
 );
 $exec_param = array();
 if( isset($filter['category']) )
 	$exec_param[] = $filter['category'];
+if( isset($_GET['query']) )
+	$exec_param[] = '%'.$_GET['query'].'%';
 $stmt->execute($exec_param);
 $purchases = array();
 while( $row = $stmt->fetch() ) {
