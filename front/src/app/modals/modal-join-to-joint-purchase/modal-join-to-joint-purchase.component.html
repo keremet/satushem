@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title" *ngIf="!fakeUser">Присоединение к закупке</h4>
-  <h4 class="modal-title" *ngIf="fakeUser">Добавление незарегистрированного участника</h4>
+  <h4 class="modal-title" *ngIf="fakeUser">Добавление участника</h4>
   <button type="button" class="close" aria-label="Close"
           (click)="dismiss()"><span aria-hidden="true">&times;</span>
   </button>
@@ -39,16 +39,12 @@
     </div>
 
     <div class="form-group" *ngIf="fakeUser">
-      <label for="user">Имя участника</label>
-      <input
-        type="text"
-        id="user"
-        class="form-control text-modal"
-        placeholder="Участник"
-        [ngClass]="userLogin.errors ? 'is-invalid': 'is-valid'"
-        formControlName="userLogin"
-        required
-      >
+      <label for="member">Имя участника</label>
+      <app-member-chooser
+        id="member"
+        [member]="userLogin.value"
+        (memberChanged)="updateUserLogin($event)"
+      ></app-member-chooser>
       <div class="invalid-feedback" [hidden]="!(userLogin.errors && userLogin.errors.required)">
         Введите имя участника
       </div>

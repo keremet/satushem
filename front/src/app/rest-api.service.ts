@@ -571,12 +571,12 @@ export class RestApiService {
       .toPromise();
   }
 
-  joinFakeUserToPurchase(id: string, login: string, volume: number) {
+  joinFakeUserToPurchase(id: string, memberId: number, volume: number) {
     const body = {
       purchase_id: id,
       event_id: 2,
       volume: volume,
-      comment: login
+      member_id: memberId
     };
 
     return this
@@ -593,22 +593,20 @@ export class RestApiService {
       .request('DELETE', `${ORV_API_URL}/del_jp_event.php`, {
         headers: this.getHeaders(),
         body: {
-          purchase_id: id,
-          event_id: 1
+          purchase_id: id
         }
       })
       .toPromise();
   }
 
-  detachFakeUserFromPurchase(id: string, login: string) {
+  detachFakeUserFromPurchase(id: string, member_id: number) {
     return this
       .http
       .request('DELETE', `${ORV_API_URL}/del_jp_event.php`, {
         headers: this.getHeaders(),
         body: {
           purchase_id: id,
-          event_id: 2,
-          login: login
+          member_id: member_id
         }
       })
       .toPromise();
@@ -765,6 +763,15 @@ export class RestApiService {
     return this
       .http
       .get(`${ORV_API_URL}/get_unit.php`, {
+        headers: this.getHeaders()
+      })
+      .toPromise();
+  }
+
+  getAllMembers() {
+    return this
+      .http
+      .get(`${ORV_API_URL}/get_all_members.php`, {
         headers: this.getHeaders()
       })
       .toPromise();

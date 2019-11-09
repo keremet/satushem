@@ -25,8 +25,8 @@ $input = json_decode(file_get_contents('php://input'), true);
 
 $h = getallheaders();
 
-if( '1' == $input['event_id'] ) {
-	$stmtD = $db->prepare("DELETE FROM purchase_event WHERE purchase_id = ? and event_id = 1 and member_id = (select t.member_id from token t WHERE t.id = ?)");
+if( !isset($input['member_id']) ) {
+	$stmtD = $db->prepare("DELETE FROM purchase_event WHERE purchase_id = ? and member_id = (select t.member_id from token t WHERE t.id = ?)");
 	if( ! $stmtD->execute(array($input['purchase_id'], $h['Authorization']))) {
 		$errInfo = $stmt->errorInfo();
 		http_response_code(500);
@@ -55,8 +55,8 @@ if( '1' == $input['event_id'] ) {
 				, 'data' => null )
 		));
 	}
-	$stmtD = $db->prepare("DELETE FROM purchase_event WHERE purchase_id = ? and event_id = ? and comment = ?");
-	$stmtD->execute(array($input['purchase_id'], $input['event_id'], $input['login']));
+	$stmtD = $db->prepare("DELETE FROM purchase_event WHERE purchase_id = ? and member_id = ?");
+	$stmtD->execute(array($input['purchase_id'], $input['member_id']));
 }
 
 $jp = select_jp($db, $input['purchase_id']);

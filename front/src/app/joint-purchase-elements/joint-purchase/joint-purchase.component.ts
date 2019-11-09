@@ -760,11 +760,11 @@ export class JointPurchaseComponent implements OnInit {
     }
   }
 
-  async detachFakeUserFromPurchase(login: string) {
+  async detachFakeUserFromPurchase(member_id: number) {
     try {
       const resp = await this.rest.detachFakeUserFromPurchase(
         this.purchaseInfo['_id'],
-        login
+        member_id
       );
 
       if (resp['meta'].success) {

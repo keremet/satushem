@@ -36,6 +36,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { ModalAddJointPurchaseComponent } from './modals/modal-add-joint-purchase/modal-add-joint-purchase.component';
 import { JointPurchaseSearchComponent } from './joint-purchase-elements/joint-purchase-search/joint-purchase-search.component';
 import { MeasurementUnitChooserComponent } from './measurement-unit-chooser/measurement-unit-chooser.component';
+import { MemberChooserComponent } from './member-chooser/member-chooser.component';
 import { JointPurchaseComponent } from './joint-purchase-elements/joint-purchase/joint-purchase.component';
 import { JointPurchaseCartComponent } from './joint-purchase-elements/joint-purchase-cart/joint-purchase-cart.component';
 import { JointPurchaseListComponent } from './joint-purchase-elements/joint-purchase-list/joint-purchase-list.component';
@@ -72,6 +73,7 @@ import { ModalGoodPurchaseChooserComponent } from './modals/modal-good-purchase-
     ModalAddJointPurchaseComponent,
     JointPurchaseSearchComponent,
     MeasurementUnitChooserComponent,
+    MemberChooserComponent,
     JointPurchaseComponent,
     JointPurchaseCartComponent,
     JointPurchaseListComponent,

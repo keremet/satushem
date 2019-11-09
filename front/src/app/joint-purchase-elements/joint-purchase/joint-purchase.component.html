@@ -582,7 +582,7 @@
                             >Товар доставлен</label>
                           </div>
                         </div>
-                        <div class="col-12 col-md-2 justify-content-md-end">
+                        <!--div class="col-12 col-md-2 justify-content-md-end">
                           <div class="d-inline-flex flex-md-column flex-row">
                             <button
                               *ngIf="currentUser.id !== participant.user.id"
@@ -593,6 +593,19 @@
                               triggers="mouseenter:mouseleave"
                             >
                               <i class="fa fa-ban"></i>
+                            </button>
+                          </div>
+                        </div-->
+                        <div class="col-12 col-md-2 justify-content-md-end">
+                          <div class="d-inline-flex flex-md-column flex-row">
+                            <button
+                              type="button"
+                              class="btn btn-detach mr-2 mr-md-0"
+                              (click)="detachFakeUserFromPurchase(participant.user.id)"
+                              ngbPopover="Удалить участника"
+                              triggers="mouseenter:mouseleave"
+                            >
+                              <i class="fa fa-times"></i>
                             </button>
                           </div>
                         </div>

@@ -50,6 +50,10 @@ export class ModalJoinToJointPurchaseComponent implements OnInit {
     });
   }
 
+  updateUserLogin(member: any) {
+    this.userLogin.setValue(member);
+  }
+
   dismiss() {
     this.activeModal.dismiss();
   }
@@ -91,11 +95,11 @@ export class ModalJoinToJointPurchaseComponent implements OnInit {
     try {
       const purchaseId = this.purchaseInfo['_id'];
       const volume = Number.parseFloat(this.volume.value);
-      const userLogin = this.userLogin.value;
+      const userId = this.userLogin.value['_id'];
 
       let resp = null;
       if (this.fakeUser) {
-        resp = await this.rest.joinFakeUserToPurchase(purchaseId, userLogin, volume);
+        resp = await this.rest.joinFakeUserToPurchase(purchaseId, userId, volume);
         this
           .data
           .addToast('Участник присоединен к закупке', '', 'success');
