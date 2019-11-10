@@ -124,13 +124,13 @@
             </h5>
 
             <h5 *ngIf="!editMode.date">
-              Прием заказов завершается: {{ purchaseInfo.date | russianLocaleDate }}
+              Прием заказов завершается: {{ purchaseInfo.date }}
               <label *ngIf="isCreator" (click)="editMode.date = true" class="btn-edit">
                 изменить
               </label>
             </h5>
             <div *ngIf="editMode.date" class="form-group">
-              <label for="date">Прием заказов завершается: {{ editModeInfo.date | russianLocaleDate }}</label>
+              <label for="date">Прием заказов завершается: {{ editModeInfo.date }}</label>
               <ngb-datepicker
                 id="date"
                 [minDate]="today | ngbDate"

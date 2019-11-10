@@ -19,7 +19,7 @@
  */
 function select_jp($db, $id) {
 	$stmt = $db->prepare(
-		"SELECT p.id, p.name, p.category_id, c.name category_name, p.price, TRIM(p.amount)+0 amount
+		"SELECT p.id, p.name, p.category_id, c.name category_name, p.price, TRIM(p.amount)+0 amount, DATE_FORMAT(deadline, '%d.%m.%Y') deadline
 			, p.creator_id, cr.login creator_login
 			, p.unit_id, unit.name unit_name
 		 FROM purchase p
@@ -59,7 +59,7 @@ function select_jp($db, $id) {
 			, 'min_volume_dec' => array('$numberDecimal' => '1')
 			, 'price_per_unit' => $row['price']
 			, 'measurement_unit' => array('_id' => $row['unit_id'], 'name' => $row['unit_name'])
-			, 'date' => '2019-09-23T21:00:00.000Z'
+			, 'date' => $row['deadline']
 			, 'state' => 0
 			, 'payment_type' => 2
 			, 'payment_info' => ''

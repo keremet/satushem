@@ -186,7 +186,7 @@ export class ModalAddJointPurchaseComponent implements OnInit {
         min_volume: Number.parseFloat(this.minVolume.value),
         price_per_unit: Number.parseFloat(this.pricePerUnit.value),
         measurement_unit_id: this.measurementUnit.value['_id'],
-        date: new Date(year, month - 1, day),
+        date: year*10000 + month*100 + day,
         state: 0,
         payment_type: this.paymentType.value,
         payment_info: this.paymentInfo.value,

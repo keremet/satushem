@@ -22,14 +22,6 @@ export class JointPurchaseListComponent implements OnInit {
     return this.purchase['measurement_unit']['name'] || '';
   }
 
-  get date(): string {
-    const date = new Date(this.purchase['date']);
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}.${month}.${year}`;
-  }
-
   joinToPurchase() {
     console.log('joint');
   }
