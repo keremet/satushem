@@ -8,7 +8,6 @@ import {ToastyModule} from 'ngx-toasty';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {ModalRegistrationComponent} from './modals/modal-registration/modal-registration.component';
 import {RestApiService} from './rest-api.service';
 import {DataService} from './data.service';
 import {LoginPopupService} from './login-popup.service';
@@ -54,14 +53,12 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 import { NgbDatePipe } from './pipes/ngb-date.pipe';
 import { PrettyUserNamePipe } from './pipes/pretty-user-name.pipe';
-import { ModalResetPasswordComponent } from './modals/modal-reset-password/modal-reset-password.component';
 import { ModalGoodPurchaseChooserComponent } from './modals/modal-good-purchase-chooser/modal-good-purchase-chooser.component';
 
 @NgModule({
   declarations: [
     AppComponent,
 
-    ModalRegistrationComponent,
     ModalLoginComponent,
     ProfileComponent,
     SettingsComponent,
@@ -88,7 +85,6 @@ import { ModalGoodPurchaseChooserComponent } from './modals/modal-good-purchase-
     CommentReplyComponent,
     NgbDatePipe,
     PrettyUserNamePipe,
-    ModalResetPasswordComponent,
     ModalGoodPurchaseChooserComponent
   ],
   imports: [
@@ -115,11 +111,9 @@ import { ModalGoodPurchaseChooserComponent } from './modals/modal-good-purchase-
   bootstrap: [AppComponent],
   entryComponents: [
     ModalLoginComponent,
-    ModalRegistrationComponent,
     ModalAddJointPurchaseComponent,
     ModalJoinToJointPurchaseComponent,
     ModalCategoryChooserComponent,
-    ModalResetPasswordComponent,
     ModalGoodPurchaseChooserComponent
   ]
 })
