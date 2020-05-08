@@ -28,12 +28,6 @@ export class OrdersComponent implements OnInit {
   }
 
   async fetchOrdersInfo() {
-    // good orders
-    const respGoods = await this.rest.getOrders();
-    const orders = respGoods['data']['orders'];
-    this.orders = orders.filter(_order => _order.good);
-
-    // purchase orders
     const respPurchases = await this.rest.getPurchaseOrders();
     const purchases = respPurchases['data']['purchases'];
     this.purchaseOrders = purchases

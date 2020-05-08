@@ -700,7 +700,7 @@ export class RestApiService {
   getPurchaseOrders() {
     return this
       .http
-      .get(`${API_URL}/api/jointpurchases/orders`, {
+      .get(`${ORV_API_URL}/get_orders.php`, {
         headers: this.getHeaders()
       })
       .toPromise();
