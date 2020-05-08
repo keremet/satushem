@@ -23,7 +23,7 @@
     "@angular/router": "6.0.3",
     "@ng-bootstrap/ng-bootstrap": "2.0.0",
     "@nicky-lenaers/ngx-scroll-to": "1.0.0",
-    "bootstrap": "4.1.1",
+    "bootstrap": "4.4.1",
     "core-js": "2.5.4",
     "install": "0.12.1",
     "ng-click-outside": "4.0.0",
