@@ -4,7 +4,7 @@ import qs from 'qs';
 import {environment} from '../environments/environment';
 
 const API_URL = environment.apiUrl;
-const ORV_API_URL = 'http://orv.org.ru/satushem/api';
+const ORV_API_URL = 'http://satushem.orv.org.ru/api';
 
 @Injectable({providedIn: 'root'})
 export class RestApiService {
