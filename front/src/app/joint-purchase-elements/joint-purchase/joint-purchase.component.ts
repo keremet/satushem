@@ -508,7 +508,7 @@ export class JointPurchaseComponent implements OnInit {
       const resp = await this.rest.updatePurchaseInfo(
         this.purchaseInfo['_id'],
         'is_public',
-        this.purchaseInfo['is_public']
+        this.purchaseInfo['is_public'] ? 1 : 0
       );
 
       if (resp['meta'].success) {

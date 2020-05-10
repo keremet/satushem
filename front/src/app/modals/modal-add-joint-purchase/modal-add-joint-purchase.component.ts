@@ -190,7 +190,7 @@ export class ModalAddJointPurchaseComponent implements OnInit {
         state: 0,
         payment_type: this.paymentType.value,
         payment_info: this.paymentInfo.value,
-        is_public: this.isPublic.value
+        is_public: this.isPublic.value ? 1 : 0
       };
 
       if (this.good) {

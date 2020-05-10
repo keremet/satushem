@@ -22,7 +22,7 @@ function select_jp($db, $id) {
 		"SELECT p.id, p.name, p.category_id, c.name category_name, p.price, TRIM(p.amount)+0 amount, TRIM(p.min_volume)+0 min_volume, DATE_FORMAT(deadline, '%d.%m.%Y') deadline
 			, p.creator_id, cr.login creator_login
 			, p.unit_id, unit.name unit_name
-			, p.description, p.issue_place, p.payment_method_id, p.state_id
+			, p.description, p.issue_place, p.payment_method_id, p.state_id, p.is_public
 		 FROM purchase p
 			JOIN category c ON c.id = p.category_id
 			JOIN member cr ON cr.id = p.creator_id
@@ -49,7 +49,7 @@ function select_jp($db, $id) {
 		return array(
 			'_id' => $row['id']
 			, 'black_list' => array()
-			, 'is_public' => true
+			, 'is_public' => (1 == $row['is_public'])
 			, 'name' => $row['name']
 			, 'picture' => ''
 			, 'description' => $row['description']

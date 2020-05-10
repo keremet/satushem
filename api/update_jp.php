@@ -34,6 +34,7 @@ switch ($_GET['prop']) {
 	case 'payment_type': $fld = "payment_method_id"; break;
 	case 'date': $fld = "deadline"; break;
 	case 'state': $fld = "state_id"; break;
+	case 'is_public': $fld = "is_public"; break;
 	default: die("Неизвестное свойство закупки");
 }
 
