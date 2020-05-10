@@ -35,6 +35,7 @@ switch ($_GET['prop']) {
 	case 'date': $fld = "deadline"; break;
 	case 'state': $fld = "state_id"; break;
 	case 'is_public': $fld = "is_public"; break;
+	case 'payment_info': $fld = "payment_info"; break;
 	default: die("Неизвестное свойство закупки");
 }
 

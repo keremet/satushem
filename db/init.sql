@@ -75,6 +75,7 @@ CREATE TABLE `purchase` (
   `price` decimal(20, 2),
   `min_volume` decimal(30, 10) not null default 1,
   `is_public` boolean not null default true,
+  `payment_info` text COLLATE utf8_unicode_ci,
   CONSTRAINT `purchase__category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `purchase__statement_id` FOREIGN KEY (`state_id`) REFERENCES `state` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `purchase__payment_method_id` FOREIGN KEY (`payment_method_id`) REFERENCES `payment_method` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,

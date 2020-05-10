@@ -22,7 +22,7 @@ function select_jp($db, $id) {
 		"SELECT p.id, p.name, p.category_id, c.name category_name, p.price, TRIM(p.amount)+0 amount, TRIM(p.min_volume)+0 min_volume, DATE_FORMAT(deadline, '%d.%m.%Y') deadline
 			, p.creator_id, cr.login creator_login
 			, p.unit_id, unit.name unit_name
-			, p.description, p.issue_place, p.payment_method_id, p.state_id, p.is_public
+			, p.description, p.issue_place, p.payment_method_id, p.state_id, p.is_public, p.payment_info
 		 FROM purchase p
 			JOIN category c ON c.id = p.category_id
 			JOIN member cr ON cr.id = p.creator_id
@@ -61,9 +61,9 @@ function select_jp($db, $id) {
 			, 'price_per_unit' => $row['price']
 			, 'measurement_unit' => array('_id' => $row['unit_id'], 'name' => $row['unit_name'])
 			, 'date' => $row['deadline']
-			, 'state' => $row['state_id']
-			, 'payment_type' => $row['payment_method_id']
-			, 'payment_info' => ''
+			, 'state' => (int)$row['state_id']
+			, 'payment_type' => (int)$row['payment_method_id']
+			, 'payment_info' => $row['payment_info']
 			, 'history' => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
 			, 'participants' => $participants
 			, '__v' => 0
