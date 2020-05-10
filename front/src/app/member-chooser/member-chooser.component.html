@@ -17,11 +17,27 @@
     <div class="list-group">
       <div class="list-group-item">
         <div class="form-group">
-          <label for="new_member">Нет нужного?</label>
+          <label for="new_member">Имя</label>
+          <div class="input-group">
+            <input
+              [(ngModel)]="new_member_visible_name"
+              id="new_member_visible_name"
+              type="text"
+              class="form-control text-modal">
+          </div>
+          <label for="new_member">Логин</label>
           <div class="input-group">
             <input
               [(ngModel)]="new_member_login"
               id="new_member"
+              type="text"
+              class="form-control text-modal">
+          </div>
+          <label for="new_member">Пароль</label>
+          <div class="input-group">
+            <input
+              [(ngModel)]="new_member_passwd"
+              id="new_member_passwd"
               type="text"
               class="form-control text-modal">
             <div class="input-group-append">

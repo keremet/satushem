@@ -13,7 +13,9 @@ export class MemberChooserComponent implements OnInit {
 
   members: Array<any>;
 
+  new_member_visible_name: string;
   new_member_login: string;
+  new_member_passwd: string;
 
   private _member: any;
 
@@ -76,13 +78,13 @@ export class MemberChooserComponent implements OnInit {
       return;
     }
     try {
-      const resp = await this.rest.addMeasurementUnit({
-        login: this.new_member_login
-      });
+      const resp = await this.rest.addMember(this.new_member_login, this.new_member_passwd, this.new_member_visible_name);
 
       if (resp['meta'].success) {
         this.members.push(resp['data']['member']);
         this.new_member_login = '';
+        this.new_member_passwd = '';
+        this.new_member_visible_name = '';
         this.selectMember(this.members[this.members.length - 1]);
       } else {
         this

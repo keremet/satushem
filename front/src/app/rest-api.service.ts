@@ -763,6 +763,15 @@ export class RestApiService {
       .toPromise();
   }
 
+  addMeasurementUnit(body: any) {
+    return this
+      .http
+      .post(`${ORV_API_URL}/add_unit.php`, body, {
+        headers: this.getHeaders()
+      })
+      .toPromise();
+  }
+
   getAllMembers() {
     return this
       .http
@@ -772,10 +781,10 @@ export class RestApiService {
       .toPromise();
   }
 
-  addMeasurementUnit(body: any) {
+  addMember(login, passwd, visible_name) {
     return this
       .http
-      .post(`${ORV_API_URL}/add_unit.php`, body, {
+      .get(`${ORV_API_URL}/add_member.php?login=${login}&passwd=${passwd}&visible_name=${visible_name}`, {
         headers: this.getHeaders()
       })
       .toPromise();
