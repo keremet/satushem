@@ -46,6 +46,21 @@ function select_jp($db, $id) {
 			$participants[] = array('paid' => $rowP['paid'], 'delivered' => false, 'sent' => null, 'volume' => $rowP['amount'], '_id' => 'r'.$rowP['member_id'], 'user' => $rowP['member_id']);
 		}
 
+		$stats = array('paid' => 0, 'not_paid' => 0, 'paid_and_sent' => 0, 'paid_and_not_sent' => 0, 'not_paid_and_sent' => 0, 'not_paid_and_not_sent' => 0, 'sent' => 0, 'not_sent' => 0);
+		$stmtStat = $db->prepare(
+			"SELECT TRIM(ordered)+0 ordered, (SELECT TRIM(p.amount - a.ordered)+0 FROM purchase p WHERE p.id = ?) remaining
+			 FROM (
+			   SELECT IFNULL(sum(amount), 0) ordered
+			   FROM purchase_event
+			   WHERE purchase_id = ? AND event_id in (1, 2)
+			 ) a"
+		);
+		$stmtStat->execute(array($id, $id));
+		if( $rowStat = $stmtStat->fetch() ){
+			$stats['ordered'] = $rowStat['ordered'];
+			$stats['remaining'] = $rowStat['remaining'];
+		}
+
 		return array(
 			'_id' => $row['id']
 			, 'black_list' => array()
@@ -71,7 +86,7 @@ function select_jp($db, $id) {
 			, 'volume' => $row['amount']
 			, 'min_volume' => $row['min_volume']
 			, 'remaining_volume' => $row['amount']
-			, 'stats' => array('ordered' => 0, 'remaining' => $row['amount'], 'paid' => 0, 'not_paid' => 0, 'paid_and_sent' => 0, 'paid_and_not_sent' => 0, 'not_paid_and_sent' => 0, 'not_paid_and_not_sent' => 0, 'sent' => 0, 'not_sent' => 0)
+			, 'stats' => $stats
 		);
 	};
 
