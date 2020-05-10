@@ -32,7 +32,7 @@ function select_jp($db, $id) {
 	$stmt->execute(array($id));
 	if( $row = $stmt->fetch() ) {
 		$stmtP = $db->prepare(
-			"SELECT amount, member_id, comment, event_id
+			"SELECT TRIM(amount)+0 amount, member_id, comment, event_id
 				,  (SELECT DATE_FORMAT(max(d), '%d.%m.%Y')
 					FROM purchase_event e2 
 					WHERE e2.purchase_id = e1.purchase_id AND e2.member_id = e1.member_id AND e2.event_id = 3) paid

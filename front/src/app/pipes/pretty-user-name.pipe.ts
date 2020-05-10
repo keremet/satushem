@@ -6,19 +6,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class PrettyUserNamePipe implements PipeTransform {
 
   transform(user: any): string {
-    let {
-      first_name: firstName,
-      last_name: lastName,
-      login
-    } = user;
+    let visible_name = user.visible_name || '';
 
-    firstName = firstName || '';
-    lastName = lastName || '';
-
-    if (firstName || lastName) {
-      return `${firstName} ${lastName}`.trim();
+    if (visible_name) {
+      return `${visible_name}`.trim() + ' (' + user.login + ')';
     } else {
-      return login;
+      return user.login;
     }
   }
 
