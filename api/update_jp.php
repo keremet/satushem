@@ -25,10 +25,25 @@ include('select_jp.php');
 $fld = "";
 switch ($_GET['prop']) {
 	case 'min_volume': $fld = "min_volume"; break;
+	case 'name': $fld = "name"; break;
+	case 'price_per_unit': $fld = "price"; break;
+	case 'volume': $fld = "amount"; break;
+	case 'category': $fld = "category_id"; break;
+	case 'description': $fld = "description"; break;
+	case 'address': $fld = "issue_place"; break;
+	case 'payment_type': $fld = "payment_method_id"; break;
+	case 'date': $fld = "deadline"; break;
+	case 'state': $fld = "state_id"; break;
 	default: die("Неизвестное свойство закупки");
 }
 
-$stmt = $db->prepare("UPDATE purchase 
+$stmt = $db->prepare(($fld == "deadline")
+                     ?
+                     "UPDATE purchase 
+                      SET deadline = STR_TO_DATE(?, '%Y%m%d')
+                      WHERE id = ?"
+                     :
+                     "UPDATE purchase 
                       SET $fld = ?
                       WHERE id = ?");
 

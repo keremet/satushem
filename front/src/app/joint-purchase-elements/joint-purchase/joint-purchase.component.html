@@ -125,16 +125,17 @@
 
             <h5 *ngIf="!editMode.date">
               Прием заказов завершается: {{ purchaseInfo.date }}
-              <label *ngIf="isCreator" (click)="editMode.date = true" class="btn-edit">
+              <label *ngIf="isCreator" (click)="editModeInfo.date = today; editMode.date = true" class="btn-edit">
                 изменить
               </label>
             </h5>
             <div *ngIf="editMode.date" class="form-group">
-              <label for="date">Прием заказов завершается: {{ editModeInfo.date }}</label>
+              <label for="date">Прием заказов завершается: {{ editModeInfo.date | date:'dd.MM.yyyy' }}</label>
               <ngb-datepicker
                 id="date"
                 [minDate]="today | ngbDate"
                 [(ngModel)]="editModeInfo.date"
+                (select)="deadline_edt = $event"
               ></ngb-datepicker><br>
               <button type="button" class="btn btn-main mt-3" (click)="updateDate()">Обновить</button>
               <button type="button" class="btn btn-detach ml-1 mt-3" (click)="disableEditMode('date')">Отмена</button>

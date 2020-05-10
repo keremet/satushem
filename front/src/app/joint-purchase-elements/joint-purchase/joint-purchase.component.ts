@@ -53,6 +53,8 @@ export class JointPurchaseComponent implements OnInit {
 
   editModeInfo: any = {};
 
+  deadline_edt: NgbDateStruct;
+
   additionalTabPane = 'description';
 
   date = {};
@@ -475,7 +477,7 @@ export class JointPurchaseComponent implements OnInit {
         const resp = await this.rest.updatePurchaseInfo(
           this.purchaseInfo['_id'],
           'date',
-          this.editModeInfo['date']
+          this.deadline_edt.year*10000 + this.deadline_edt.month*100 + this.deadline_edt.day
         );
 
         if (resp['meta'].success) {
