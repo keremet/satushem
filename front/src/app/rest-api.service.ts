@@ -543,14 +543,9 @@ export class RestApiService {
   }
 
   updatePurchaseInfo(id: string, field: string, value: any) {
-    const body = {
-      id: id,
-      value: value
-    };
-
     return this
       .http
-      .put(`${API_URL}/api/jointpurchases/update/${field}`, body, {
+      .put(`${ORV_API_URL}/update_jp.php?id=${id}&prop=${field}&value=${value}`, {
         headers: this.getHeaders()
       })
       .toPromise();

@@ -19,7 +19,7 @@
  */
 function select_jp($db, $id) {
 	$stmt = $db->prepare(
-		"SELECT p.id, p.name, p.category_id, c.name category_name, p.price, TRIM(p.amount)+0 amount, DATE_FORMAT(deadline, '%d.%m.%Y') deadline
+		"SELECT p.id, p.name, p.category_id, c.name category_name, p.price, TRIM(p.amount)+0 amount, TRIM(p.min_volume)+0 min_volume, DATE_FORMAT(deadline, '%d.%m.%Y') deadline
 			, p.creator_id, cr.login creator_login
 			, p.unit_id, unit.name unit_name
 		 FROM purchase p
@@ -68,7 +68,7 @@ function select_jp($db, $id) {
 			, '__v' => 0
 			, 'recent'  => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
 			, 'volume' => $row['amount']
-			, 'min_volume' => 1
+			, 'min_volume' => $row['min_volume']
 			, 'remaining_volume' => $row['amount']
 			, 'stats' => array('ordered' => 0, 'remaining' => $row['amount'], 'paid' => 0, 'not_paid' => 0, 'paid_and_sent' => 0, 'paid_and_not_sent' => 0, 'not_paid_and_sent' => 0, 'not_paid_and_not_sent' => 0, 'sent' => 0, 'not_sent' => 0)
 		);
