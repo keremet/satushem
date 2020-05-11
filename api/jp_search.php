@@ -23,13 +23,18 @@ include('connect.php');
 
 parse_str($_GET['filter'], $filter);
 
+$skip = 4*((int)$filter['page_number'] - 1);
+
+$flt = (isset($filter['category'])?" AND category_id=?":"")
+	  .(isset($_GET['query'])?" AND upper(p.name) like upper(?)":"");
+
 $stmt = $db->prepare(
-	"SELECT p.id, p.name, TRIM(p.amount)+0 amount, p.unit_id, unit.name unit_name, p.price, DATE_FORMAT(deadline, '%d.%m.%Y') deadline, p.img
+	"SELECT p.id, p.name, TRIM(p.amount)+0 amount, p.unit_id, unit.name unit_name, p.price, DATE_FORMAT(deadline, '%d.%m.%Y') deadline, p.img, p.description, p.state_id
 	 FROM purchase p
 		JOIN unit on unit.id = p.unit_id
-	 WHERE is_public = 1" 
-	     . (isset($filter['category'])?" AND category_id=?":"")
-	     . (isset($_GET['query'])?" AND upper(p.name) like upper(?)":"")
+	 WHERE is_public = 1
+	 $flt
+	 ORDER BY p.deadline, p.name, p.id DESC LIMIT $skip, 4"
 );
 $exec_param = array();
 if( isset($filter['category']) )
@@ -40,33 +45,27 @@ $stmt->execute($exec_param);
 $purchases = array();
 while( $row = $stmt->fetch() ) {
 	$purchases[] = array('_id' => $row['id']
-				, 'black_list' => array()
-				, 'is_public' => true
 				, 'name' => $row['name']
 				, 'picture' => ($row['img'] != "") ? "http://satushem.orv.org.ru" . $row['img'] : ""
-				, 'description' => ''
-				, 'category' => ''
-				, 'creator' => ''
-				, 'address' => ''
-				, 'volume_dec' => array('$numberDecimal' => '1')
-				, 'min_volume_dec' => array('$numberDecimal' => '1')
+				, 'description' => $row['description']
 				, 'price_per_unit' => (int)($row['price'])
 				, 'measurement_unit' => array('_id' => $row['unit_id'], 'name' => $row['unit_name'])
 				, 'date' => $row['deadline']
-				, 'state' => 0
-				, 'payment_type' => 2
-				, 'payment_info' => ''
-				, 'history' => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
-				, 'participants' => array()
-				, '__v' => 0
-				, 'recent'  => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
+				, 'state' => (int)$row['state_id']
 				, 'volume' => $row['amount']
-				, 'min_volume' => 1
 				, 'remaining_volume' => $row['amount']
 	);
 };
+
+$stmt = $db->prepare(
+	"SELECT count(1)
+	 FROM purchase p
+	 WHERE is_public = 1 $flt"
+);
+$stmt->execute($exec_param);
+
 echo json_encode(
 	array('meta' => array('code' => 200, 'success' => true, 'message' => 'FOUND')
-		, 'data' => array('purchases' => $purchases, 'total' => 10))
+		, 'data' => array('purchases' => $purchases, 'total' => $stmt->fetchColumn()))
 );
 ?>
