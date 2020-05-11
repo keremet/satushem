@@ -43,7 +43,7 @@ function select_jp($db, $id) {
 		$stmtP->execute(array($id));
 		$participants = array();
 		while( $rowP = $stmtP->fetch() ) {
-			$participants[] = array('paid' => $rowP['paid'], 'delivered' => false, 'sent' => null, 'volume' => $rowP['amount'], '_id' => 'r'.$rowP['member_id'], 'user' => $rowP['member_id']);
+			$participants[] = array('paid' => $rowP['paid'], 'delivered' => false, 'sent' => null, 'volume' => $rowP['amount'], '_id' => $rowP['member_id'], 'user' => $rowP['member_id']);
 		}
 
 		$stats = array('paid' => 0, 'not_paid' => 0, 'paid_and_sent' => 0, 'paid_and_not_sent' => 0, 'not_paid_and_sent' => 0, 'not_paid_and_not_sent' => 0, 'sent' => 0, 'not_sent' => 0);

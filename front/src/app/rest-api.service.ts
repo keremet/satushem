@@ -790,6 +790,15 @@ export class RestApiService {
       .toPromise();
   }
 
+  updateParticipantVolume(purchase_id, participant_id, new_volume) {
+    return this
+      .http
+      .get(`${ORV_API_URL}/update_part_volume.php?purchase_id=${purchase_id}&participant_id=${participant_id}&new_volume=${new_volume}`, {
+        headers: this.getHeaders()
+      })
+      .toPromise();
+  }
+
   getAllChats() {
     return this
       .http

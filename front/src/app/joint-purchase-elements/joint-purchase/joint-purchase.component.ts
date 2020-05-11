@@ -392,10 +392,50 @@ export class JointPurchaseComponent implements OnInit {
     } else {
       this
         .data
-        .error('Вы не количество товара');
+        .error('Вы не ввели количество товара');
     }
   }
 
+  async updateParticipantVolume(participant_id, new_volume) {
+    if (new_volume) {
+      try {
+        const resp = await this.rest.updateParticipantVolume(
+          this.purchaseInfo['_id'],
+          participant_id,
+          new_volume
+        );
+
+        if (resp['meta'].success) {
+          this
+            .data
+            .addToast('Информация обновлена', '', 'success');
+
+          await this.loadAdditionalInfo(resp['data']['purchase']);
+        } else {
+          this
+            .data
+            .error(resp['meta'].message);
+        }
+      } catch (error) {
+        const message = error.error.meta.message;
+
+        if (message === 'LESSER THAN USED') {
+          this
+            .data
+            .addToast('Товара недостаточно для заказа', '', 'error');
+        } else {
+          this
+            .data
+            .addToast('Ошибка', error['message'], 'error');
+        }
+      }
+    } else {
+      this
+        .data
+        .error('Вы не ввели количество товара');
+    }
+  }
+  
   async updateMinVolume() {
     if (this.editModeInfo['min_volume']) {
       this.editMode['min_volume'] = false;

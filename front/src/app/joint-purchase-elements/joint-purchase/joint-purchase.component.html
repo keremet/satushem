@@ -357,14 +357,35 @@
                 <div *ngIf="participants.length > 0">
                   <div class="list-group">
                     <div class="list-group-item" *ngFor="let participant of participants; let i = index">
-                      <div class="row" *ngIf="participant.user">
+                      <div class="row">
                         <div class="col-12 col-md-3">
                           {{participant.user | prettyUserName}}
                         </div>
-                        <div class="col-12 col-md-3">
+                        <div class="col-12 col-md-3" *ngIf="!participant.edit_volume_flg">
                           {{ participant.volume }} {{ measurementUnit }}
                           ({{ participant.cost | fixedFloat: 2 }} ₽)
+						  <a
+							href="javascript:void(0)"
+							class="mr-2 text-primary"
+							(click)="participant.edit_volume = participant.volume; participant.edit_volume_flg = true"
+						  >
+							<i class="fa fa-edit mr-1"></i><span class="d-md-none">Изменить</span>
+						  </a>
                         </div>
+                        <div class="col-12 col-md-3" *ngIf="participant.edit_volume_flg">
+						  <label for="participant_volume">Количество товара</label>
+                          <input
+                            id="participant_volume"
+                            type="text"
+                            [(ngModel)]="participant.edit_volume"
+                            class="form-control text-good card-title"
+                            [dropSpecialCharacters]="false"
+                            mask="0*.0*"
+                          >
+                          <button type="button" class="btn btn-main" (click)="updateParticipantVolume(participant._id, participant.edit_volume);participant.edit_volume_flg = false">Обновить</button>
+                          <button type="button" class="btn btn-detach ml-1" (click)="participant.edit_volume_flg = false">Отмена</button>
+                        </div>
+
                         <div class="col-12 col-md-4">
                           <div class="custom-control mb-md-0 mb-2 pl-0">
                             <div *ngIf="participant.paid" (clickOutside)="toggles.paid[participant._id] = false">
