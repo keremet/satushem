@@ -145,14 +145,14 @@ export class RestApiService {
       .toPromise();
   }
 
-  uploadImage(apiUrl: string, body: any) {
+  uploadImage(body: any) {
     const headers = this.getHeaders();
     headers.append('Content-Type', 'multipart/form-data');
     headers.append('Accept', 'application/json');
     console.log(body);
     return this
       .http
-      .post(`${apiUrl}/new.php`, body)
+      .post(`${ORV_API_URL}/new_img.php`, body)
       .toPromise();
   }
 

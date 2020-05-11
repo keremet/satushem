@@ -1,14 +1,10 @@
 import {Injectable} from '@angular/core';
-import {environment} from '../environments/environment';
 import {RestApiService} from './rest-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadFileService {
-
-  private uploadUrl = environment.uploadUrl;
-
   constructor(
     private rest: RestApiService
   ) { }
@@ -22,7 +18,7 @@ export class UploadFileService {
     const formData = new FormData();
     formData.append('image', file, file.name);
 
-    const resp = await this.rest.uploadImage(this.uploadUrl, formData);
+    const resp = await this.rest.uploadImage(formData);
     return resp['file'];
   }
 

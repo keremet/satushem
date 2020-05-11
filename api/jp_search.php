@@ -24,7 +24,7 @@ include('connect.php');
 parse_str($_GET['filter'], $filter);
 
 $stmt = $db->prepare(
-	"SELECT p.id, p.name, TRIM(p.amount)+0 amount, p.unit_id, unit.name unit_name, p.price, DATE_FORMAT(deadline, '%d.%m.%Y') deadline
+	"SELECT p.id, p.name, TRIM(p.amount)+0 amount, p.unit_id, unit.name unit_name, p.price, DATE_FORMAT(deadline, '%d.%m.%Y') deadline, p.img
 	 FROM purchase p
 		JOIN unit on unit.id = p.unit_id
 	 WHERE is_public = 1" 
@@ -43,7 +43,7 @@ while( $row = $stmt->fetch() ) {
 				, 'black_list' => array()
 				, 'is_public' => true
 				, 'name' => $row['name']
-				, 'picture' => ''
+				, 'picture' => ($row['img'] != "") ? "http://satushem.orv.org.ru" . $row['img'] : ""
 				, 'description' => ''
 				, 'category' => ''
 				, 'creator' => ''
