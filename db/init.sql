@@ -111,32 +111,27 @@ CREATE TABLE `token` (
   CONSTRAINT `token__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE `purchase_member` (
-  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `member_id` int(11) NOT NULL,
-  `purchase_id` int(11) NOT NULL,
-   CONSTRAINT `purchase_member__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-   CONSTRAINT `purchase_member__purchase_id` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 CREATE TABLE `request` (
-  `purchase_member_id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `purchase_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
   `d` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `amount` decimal(30, 10) NOT NULL,
-   CONSTRAINT `request__purchase_member_id` FOREIGN KEY (`purchase_member_id`) REFERENCES `purchase_member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  CONSTRAINT `request__purchase_id` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `request__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `issue` (
-  `purchase_member_id` int(11) NOT NULL,
+  `request_id` int(11) NOT NULL,
   `d` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `amount` decimal(30, 10) NOT NULL,
-   CONSTRAINT `issue__purchase_member_id` FOREIGN KEY (`purchase_member_id`) REFERENCES `purchase_member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+   CONSTRAINT `issue__request_id` FOREIGN KEY (`request_id`) REFERENCES `request` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `payment` (
-  `purchase_member_id` int(11) NOT NULL,
+  `request_id` int(11) NOT NULL,
   `d` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `price` decimal(20, 2) NOT NULL,
-   CONSTRAINT `payment__purchase_member_id` FOREIGN KEY (`purchase_member_id`) REFERENCES `purchase_member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  `value` decimal(20, 2) NOT NULL,
+   CONSTRAINT `payment__request_id` FOREIGN KEY (`request_id`) REFERENCES `request` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

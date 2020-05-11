@@ -26,19 +26,11 @@ export class JointPurchaseHistoryService {
   public readonly purchaseState = ['state'];
 
   public readonly participantParameters = [
-    'participants.sent', 'participants.paid', 'participants.delivered'
+    'requests.sent', 'requests.paid', 'requests.delivered'
   ];
 
   public readonly participantActivity = [
-    'participants.joint', 'participants.detached'
-  ];
-
-  public readonly fakeParticipantParameters = [
-    'fake_participants.sent', 'fake_participants.paid', 'fake_participants.delivered'
-  ];
-
-  public readonly fakeParticipantActivity = [
-    'fake_participants.joint', 'fake_participants.detached'
+    'requests.joint', 'requests.detached'
   ];
 
   public readonly blackListActivity = [
@@ -168,19 +160,19 @@ export class JointPurchaseHistoryService {
     const {user: userId, state} = item['value'];
 
     const user = await this.getUser(userId);
-    if (parameter === 'participants.sent') {
+    if (parameter === 'requests.sent') {
       const textState = state ? 'отправлен' : 'не отправлен';
       return [
         { text: 'Организатор обновил статус отправки товара для ', bold: false},
         { text: `${user['login']}: ${textState}`, bold: true}
       ];
-    } else if (parameter === 'participants.paid') {
+    } else if (parameter === 'requests.paid') {
       const textState = state ? 'платеж подтвержден' : 'платеж не подтвержден';
       return [
         { text: 'Организатор обновил статус платежа пользователя ', bold: false},
         { text: `${user['login']}: ${textState}`, bold: true}
       ];
-    } else if (parameter === 'participants.delivered') {
+    } else if (parameter === 'requests.delivered') {
       const textState = state ? 'доставлен' : 'не доставлен';
       return [
         { text: 'Пользователь ', bold: false},
@@ -196,66 +188,17 @@ export class JointPurchaseHistoryService {
     const {user: userId} = item['value'];
 
     const user = await this.getUser(userId);
-    if (parameter === 'participants.joint') {
+    if (parameter === 'requests.joint') {
       return [
         { text: 'Пользователь ', bold: false},
         { text: `${user['login']}`, bold: true},
         { text: ' присоединился к закупке', bold: false}
       ];
-    } else if (parameter === 'participants.detached') {
+    } else if (parameter === 'requests.detached') {
       return [
         { text: 'Пользователь ', bold: false},
         { text: `${user['login']}`, bold: true},
         { text: ' отказался от участия в закупке', bold: false}
-      ];
-    }
-  }
-
-  private async parseFakeParticipantParameter(item: any): Promise<Array<TextBlock>> {
-    const parameter = item['parameter'];
-    const {user, state} = item['value'];
-
-    const date = new RussianLocaleDatePipe().transform(state);
-    if (parameter === 'fake_participants.sent') {
-      const textState = state ? 'отправлен' : 'не отправлен';
-      return [
-        { text: 'Организатор обновил статус отправки товара для ', bold: false},
-        { text: `${user}: ${textState}`, bold: true},
-        { text: state ? ` (${date})` : '', bold: false}
-      ];
-    } else if (parameter === 'fake_participants.paid') {
-      const textState = state ? 'платеж подтвержден' : 'платеж не подтвержден';
-      return [
-        { text: 'Организатор обновил статус платежа пользователя ', bold: false},
-        { text: `${user}: ${textState}`, bold: true},
-        { text: state ? ` (${date})` : '', bold: false}
-      ];
-    } else if (parameter === 'fake_participants.delivered') {
-      const textState = state ? 'доставлен' : 'не доставлен';
-      return [
-        { text: 'Организатор обновил статус доставки товара для пользователя ', bold: false},
-        { text: `${user}: `, bold: true},
-        { text: `${textState}`, bold: true},
-        { text: state ? ` (${date})` : '', bold: false}
-      ];
-    }
-  }
-
-  private async parseFakeParticipantActivity(item: any): Promise<Array<TextBlock>> {
-    const parameter = item['parameter'];
-    const {user} = item['value'];
-
-    if (parameter === 'fake_participants.joint') {
-      return [
-        { text: 'Организатор присоединил пользователя ', bold: false},
-        { text: `${user}`, bold: true},
-        { text: ' к закупке', bold: false}
-      ];
-    } else if (parameter === 'fake_participants.detached') {
-      return [
-        { text: 'Организатор отсоединил пользователя ', bold: false},
-        { text: `${user}`, bold: true},
-        { text: ' от закупки', bold: false}
       ];
     }
   }
@@ -293,10 +236,6 @@ export class JointPurchaseHistoryService {
         return await this.parseParticipantParameter(item);
       } else if (this.participantActivity.indexOf(item['parameter']) !== -1) {
         return await this.parseParticipantActivity(item);
-      } else if (this.fakeParticipantParameters.indexOf(item['parameter']) !== -1) {
-        return await this.parseFakeParticipantParameter(item);
-      } else if (this.fakeParticipantActivity.indexOf(item['parameter']) !== -1) {
-        return await this.parseFakeParticipantActivity(item);
       } else if (this.blackListActivity.indexOf(item['parameter']) !== -1) {
         return await this.parseBlackListActivity(item);
       }

@@ -554,29 +554,40 @@ export class RestApiService {
   joinToPurchase(id: string, volume: number) {
     const body = {
       purchase_id: id,
-      event_id: 1,
       volume: volume
     };
 
     return this
       .http
-      .put(`${ORV_API_URL}/add_jp_event.php`, body, {
+      .put(`${ORV_API_URL}/add_my_request.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
   }
 
-  joinFakeUserToPurchase(id: string, memberId: number, volume: number) {
+  addRequest(id: string, memberId: number, volume: number) {
     const body = {
       purchase_id: id,
-      event_id: 2,
       volume: volume,
       member_id: memberId
     };
 
     return this
       .http
-      .put(`${ORV_API_URL}/add_jp_event.php`, body, {
+      .put(`${ORV_API_URL}/add_request.php`, body, {
+        headers: this.getHeaders()
+      })
+      .toPromise();
+  }
+
+  deleteRequest(id: number) {
+    const body = {
+      id: id
+    };
+
+    return this
+      .http
+      .put(`${ORV_API_URL}/del_request.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -585,23 +596,10 @@ export class RestApiService {
   detachFromPurchase(id: string) {
     return this
       .http
-      .request('DELETE', `${ORV_API_URL}/del_jp_event.php`, {
+      .request('DELETE', `${ORV_API_URL}/del_my_request.php`, {
         headers: this.getHeaders(),
         body: {
           purchase_id: id
-        }
-      })
-      .toPromise();
-  }
-
-  detachFakeUserFromPurchase(id: string, member_id: number) {
-    return this
-      .http
-      .request('DELETE', `${ORV_API_URL}/del_jp_event.php`, {
-        headers: this.getHeaders(),
-        body: {
-          purchase_id: id,
-          member_id: member_id
         }
       })
       .toPromise();
@@ -618,21 +616,6 @@ export class RestApiService {
     return this
       .http
       .put(`${ORV_API_URL}/add_jp_event.php`, body, {
-        headers: this.getHeaders()
-      })
-      .toPromise();
-  }
-
-  updateFakeUserPaymentPurchase(id: string, login: string, date: Date) {
-    const body = {
-      id: id,
-      login: login,
-      date: date
-    };
-
-    return this
-      .http
-      .put(`${API_URL}/api/jointpurchases/payments/update/fake`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -663,21 +646,6 @@ export class RestApiService {
     return this
       .http
       .put(`${API_URL}/api/jointpurchases/sent/update`, body, {
-        headers: this.getHeaders()
-      })
-      .toPromise();
-  }
-
-  updateFakeUserOrderSentPurchase(id: string, login: string, date: Date) {
-    const body = {
-      id: id,
-      login: login,
-      date: date
-    };
-
-    return this
-      .http
-      .put(`${API_URL}/api/jointpurchases/sent/update/fake`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -790,28 +758,10 @@ export class RestApiService {
       .toPromise();
   }
 
-  updateParticipantVolume(purchase_id, participant_id, new_volume) {
+  updateRequestVolume(request_id, new_volume) {
     return this
       .http
-      .get(`${ORV_API_URL}/update_part_volume.php?purchase_id=${purchase_id}&participant_id=${participant_id}&new_volume=${new_volume}`, {
-        headers: this.getHeaders()
-      })
-      .toPromise();
-  }
-
-  getAllChats() {
-    return this
-      .http
-      .get(`${API_URL}/api/chats/all`, {
-        headers: this.getHeaders()
-      })
-      .toPromise();
-  }
-
-  getChatHistory(chat_id: string) {
-    return this
-      .http
-      .get(`${API_URL}/api/chats/history/${chat_id}`, {
+      .get(`${ORV_API_URL}/update_req_volume.php?request_id=${request_id}&new_volume=${new_volume}`, {
         headers: this.getHeaders()
       })
       .toPromise();

@@ -211,9 +211,9 @@
                 </li>
 
                 <li class="nav-item p-b-10" *ngIf="isCreator">
-                  <a class="nav-link tabs" [class.active]="additionalTabPane === 'participants'" data-toggle="tab"
-                     (click)="switchTab('participants')"
-                     role="tab">Участники</a>
+                  <a class="nav-link tabs" [class.active]="additionalTabPane === 'requests'" data-toggle="tab"
+                     (click)="switchTab('requests')"
+                     role="tab">Заявки</a>
                 </li>
 
                 <li class="nav-item p-b-10">
@@ -351,128 +351,128 @@
                 </div>
               </div>
 
-              <div class="tab-content p-t-43" *ngIf="additionalTabPane === 'participants'">
-                <div *ngIf="participants.length === 0" class="text-center"
+              <div class="tab-content p-t-43" *ngIf="additionalTabPane === 'requests'">
+                <div *ngIf="requests.length === 0" class="text-center"
                 >Участников нет</div>
-                <div *ngIf="participants.length > 0">
+                <div *ngIf="requests.length > 0">
                   <div class="list-group">
-                    <div class="list-group-item" *ngFor="let participant of participants; let i = index">
+                    <div class="list-group-item" *ngFor="let request of requests; let i = index">
                       <div class="row">
                         <div class="col-12 col-md-3">
-                          {{participant.user | prettyUserName}}
+                          {{request.user | prettyUserName}}
                         </div>
-                        <div class="col-12 col-md-3" *ngIf="!participant.edit_volume_flg">
-                          {{ participant.volume }} {{ measurementUnit }}
-                          ({{ participant.cost | fixedFloat: 2 }} ₽)
+                        <div class="col-12 col-md-3" *ngIf="!request.edit_volume_flg">
+                          {{ request.volume }} {{ measurementUnit }}
+                          ({{ request.cost | fixedFloat: 2 }} ₽)
 						  <a
 							href="javascript:void(0)"
 							class="mr-2 text-primary"
-							(click)="participant.edit_volume = participant.volume; participant.edit_volume_flg = true"
+							(click)="request.edit_volume = request.volume; request.edit_volume_flg = true"
 						  >
 							<i class="fa fa-edit mr-1"></i><span class="d-md-none">Изменить</span>
 						  </a>
                         </div>
-                        <div class="col-12 col-md-3" *ngIf="participant.edit_volume_flg">
-						  <label for="participant_volume">Количество товара</label>
+                        <div class="col-12 col-md-3" *ngIf="request.edit_volume_flg">
+						  <label for="request_volume">Количество товара</label>
                           <input
-                            id="participant_volume"
+                            id="request_volume"
                             type="text"
-                            [(ngModel)]="participant.edit_volume"
+                            [(ngModel)]="request.edit_volume"
                             class="form-control text-good card-title"
                             [dropSpecialCharacters]="false"
                             mask="0*.0*"
                           >
-                          <button type="button" class="btn btn-main" (click)="updateParticipantVolume(participant._id, participant.edit_volume);participant.edit_volume_flg = false">Обновить</button>
-                          <button type="button" class="btn btn-detach ml-1" (click)="participant.edit_volume_flg = false">Отмена</button>
+                          <button type="button" class="btn btn-main" (click)="updateRequestVolume(request._id, request.edit_volume);request.edit_volume_flg = false">Обновить</button>
+                          <button type="button" class="btn btn-detach ml-1" (click)="request.edit_volume_flg = false">Отмена</button>
                         </div>
 
                         <div class="col-12 col-md-4">
                           <div class="custom-control mb-md-0 mb-2 pl-0">
-                            <div *ngIf="participant.paid" (clickOutside)="toggles.paid[participant._id] = false">
+                            <div *ngIf="request.paid" (clickOutside)="toggles.paid[request._id] = false">
                               <div class="justify-content-start">
                                 <span>Платеж подтвержден</span>
                               </div>
                               <div class="justify-content-start">
                                 <div class="d-inline-flex flex-row">
-                                  <span class="mr-2">{{participant.paid}}</span>
+                                  <span class="mr-2">{{request.paid}}</span>
                                   <a
                                     href="javascript:void(0)"
                                     class="mr-2 text-primary"
-                                    (click)="toggles.paid[participant._id] = !toggles.paid[participant._id]"
+                                    (click)="toggles.paid[request._id] = !toggles.paid[request._id]"
                                   >
                                     <i class="fa fa-edit mr-1"></i><span class="d-md-none">Изменить</span>
                                   </a>
                                   <a
                                     href="javascript:void(0)"
                                     class="mr-2 text-danger"
-                                    (click)="updatePaymentState(participant, null)"
+                                    (click)="updatePaymentState(request, null)"
                                   >
                                     <i class="fa fa-times mr-1"></i><span class="d-md-none">Отменить</span>
                                   </a>
                                 </div>
                               </div>
-                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.paid[participant._id]">
+                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.paid[request._id]">
                                 <ngb-datepicker
                                   [ngModel]="today"
-                                  (select)="updatePaymentState(participant, $event)"
+                                  (select)="updatePaymentState(request, $event)"
                                 ></ngb-datepicker>
                               </div>
                             </div>
-                            <div *ngIf="!participant.paid" (clickOutside)="toggles.paid[participant._id] = false">
+                            <div *ngIf="!request.paid" (clickOutside)="toggles.paid[request._id] = false">
                               <button
                                 type="button"
                                 class="btn btn-main btn-block btn-sm mb-2"
-                                (click)="toggles.paid[participant._id] = !toggles.paid[participant._id]"
+                                (click)="toggles.paid[request._id] = !toggles.paid[request._id]"
                               ><i class="fa fa-check"></i> Оплачено</button>
-                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.paid[participant._id]">
+                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.paid[request._id]">
                                 <ngb-datepicker
                                   [ngModel]="today"
-                                  (select)="updatePaymentState(participant, $event)"
+                                  (select)="updatePaymentState(request, $event)"
                                 ></ngb-datepicker>
                               </div>
                             </div>
                           </div>
                           <div class="custom-control mb-md-0 mb-2 pl-0">
-                            <div *ngIf="participant.sent" (clickOutside)="toggles.sent[participant._id] = false">
+                            <div *ngIf="request.sent" (clickOutside)="toggles.sent[request._id] = false">
                               <div class="justify-content-start">
                                 <span>Товар отправлен</span>
                               </div>
                               <div class="justify-content-start">
                                 <div class="d-inline-flex flex-row">
-                                  <span class="mr-2">{{participant.sent | date:'dd.MM.yyyy'}}</span>
+                                  <span class="mr-2">{{request.sent | date:'dd.MM.yyyy'}}</span>
                                   <a
                                     href="javascript:void(0)"
                                     class="mr-2 text-primary"
-                                    (click)="toggles.sent[participant._id] = !toggles.sent[participant._id]"
+                                    (click)="toggles.sent[request._id] = !toggles.sent[request._id]"
                                   >
                                     <i class="fa fa-edit mr-1"></i><span class="d-md-none">Изменить</span>
                                   </a>
                                   <a
                                     href="javascript:void(0)"
                                     class="mr-2 text-danger"
-                                    (click)="updateOrderSentState(participant, null)"
+                                    (click)="updateOrderSentState(request, null)"
                                   >
                                     <i class="fa fa-times mr-1"></i><span class="d-md-none">Отменить</span>
                                   </a>
                                 </div>
                               </div>
-                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.sent[participant._id]">
+                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.sent[request._id]">
                                 <ngb-datepicker
                                   [ngModel]="today"
-                                  (select)="updateOrderSentState(participant, $event)"
+                                  (select)="updateOrderSentState(request, $event)"
                                 ></ngb-datepicker>
                               </div>
                             </div>
-                            <div *ngIf="!participant.sent" (clickOutside)="toggles.sent[participant._id] = false">
+                            <div *ngIf="!request.sent" (clickOutside)="toggles.sent[request._id] = false">
                               <button
                                 type="button"
                                 class="btn btn-main btn-block btn-sm mb-2"
-                                (click)="toggles.sent[participant._id] = !toggles.sent[participant._id]"
+                                (click)="toggles.sent[request._id] = !toggles.sent[request._id]"
                               ><i class="fa fa-check"></i> Отправлено</button>
-                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.sent[participant._id]">
+                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.sent[request._id]">
                                 <ngb-datepicker
                                   [ngModel]="today"
-                                  (select)="updateOrderSentState(participant, $event)"
+                                  (select)="updateOrderSentState(request, $event)"
                                 ></ngb-datepicker>
                               </div>
                             </div>
@@ -483,7 +483,7 @@
                               type="checkbox"
                               class="custom-control-input"
                               disabled
-                              [checked]="participant.delivered"
+                              [checked]="request.delivered"
                             >
                             <label class="custom-control-label" for="userDelivered_{{i}}"
                             >Товар доставлен</label>
@@ -508,8 +508,8 @@
                             <button
                               type="button"
                               class="btn btn-detach mr-2 mr-md-0"
-                              (click)="detachFakeUserFromPurchase(participant.user.id)"
-                              ngbPopover="Удалить участника"
+                              (click)="deleteRequest(request._id)"
+                              ngbPopover="Удалить заявку"
                               triggers="mouseenter:mouseleave"
                             >
                               <i class="fa fa-times"></i>
@@ -524,7 +524,7 @@
                   type="button"
                   class="btn btn-main ml-auto mr-auto mt-2"
                   (click)="joinToPurchase(true)"
-                >Добавить участника</button>
+                >Добавить заявку</button>
               </div>
 
               <div class="tab-content p-t-43" *ngIf="additionalTabPane === 'history'">

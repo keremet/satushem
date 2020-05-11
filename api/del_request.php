@@ -17,26 +17,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  */
-
 include('headers.php');
 include('connect.php');
 include('select_jp.php');
+$input = json_decode(file_get_contents('php://input'), true); 
 
-$stmt = $db->prepare("UPDATE purchase_event 
-                      SET amount = ?
-                      WHERE purchase_id = ? AND member_id = ? AND event_id in (1, 2)");
-
-if( $stmt->execute(array($_GET['new_volume'], $_GET['purchase_id'], $_GET['participant_id'])) ) {
-	$jp = select_jp($db, $_GET['purchase_id']);
+$stmt = $db->prepare("SELECT purchase_id FROM request WHERE id = ?");
+$stmt->execute(array($input['id']));
+$purchase_id = $stmt->fetchColumn();
+if( !$purchase_id )
+{
 	echo json_encode(
-		array('meta' => array('code' => 200, 'success' => true, 'message' => 'PURCHASE UPDATED')
-			, 'data' => array('purchase' => $jp))
+		array('meta' => array('code' => 500, 'success' => false, 'message' => 'NOT JOINT')
+			, 'data' => null)
+	);
+	die();
+}
+
+$stmt = $db->prepare("DELETE FROM request WHERE id = ?");
+$h = getallheaders();
+if( $stmt->execute(array($input['id'])) ) {
+	$jp = select_jp($db, $purchase_id);
+	echo json_encode(
+		array('meta' => array('code' => 200, 'success' => true)
+			, 'data' => array('purchase' => $jp) )
 	);
 } else {
 	$errInfo = $stmt->errorInfo();
 	http_response_code(500);
 	echo json_encode(
-		array('meta' => array('code' => 500, 'success' => false, 'message' => 'Ошибка при обновлении закупки'. implode($errInfo, ','))
+		array('meta' => array('code' => 500, 'success' => false, 'message' => 'Ошибка при удалении заявки'. implode($errInfo, ','))
 			, 'data' => null)
 	);
 }

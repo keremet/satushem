@@ -59,7 +59,7 @@ export class JointPurchaseComponent implements OnInit {
 
   date = {};
 
-  participants = [];
+  requests = [];
 
   history = [];
 
@@ -118,8 +118,8 @@ export class JointPurchaseComponent implements OnInit {
   get isParticipant(): boolean {
     if (this.purchaseInfo && this.data.user) {
       const index = this
-        .purchaseInfo['participants']
-        .findIndex(participant => participant['user'] === this.data.user['id']);
+        .purchaseInfo['requests']
+        .findIndex(request => request['user'] === this.data.user['id']);
       return index !== -1;
     } else {
       return false;
@@ -157,10 +157,10 @@ export class JointPurchaseComponent implements OnInit {
   get isPaymentApproved(): boolean {
     if (this.purchaseInfo && this.data.user) {
       const index = this
-        .purchaseInfo['participants']
-        .findIndex(participant => participant['user'] === this.data.user['id']);
+        .purchaseInfo['requests']
+        .findIndex(request => request['user'] === this.data.user['id']);
       if (index !== -1) {
-        return this.purchaseInfo['participants'][index]['paid'];
+        return this.purchaseInfo['requests'][index]['paid'];
       } else {
         return false;
       }
@@ -182,7 +182,7 @@ export class JointPurchaseComponent implements OnInit {
   }
 
   get totalOrderedVolume(): number {
-    return this.purchaseInfo['participants'].reduce((all, value) => all + value['volume'], 0);
+    return this.purchaseInfo['requests'].reduce((all, value) => all + value['volume'], 0);
   }
 
   get pricePerUnit(): number {
@@ -225,17 +225,17 @@ export class JointPurchaseComponent implements OnInit {
 
     this.data.setTitle(`${this.purchaseInfo.name} - Совместные закупки`);
 
-    this.participants = await Promise.all(
+    this.requests = await Promise.all(
       this
-        .purchaseInfo['participants']
-        .map(async (participant) => {
-          const data = Object.create(participant);
-          if (participant['user']) {
-            const resp = await this.rest.getUserById(participant['user']);
+        .purchaseInfo['requests']
+        .map(async (request) => {
+          const data = Object.create(request);
+          if (request['user']) {
+            const resp = await this.rest.getUserById(request['user']);
             data['user'] = resp['data']['user'];
           }
 
-          data['cost'] = participant['volume'] * this.purchaseInfo['price_per_unit'];
+          data['cost'] = request['volume'] * this.purchaseInfo['price_per_unit'];
           return data;
       }));
 
@@ -259,7 +259,7 @@ export class JointPurchaseComponent implements OnInit {
   async loadTab() {
     this.querySub = this.route.queryParamMap.subscribe(async (params) => {
       const tab = params.get('tab') || this.additionalTabPane;
-      if (!this.isCreator && (tab === 'participants' || tab === 'black_list')) {
+      if (!this.isCreator && (tab === 'requests' || tab === 'black_list')) {
         await this.switchTab('description');
       } else {
         this.additionalTabPane = tab;
@@ -396,12 +396,11 @@ export class JointPurchaseComponent implements OnInit {
     }
   }
 
-  async updateParticipantVolume(participant_id, new_volume) {
+  async updateRequestVolume(request_id, new_volume) {
     if (new_volume) {
       try {
-        const resp = await this.rest.updateParticipantVolume(
-          this.purchaseInfo['_id'],
-          participant_id,
+        const resp = await this.rest.updateRequestVolume(
+          request_id,
           new_volume
         );
 
@@ -801,23 +800,20 @@ export class JointPurchaseComponent implements OnInit {
     }
   }
 
-  async detachFakeUserFromPurchase(member_id: number) {
+  async deleteRequest(id: number) {
     try {
-      const resp = await this.rest.detachFakeUserFromPurchase(
-        this.purchaseInfo['_id'],
-        member_id
-      );
+      const resp = await this.rest.deleteRequest(id);
 
       if (resp['meta'].success) {
         this
           .data
-          .addToast('Пользователь отсоединен от закупки', '', 'success');
+          .addToast('Заявка удалена', '', 'success');
 
         await this.loadAdditionalInfo(resp['data']['purchase']);
       } else {
         this
           .data
-          .addToast('Не удалось отсоединиться от закупки', '', 'success');
+          .addToast('Ошибка удаления заявки', '', 'success');
       }
     } catch (error) {
       const message = error.error.meta.message;
@@ -825,7 +821,7 @@ export class JointPurchaseComponent implements OnInit {
       if (message === 'NOT JOINT') {
         this
           .data
-          .addToast('Пользователь не является участником закупки', 'Обновите страницу', 'error');
+          .addToast('Заявка уже удалена', 'Обновите страницу', 'error');
       } else {
         this
           .data
@@ -862,35 +858,6 @@ export class JointPurchaseComponent implements OnInit {
     }
   }
 
-  async updateFakeUserPaymentState(participant: any, date: NgbDateStruct) {
-    this.toggles.paid[participant._id] = false;
-    const nativeDate = date ? new Date(date.year, date.month - 1, date.day) : null;
-
-    try {
-      const resp = await this.rest.updateFakeUserPaymentPurchase(
-        this.purchaseInfo['_id'],
-        participant['fake_user']['login'],
-        nativeDate
-      );
-
-      if (resp['meta'].success) {
-        this
-          .data
-          .addToast('Информация обновлена', '', 'success');
-
-        await this.loadAdditionalInfo(resp['data']['purchase']);
-      } else {
-        this
-          .data
-          .error(resp['meta'].message);
-      }
-    } catch (error) {
-      this
-        .data
-        .error(error['message']);
-    }
-  }
-
   async updateOrderSentState(participant: any, date: NgbDateStruct) {
     this.toggles.sent[participant._id] = false;
     const nativeDate = date ? new Date(date.year, date.month - 1, date.day) : null;
@@ -899,35 +866,6 @@ export class JointPurchaseComponent implements OnInit {
       const resp = await this.rest.updateOrderSentPurchase(
         this.purchaseInfo['_id'],
         participant['user']['_id'],
-        nativeDate
-      );
-
-      if (resp['meta'].success) {
-        this
-          .data
-          .addToast('Информация обновлена', '', 'success');
-
-        await this.loadAdditionalInfo(resp['data']['purchase']);
-      } else {
-        this
-          .data
-          .error(resp['meta'].message);
-      }
-    } catch (error) {
-      this
-        .data
-        .error(error['message']);
-    }
-  }
-
-  async updateFakeUserOrderSentState(participant: any, date: NgbDateStruct) {
-    this.toggles.sent[participant._id] = false;
-    const nativeDate = date ? new Date(date.year, date.month - 1, date.day) : null;
-
-    try {
-      const resp = await this.rest.updateFakeUserOrderSentPurchase(
-        this.purchaseInfo['_id'],
-        participant['fake_user']['login'],
         nativeDate
       );
 

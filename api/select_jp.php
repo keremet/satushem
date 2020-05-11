@@ -32,18 +32,16 @@ function select_jp($db, $id) {
 	$stmt->execute(array($id));
 	if( $row = $stmt->fetch() ) {
 		$stmtP = $db->prepare(
-			"SELECT TRIM(amount)+0 amount, member_id, comment, event_id
-				,  (SELECT DATE_FORMAT(max(d), '%d.%m.%Y')
-					FROM purchase_event e2 
-					WHERE e2.purchase_id = e1.purchase_id AND e2.member_id = e1.member_id AND e2.event_id = 3) paid
-			 FROM purchase_event e1
-			 WHERE purchase_id = ? AND event_id in (1, 2)
+			"SELECT TRIM(amount)+0 amount, member_id, id
+				,  NULL paid
+			 FROM request
+			 WHERE purchase_id = ?
 			 ORDER BY d"
 		);
 		$stmtP->execute(array($id));
-		$participants = array();
+		$requests = array();
 		while( $rowP = $stmtP->fetch() ) {
-			$participants[] = array('paid' => $rowP['paid'], 'delivered' => false, 'sent' => null, 'volume' => $rowP['amount'], '_id' => $rowP['member_id'], 'user' => $rowP['member_id']);
+			$requests[] = array('paid' => $rowP['paid'], 'delivered' => false, 'sent' => null, 'volume' => $rowP['amount'], '_id' => $rowP['id'], 'user' => $rowP['member_id']);
 		}
 
 		$stats = array('paid' => 0, 'not_paid' => 0, 'paid_and_sent' => 0, 'paid_and_not_sent' => 0, 'not_paid_and_sent' => 0, 'not_paid_and_not_sent' => 0, 'sent' => 0, 'not_sent' => 0);
@@ -51,8 +49,8 @@ function select_jp($db, $id) {
 			"SELECT TRIM(ordered)+0 ordered, (SELECT TRIM(p.amount - a.ordered)+0 FROM purchase p WHERE p.id = ?) remaining
 			 FROM (
 			   SELECT IFNULL(sum(amount), 0) ordered
-			   FROM purchase_event
-			   WHERE purchase_id = ? AND event_id in (1, 2)
+			   FROM request
+			   WHERE purchase_id = ?
 			 ) a"
 		);
 		$stmtStat->execute(array($id, $id));
@@ -80,7 +78,7 @@ function select_jp($db, $id) {
 			, 'payment_type' => (int)$row['payment_method_id']
 			, 'payment_info' => $row['payment_info']
 			, 'history' => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
-			, 'participants' => $participants
+			, 'requests' => $requests
 			, '__v' => 0
 			, 'recent'  => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
 			, 'volume' => $row['amount']

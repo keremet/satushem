@@ -32,9 +32,9 @@ export class OrdersComponent implements OnInit {
     const purchases = respPurchases['data']['purchases'];
     this.purchaseOrders = purchases
       .map(purchase => {
-        const index = purchase['participants']
-          .findIndex(participant => participant['user'] === this.data.user['id']);
-        const orderInfo = purchase['participants'][index];
+        const index = purchase['requests']
+          .findIndex(request => request['user'] === this.data.user['id']);
+        const orderInfo = purchase['requests'][index];
         return {
           purchase: purchase,
           volume: orderInfo['volume'],
