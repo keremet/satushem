@@ -43,14 +43,6 @@ export class CommentBranchComponent implements OnInit {
     this.commentSent.emit();
   }
 
-  async openChat() {
-    try {
-      const info = (await this.rest.getUserByLogin(this.comment.user))['data']['user'];
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   get currentUser(): any {
     return this.data.user || {};
   }

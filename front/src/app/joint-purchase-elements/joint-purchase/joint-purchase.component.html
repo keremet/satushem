@@ -289,14 +289,6 @@
                     <p>
                       Пользователь: {{purchaseInfo.creator.login}}
                     </p>
-                    <button
-                      type="button"
-                      class="btn btn-main mb-3"
-                      (click)="openChatWithCreator()"
-                      *ngIf="isLoggedIn && !isCreator"
-                    >
-                      Связаться по чату <i class="fa fa-comment"></i>
-                    </button>
                     <div>
                       <h5>Платежные данные
                         <label
