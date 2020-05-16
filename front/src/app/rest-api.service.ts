@@ -528,19 +528,6 @@ export class RestApiService {
       .toPromise();
   }
 
-  searchGoodJointPurchases(filter: string) {
-    const params = new HttpParams()
-      .append('filter', filter);
-
-    return this
-      .http
-      .get(`${API_URL}/api/search/goodpurchases`, {
-        params: params,
-        headers: this.getHeaders()
-      })
-      .toPromise();
-  }
-
   updatePurchaseInfo(id: string, field: string, value: any) {
     return this
       .http

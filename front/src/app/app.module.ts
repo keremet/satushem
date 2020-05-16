@@ -53,7 +53,6 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 
 import { NgbDatePipe } from './pipes/ngb-date.pipe';
 import { PrettyUserNamePipe } from './pipes/pretty-user-name.pipe';
-import { ModalGoodPurchaseChooserComponent } from './modals/modal-good-purchase-chooser/modal-good-purchase-chooser.component';
 
 @NgModule({
   declarations: [
@@ -84,8 +83,7 @@ import { ModalGoodPurchaseChooserComponent } from './modals/modal-good-purchase-
     CommentBranchComponent,
     CommentReplyComponent,
     NgbDatePipe,
-    PrettyUserNamePipe,
-    ModalGoodPurchaseChooserComponent
+    PrettyUserNamePipe
   ],
   imports: [
     BrowserModule, AppRoutingModule, NgbModule.forRoot(), ToastyModule.forRoot(),
@@ -113,8 +111,7 @@ import { ModalGoodPurchaseChooserComponent } from './modals/modal-good-purchase-
     ModalLoginComponent,
     ModalAddJointPurchaseComponent,
     ModalJoinToJointPurchaseComponent,
-    ModalCategoryChooserComponent,
-    ModalGoodPurchaseChooserComponent
+    ModalCategoryChooserComponent
   ]
 })
 export class AppModule {
