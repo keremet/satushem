@@ -143,7 +143,7 @@
 
             <p class="card-text" *ngIf="!isParticipant && isOpened && isLoggedIn && !isBanned">
               <button class="btn btn-main" (click)="joinToPurchase()" *ngIf="haveEnoughRemainingVolume">
-                Присоединится к закупке
+                Присоединиться к закупке
               </button>
               <span *ngIf="!haveEnoughRemainingVolume" class="text-danger">
                 <b>Товара осталось недостаточно для минимального заказа</b>
@@ -415,7 +415,7 @@
                                 type="button"
                                 class="btn btn-main btn-block btn-sm mb-2"
                                 (click)="toggles.paid[request._id] = !toggles.paid[request._id]"
-                              ><i class="fa fa-check"></i> Оплачено</button>
+                              >Оплата</button>
                               <div class="dropdown-menu d-block p-0" *ngIf="toggles.paid[request._id]">
                                 <ngb-datepicker
                                   [ngModel]="today"
@@ -460,7 +460,7 @@
                                 type="button"
                                 class="btn btn-main btn-block btn-sm mb-2"
                                 (click)="toggles.sent[request._id] = !toggles.sent[request._id]"
-                              ><i class="fa fa-check"></i> Отправлено</button>
+                              >Выдача</button>
                               <div class="dropdown-menu d-block p-0" *ngIf="toggles.sent[request._id]">
                                 <ngb-datepicker
                                   [ngModel]="today"
