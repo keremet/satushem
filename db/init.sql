@@ -25,7 +25,7 @@ CREATE TABLE `category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `state` (
-  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` int(11) NOT NULL PRIMARY KEY,
   `name` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -135,3 +135,22 @@ CREATE TABLE `payment` (
    CONSTRAINT `payment__request_id` FOREIGN KEY (`request_id`) REFERENCES `request` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+
+INSERT INTO `event` (`id`, `name`) VALUES
+(1, 'Присоединение к закупке'),
+(2, 'Присоединение незареганного'),
+(3, 'Оплата');
+
+INSERT INTO `payment_method` (`id`, `name`) VALUES
+(1, 'Предоплата напрямую организатору'),
+(2, 'В момент выдачи товара');
+
+INSERT INTO `state` (`id`, `name`) VALUES
+(0, 'Сбор заказов'),
+(1, 'Сбор заказов завершен'),
+(2, 'Закрыта');
+
+INSERT INTO `unit` (`name`) VALUES
+('кг'),
+('л'),
+('шт');
