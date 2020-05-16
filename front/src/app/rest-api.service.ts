@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import qs from 'qs';
-import {environment} from '../environments/environment';
 
-const API_URL = environment.apiUrl;
 const ORV_API_URL = 'http://satushem.orv.org.ru/api';
+const API_URL = ORV_API_URL;
 
 @Injectable({providedIn: 'root'})
 export class RestApiService {
