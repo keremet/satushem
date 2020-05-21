@@ -34,11 +34,6 @@ CREATE TABLE `payment_method` (
   `name` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE `event` (
-  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 CREATE TABLE `member` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `login` text COLLATE utf8_unicode_ci NOT NULL,
@@ -92,18 +87,6 @@ CREATE TABLE `black_list` (
   CONSTRAINT `black_list__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-CREATE TABLE `purchase_event` (
-  `purchase_id` int(11) NOT NULL,
-  `member_id` int(11) NOT NULL,
-  `event_id` int(11) NOT NULL,
-  `d` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `amount` decimal(30, 10),
-  `comment` text COLLATE utf8_unicode_ci,
-  CONSTRAINT `purchase_events__purchase_id` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `purchase_events__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `purchase_events__event_id` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 CREATE TABLE `token` (
   `id` varchar(64) NOT NULL PRIMARY KEY,
   `member_id` int(11) NOT NULL,
@@ -135,11 +118,6 @@ CREATE TABLE `payment` (
    CONSTRAINT `payment__request_id` FOREIGN KEY (`request_id`) REFERENCES `request` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
-INSERT INTO `event` (`id`, `name`) VALUES
-(1, 'Присоединение к закупке'),
-(2, 'Присоединение незареганного'),
-(3, 'Оплата');
 
 INSERT INTO `payment_method` (`id`, `name`) VALUES
 (1, 'Предоплата напрямую организатору'),

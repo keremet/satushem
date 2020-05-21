@@ -33,15 +33,16 @@ function select_jp($db, $id) {
 	if( $row = $stmt->fetch() ) {
 		$stmtP = $db->prepare(
 			"SELECT TRIM(amount)+0 amount, member_id, id
-				,  NULL paid
-			 FROM request
-			 WHERE purchase_id = ?
-			 ORDER BY d"
+			 ,  NULL paid
+			 ,  (SELECT TRIM(IFNULL(SUM(i.amount), 0))+0 FROM issue i WHERE i.request_id = r.id ) sent
+			 FROM request r
+			 WHERE purchase_id = 1
+			 ORDER BY d;"
 		);
 		$stmtP->execute(array($id));
 		$requests = array();
 		while( $rowP = $stmtP->fetch() ) {
-			$requests[] = array('paid' => $rowP['paid'], 'delivered' => false, 'sent' => null, 'volume' => $rowP['amount'], '_id' => $rowP['id'], 'user' => $rowP['member_id']);
+			$requests[] = array('paid' => $rowP['paid'], 'delivered' => false, 'sent' => $rowP['sent'], 'volume' => $rowP['amount'], '_id' => $rowP['id'], 'user' => $rowP['member_id']);
 		}
 
 		$stats = array('paid' => 0, 'not_paid' => 0, 'paid_and_sent' => 0, 'paid_and_not_sent' => 0, 'not_paid_and_sent' => 0, 'not_paid_and_not_sent' => 0, 'sent' => 0, 'not_sent' => 0);
@@ -57,6 +58,7 @@ function select_jp($db, $id) {
 		if( $rowStat = $stmtStat->fetch() ){
 			$stats['ordered'] = $rowStat['ordered'];
 			$stats['remaining'] = $rowStat['remaining'];
+			//$stats['sent'] = $rowStat['sent'];
 		}
 
 		return array(

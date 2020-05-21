@@ -591,22 +591,6 @@ export class RestApiService {
       .toPromise();
   }
 
-  updatePaymentPurchase(id: string, userId: string, date: number) {
-    const body = {
-      purchase_id: id,
-      user_id: userId,
-      event_id: 3,
-      date: date
-    };
-
-    return this
-      .http
-      .put(`${ORV_API_URL}/add_jp_event.php`, body, {
-        headers: this.getHeaders()
-      })
-      .toPromise();
-  }
-
   updateDeliveryPurchase(id: string, userId: string, state: boolean) {
     const body = {
       id: id,
@@ -617,21 +601,6 @@ export class RestApiService {
     return this
       .http
       .put(`${API_URL}/api/jointpurchases/deliveries/update`, body, {
-        headers: this.getHeaders()
-      })
-      .toPromise();
-  }
-
-  updateOrderSentPurchase(id: string, userId: string, date: Date) {
-    const body = {
-      id: id,
-      user_id: userId,
-      date: date
-    };
-
-    return this
-      .http
-      .put(`${API_URL}/api/jointpurchases/sent/update`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -748,6 +717,15 @@ export class RestApiService {
     return this
       .http
       .get(`${ORV_API_URL}/update_req_volume.php?request_id=${request_id}&new_volume=${new_volume}`, {
+        headers: this.getHeaders()
+      })
+      .toPromise();
+  }
+
+  addIssue(request_id, volume, date) {
+    return this
+      .http
+      .get(`${ORV_API_URL}/add_issue.php?request_id=${request_id}&volume=${volume}&date=${date}`, {
         headers: this.getHeaders()
       })
       .toPromise();

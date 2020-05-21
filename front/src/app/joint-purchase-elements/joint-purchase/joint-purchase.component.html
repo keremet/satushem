@@ -354,7 +354,7 @@
                           {{request.user | prettyUserName}}
                         </div>
                         <div class="col-12 col-md-3" *ngIf="!request.edit_volume_flg">
-                          {{ request.volume }} {{ measurementUnit }}
+                          {{ request.volume }} / {{ request.sent }} {{ measurementUnit }}
                           ({{ request.cost | fixedFloat: 2 }} ₽)
 						  <a
 							href="javascript:void(0)"
@@ -380,96 +380,20 @@
 
                         <div class="col-12 col-md-4">
                           <div class="custom-control mb-md-0 mb-2 pl-0">
-                            <div *ngIf="request.paid" (clickOutside)="toggles.paid[request._id] = false">
-                              <div class="justify-content-start">
-                                <span>Платеж подтвержден</span>
-                              </div>
-                              <div class="justify-content-start">
-                                <div class="d-inline-flex flex-row">
-                                  <span class="mr-2">{{request.paid}}</span>
-                                  <a
-                                    href="javascript:void(0)"
-                                    class="mr-2 text-primary"
-                                    (click)="toggles.paid[request._id] = !toggles.paid[request._id]"
-                                  >
-                                    <i class="fa fa-edit mr-1"></i><span class="d-md-none">Изменить</span>
-                                  </a>
-                                  <a
-                                    href="javascript:void(0)"
-                                    class="mr-2 text-danger"
-                                    (click)="updatePaymentState(request, null)"
-                                  >
-                                    <i class="fa fa-times mr-1"></i><span class="d-md-none">Отменить</span>
-                                  </a>
-                                </div>
-                              </div>
-                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.paid[request._id]">
-                                <ngb-datepicker
-                                  [ngModel]="today"
-                                  (select)="updatePaymentState(request, $event)"
-                                ></ngb-datepicker>
-                              </div>
-                            </div>
-                            <div *ngIf="!request.paid" (clickOutside)="toggles.paid[request._id] = false">
-                              <button
-                                type="button"
-                                class="btn btn-main btn-block btn-sm mb-2"
-                                (click)="toggles.paid[request._id] = !toggles.paid[request._id]"
-                              >Оплата</button>
-                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.paid[request._id]">
-                                <ngb-datepicker
-                                  [ngModel]="today"
-                                  (select)="updatePaymentState(request, $event)"
-                                ></ngb-datepicker>
-                              </div>
-                            </div>
+                            <button
+                              type="button"
+                              class="btn btn-main btn-block btn-sm mb-2"
+                              (click)="showModalRequestEvent()"
+                            >Оплата</button>
                           </div>
                           <div class="custom-control mb-md-0 mb-2 pl-0">
-                            <div *ngIf="request.sent" (clickOutside)="toggles.sent[request._id] = false">
-                              <div class="justify-content-start">
-                                <span>Товар отправлен</span>
-                              </div>
-                              <div class="justify-content-start">
-                                <div class="d-inline-flex flex-row">
-                                  <span class="mr-2">{{request.sent | date:'dd.MM.yyyy'}}</span>
-                                  <a
-                                    href="javascript:void(0)"
-                                    class="mr-2 text-primary"
-                                    (click)="toggles.sent[request._id] = !toggles.sent[request._id]"
-                                  >
-                                    <i class="fa fa-edit mr-1"></i><span class="d-md-none">Изменить</span>
-                                  </a>
-                                  <a
-                                    href="javascript:void(0)"
-                                    class="mr-2 text-danger"
-                                    (click)="updateOrderSentState(request, null)"
-                                  >
-                                    <i class="fa fa-times mr-1"></i><span class="d-md-none">Отменить</span>
-                                  </a>
-                                </div>
-                              </div>
-                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.sent[request._id]">
-                                <ngb-datepicker
-                                  [ngModel]="today"
-                                  (select)="updateOrderSentState(request, $event)"
-                                ></ngb-datepicker>
-                              </div>
-                            </div>
-                            <div *ngIf="!request.sent" (clickOutside)="toggles.sent[request._id] = false">
-                              <button
-                                type="button"
-                                class="btn btn-main btn-block btn-sm mb-2"
-                                (click)="toggles.sent[request._id] = !toggles.sent[request._id]"
-                              >Выдача</button>
-                              <div class="dropdown-menu d-block p-0" *ngIf="toggles.sent[request._id]">
-                                <ngb-datepicker
-                                  [ngModel]="today"
-                                  (select)="updateOrderSentState(request, $event)"
-                                ></ngb-datepicker>
-                              </div>
-                            </div>
+                            <button
+                              type="button"
+                              class="btn btn-main btn-block btn-sm mb-2"
+                              (click)="showModalRequestEvent(request._id)"
+                            >Выдача</button>
                           </div>
-                          <div class="custom-control custom-checkbox mb-md-0 mb-2">
+                          <!--div class="custom-control custom-checkbox mb-md-0 mb-2">
                             <input
                               id="userDelivered_{{i}}"
                               type="checkbox"
@@ -479,7 +403,7 @@
                             >
                             <label class="custom-control-label" for="userDelivered_{{i}}"
                             >Товар доставлен</label>
-                          </div>
+                          </div-->
                         </div>
                         <!--div class="col-12 col-md-2 justify-content-md-end">
                           <div class="d-inline-flex flex-md-column flex-row">

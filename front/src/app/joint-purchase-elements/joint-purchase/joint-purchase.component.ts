@@ -7,6 +7,7 @@ import { SearchService } from '../../search.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import {ModalJoinToJointPurchaseComponent} from '../../modals/modal-join-to-joint-purchase/modal-join-to-joint-purchase.component';
+import { ModalRequestEventComponent } from '../../modals/modal-request-event/modal-request-event.component';
 import {UploadFileService} from '../../upload-file.service';
 import {JointPurchaseHistoryService} from '../../joint-purchase-history.service';
 import {CommentModel} from '../comment-elements/comment-model';
@@ -72,8 +73,7 @@ export class JointPurchaseComponent implements OnInit {
   ready = false;
 
   toggles = {
-    paid: {},
-    sent: {}
+    paid: {}
   };
 
   constructor(
@@ -770,6 +770,22 @@ export class JointPurchaseComponent implements OnInit {
     });
   }
 
+  async showModalRequestEvent(request_id) {
+    const modalRef = this.modalService.open(ModalRequestEventComponent);
+
+    modalRef.componentInstance.purchaseInfo = this.purchaseInfo;
+    modalRef.componentInstance.fakeUser = false;
+    modalRef.componentInstance.request_id = request_id;
+
+    modalRef.result.then(async (purchaseInfo) => {
+      if (purchaseInfo) {
+        await this.loadAdditionalInfo(purchaseInfo);
+      }
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
   async detachFromPurchase() {
     try {
       const resp = await this.rest.detachFromPurchase(this.purchaseInfo['_id']);
@@ -827,63 +843,6 @@ export class JointPurchaseComponent implements OnInit {
           .data
           .addToast('Ошибка', error['message'], 'error');
       }
-    }
-  }
-
-  async updatePaymentState(participant: any, date: NgbDateStruct) {
-    this.toggles.paid[participant._id] = false;
-
-    try {
-      const resp = await this.rest.updatePaymentPurchase(
-        this.purchaseInfo['_id'],
-        participant['user']['id'],
-        date ? date.year*10000 + date.month*100 + date.day : null
-      );
-
-      if (resp['meta'].success) {
-        this
-          .data
-          .addToast('Информация обновлена', '', 'success');
-
-        await this.loadAdditionalInfo(resp['data']['purchase']);
-      } else {
-        this
-          .data
-          .error(resp['meta'].message);
-      }
-    } catch (error) {
-      this
-        .data
-        .error(error['message']);
-    }
-  }
-
-  async updateOrderSentState(participant: any, date: NgbDateStruct) {
-    this.toggles.sent[participant._id] = false;
-    const nativeDate = date ? new Date(date.year, date.month - 1, date.day) : null;
-
-    try {
-      const resp = await this.rest.updateOrderSentPurchase(
-        this.purchaseInfo['_id'],
-        participant['user']['_id'],
-        nativeDate
-      );
-
-      if (resp['meta'].success) {
-        this
-          .data
-          .addToast('Информация обновлена', '', 'success');
-
-        await this.loadAdditionalInfo(resp['data']['purchase']);
-      } else {
-        this
-          .data
-          .error(resp['meta'].message);
-      }
-    } catch (error) {
-      this
-        .data
-        .error(error['message']);
     }
   }
 

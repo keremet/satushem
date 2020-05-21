@@ -41,6 +41,7 @@ import { JointPurchaseCartComponent } from './joint-purchase-elements/joint-purc
 import { JointPurchaseListComponent } from './joint-purchase-elements/joint-purchase-list/joint-purchase-list.component';
 import { RussianLocaleDatePipe } from './pipes/russian-locale-date.pipe';
 import { ModalJoinToJointPurchaseComponent } from './modals/modal-join-to-joint-purchase/modal-join-to-joint-purchase.component';
+import { ModalRequestEventComponent } from './modals/modal-request-event/modal-request-event.component';
 
 import { JointPurchasesComponent } from './profile-elements/joint-purchases/joint-purchases.component';
 import { CategoryNestedChooserComponent } from './category-chooser-elements/category-nested-chooser/category-nested-chooser.component';
@@ -75,6 +76,7 @@ import { PrettyUserNamePipe } from './pipes/pretty-user-name.pipe';
     JointPurchaseListComponent,
     RussianLocaleDatePipe,
     ModalJoinToJointPurchaseComponent,
+    ModalRequestEventComponent,
     JointPurchasesComponent,
     CategoryNestedChooserComponent,
     InternalCategoryNodeComponent,
@@ -111,6 +113,7 @@ import { PrettyUserNamePipe } from './pipes/pretty-user-name.pipe';
     ModalLoginComponent,
     ModalAddJointPurchaseComponent,
     ModalJoinToJointPurchaseComponent,
+    ModalRequestEventComponent,
     ModalCategoryChooserComponent
   ]
 })
