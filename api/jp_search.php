@@ -29,7 +29,8 @@ $flt = (isset($filter['category'])?" AND category_id=?":"")
 	  .(isset($_GET['query'])?" AND upper(p.name) like upper(?)":"");
 
 $stmt = $db->prepare(
-	"SELECT p.id, p.name, TRIM(p.amount)+0 amount, p.unit_id, unit.name unit_name, p.price, DATE_FORMAT(deadline, '%d.%m.%Y') deadline, p.img, p.description, p.state_id
+	"SELECT p.id, p.name, TRIM(p.amount)+0 amount, p.unit_id, unit.name unit_name, p.price, DATE_FORMAT(deadline, '%d.%m.%Y') deadline, p.img, p.description, p.state_id,
+	 (SELECT TRIM(p.amount - IFNULL(sum(r.amount), 0))+0 FROM request r WHERE r.purchase_id = p.id) remaining
 	 FROM purchase p
 		JOIN unit on unit.id = p.unit_id
 	 WHERE is_public = 1
@@ -53,7 +54,7 @@ while( $row = $stmt->fetch() ) {
 				, 'date' => $row['deadline']
 				, 'state' => (int)$row['state_id']
 				, 'volume' => $row['amount']
-				, 'remaining_volume' => $row['amount']
+				, 'remaining_volume' => $row['remaining']
 	);
 };
 
