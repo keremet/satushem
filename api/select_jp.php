@@ -36,7 +36,7 @@ function select_jp($db, $id) {
 			 ,  (SELECT IFNULL(SUM(p.value), 0) FROM payment p WHERE p.request_id = r.id ) paid
 			 ,  (SELECT TRIM(IFNULL(SUM(i.amount), 0))+0 FROM issue i WHERE i.request_id = r.id ) sent
 			 FROM request r
-			 WHERE purchase_id = 1
+			 WHERE purchase_id = ?
 			 ORDER BY d;"
 		);
 		$stmtP->execute(array($id));
