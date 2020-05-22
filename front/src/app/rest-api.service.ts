@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import qs from 'qs';
+import {environment} from '../environments/environment';
 
-const ORV_API_URL = 'http://satushem.orv.org.ru/api';
-const API_URL = ORV_API_URL;
+const API_URL = environment.apiUrl;
 
 @Injectable({providedIn: 'root'})
 export class RestApiService {
@@ -48,7 +48,7 @@ export class RestApiService {
   loginUser(body: any) {
     return this
       .http
-      .post(`${ORV_API_URL}/login.php`, body)
+      .post(`${API_URL}/login.php`, body)
       .toPromise();
   }
 
@@ -76,7 +76,7 @@ export class RestApiService {
   getUserProfile() {
     return this
       .http
-      .get(`${ORV_API_URL}/profile.php`, {
+      .get(`${API_URL}/profile.php`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -151,7 +151,7 @@ export class RestApiService {
     console.log(body);
     return this
       .http
-      .post(`${ORV_API_URL}/new_img.php`, body)
+      .post(`${API_URL}/new_img.php`, body)
       .toPromise();
   }
 
@@ -231,7 +231,7 @@ export class RestApiService {
   getUserById(id: string) {
     return this
       .http
-      .get(`${ORV_API_URL}/get_member.php?id=${id}`, {
+      .get(`${API_URL}/get_member.php?id=${id}`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -342,7 +342,7 @@ export class RestApiService {
   getAllGoodCategories() {
     return this
       .http
-      .get(`${ORV_API_URL}/get_cat_list.php`, {
+      .get(`${API_URL}/get_cat_list.php`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -351,7 +351,7 @@ export class RestApiService {
   getGoodCategoryTree() {
     return this
       .http
-      .get(`${ORV_API_URL}/get_cat_tree.php`, {
+      .get(`${API_URL}/get_cat_tree.php`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -488,7 +488,7 @@ export class RestApiService {
   addJointPurchase(body: any) {
     return this
       .http
-      .post(`${ORV_API_URL}/add_jp.php`, body, {
+      .post(`${API_URL}/add_jp.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -506,7 +506,7 @@ export class RestApiService {
   getJointPurchaseById(id: string) {
     return this
       .http
-      .get(`${ORV_API_URL}/get_jp.php?id=${id}`, {
+      .get(`${API_URL}/get_jp.php?id=${id}`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -521,7 +521,7 @@ export class RestApiService {
 
     return this
       .http
-      .get(`${ORV_API_URL}/jp_search.php`, {
+      .get(`${API_URL}/jp_search.php`, {
         params: params,
         headers: this.getHeaders()
       })
@@ -531,7 +531,7 @@ export class RestApiService {
   updatePurchaseInfo(id: string, field: string, value: any) {
     return this
       .http
-      .put(`${ORV_API_URL}/update_jp.php?id=${id}&prop=${field}&value=${value}`, {
+      .put(`${API_URL}/update_jp.php?id=${id}&prop=${field}&value=${value}`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -545,7 +545,7 @@ export class RestApiService {
 
     return this
       .http
-      .put(`${ORV_API_URL}/add_my_request.php`, body, {
+      .put(`${API_URL}/add_my_request.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -560,7 +560,7 @@ export class RestApiService {
 
     return this
       .http
-      .put(`${ORV_API_URL}/add_request.php`, body, {
+      .put(`${API_URL}/add_request.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -573,7 +573,7 @@ export class RestApiService {
 
     return this
       .http
-      .put(`${ORV_API_URL}/del_request.php`, body, {
+      .put(`${API_URL}/del_request.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -582,7 +582,7 @@ export class RestApiService {
   detachFromPurchase(id: string) {
     return this
       .http
-      .request('DELETE', `${ORV_API_URL}/del_my_request.php`, {
+      .request('DELETE', `${API_URL}/del_my_request.php`, {
         headers: this.getHeaders(),
         body: {
           purchase_id: id
@@ -618,7 +618,7 @@ export class RestApiService {
   getPurchaseOrders() {
     return this
       .http
-      .get(`${ORV_API_URL}/get_orders.php`, {
+      .get(`${API_URL}/get_orders.php`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -671,7 +671,7 @@ export class RestApiService {
   getPurchaseCommentTree(id: string) {
     return this
       .http
-      .get(`${ORV_API_URL}/get_jp_comment_tree.php?purchase_id=${id}`, {
+      .get(`${API_URL}/get_jp_comment_tree.php?purchase_id=${id}`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -680,7 +680,7 @@ export class RestApiService {
   getAllMeasurementUnits() {
     return this
       .http
-      .get(`${ORV_API_URL}/get_unit.php`, {
+      .get(`${API_URL}/get_unit.php`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -689,7 +689,7 @@ export class RestApiService {
   addMeasurementUnit(body: any) {
     return this
       .http
-      .post(`${ORV_API_URL}/add_unit.php`, body, {
+      .post(`${API_URL}/add_unit.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -698,7 +698,7 @@ export class RestApiService {
   getAllMembers() {
     return this
       .http
-      .get(`${ORV_API_URL}/get_all_members.php`, {
+      .get(`${API_URL}/get_all_members.php`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -707,7 +707,7 @@ export class RestApiService {
   addMember(login, passwd, visible_name) {
     return this
       .http
-      .get(`${ORV_API_URL}/add_member.php?login=${login}&passwd=${passwd}&visible_name=${visible_name}`, {
+      .get(`${API_URL}/add_member.php?login=${login}&passwd=${passwd}&visible_name=${visible_name}`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -716,7 +716,7 @@ export class RestApiService {
   updateRequestVolume(request_id, new_volume) {
     return this
       .http
-      .get(`${ORV_API_URL}/update_req_volume.php?request_id=${request_id}&new_volume=${new_volume}`, {
+      .get(`${API_URL}/update_req_volume.php?request_id=${request_id}&new_volume=${new_volume}`, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -725,7 +725,7 @@ export class RestApiService {
   addIssue(request_id, volume, date) {
     return this
       .http
-      .get(`${ORV_API_URL}/add_issue.php?request_id=${request_id}&volume=${volume}&date=${date}`, {
+      .get(`${API_URL}/add_issue.php?request_id=${request_id}&volume=${volume}&date=${date}`, {
         headers: this.getHeaders()
       })
       .toPromise();

@@ -46,7 +46,7 @@ $purchases = array();
 while( $row = $stmt->fetch() ) {
 	$purchases[] = array('_id' => $row['id']
 				, 'name' => $row['name']
-				, 'picture' => ($row['img'] != "") ? "http://satushem.orv.org.ru" . $row['img'] : ""
+				, 'picture' => ($row['img'] != "") ? "http://newsatushem.ru" . $row['img'] : ""
 				, 'description' => $row['description']
 				, 'price_per_unit' => (int)($row['price'])
 				, 'measurement_unit' => array('_id' => $row['unit_id'], 'name' => $row['unit_name'])

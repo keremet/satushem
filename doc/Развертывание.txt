@@ -7,8 +7,7 @@ sudo apt install git npm
 git clone https://github.com/keremet/satushem
 cd satushem/front
 
-Заменить ссылку на API в файле src/app/rest-api.service.ts (const ORV_API_URL = 'http://satushem.orv.org.ru/api';) на свою, например так:
-const ORV_API_URL = 'http://newsatushem.ru/api';
+Заменить ссылку на API в файле src/environments/environment.prod.ts на свою.
 
 В файле src/app/app.component.html заменить ссылку https://vk.com/orv_org_ru на ссылку на свою группу в ВК.
 
@@ -49,7 +48,7 @@ echo "insert into category(name) values('Молоко');" | mysql -u satushem -p
 echo "insert into member(login, password, visible_name) values ('user1', '1', 'Первый пользователь');" | mysql -u satushem -ppassword satushem 
 
 В файле api/new_img.php заменить '/var/www/satushem' на имя корневого каталога сайта ('/var/www/html' в нашем примере)
-В файлах api/select_jp.php и api/jp_search.php заменить http://satushem.orv.org.ru на адрес вашего сайта.
+В файлах api/select_jp.php и api/jp_search.php заменить http://newsatushem.ru на адрес вашего сайта.
 
 
 Скопировать каталог api в корневой каталог сайта
