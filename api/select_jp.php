@@ -33,7 +33,7 @@ function select_jp($db, $id) {
 	if( $row = $stmt->fetch() ) {
 		$stmtP = $db->prepare(
 			"SELECT TRIM(amount)+0 amount, member_id, id
-			 ,  NULL paid
+			 ,  (SELECT IFNULL(SUM(p.value), 0) FROM payment p WHERE p.request_id = r.id ) paid
 			 ,  (SELECT TRIM(IFNULL(SUM(i.amount), 0))+0 FROM issue i WHERE i.request_id = r.id ) sent
 			 FROM request r
 			 WHERE purchase_id = 1

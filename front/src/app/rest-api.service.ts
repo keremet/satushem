@@ -730,4 +730,13 @@ export class RestApiService {
       })
       .toPromise();
   }
+
+  addPayment(request_id, volume, date) {
+    return this
+      .http
+      .get(`${API_URL}/add_payment.php?request_id=${request_id}&volume=${volume}&date=${date}`, {
+        headers: this.getHeaders()
+      })
+      .toPromise();
+  } 
 }

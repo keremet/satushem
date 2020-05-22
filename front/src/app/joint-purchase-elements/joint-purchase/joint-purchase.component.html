@@ -355,7 +355,7 @@
                         </div>
                         <div class="col-12 col-md-3" *ngIf="!request.edit_volume_flg">
                           {{ request.volume }} / {{ request.sent }} {{ measurementUnit }}
-                          ({{ request.cost | fixedFloat: 2 }} ₽)
+                          ({{ request.cost | fixedFloat: 2 }} / {{ request.paid }}  ₽)
 						  <a
 							href="javascript:void(0)"
 							class="mr-2 text-primary"
@@ -383,7 +383,7 @@
                             <button
                               type="button"
                               class="btn btn-main btn-block btn-sm mb-2"
-                              (click)="showModalRequestEvent()"
+                              (click)="showModalRequestPayment(request._id)"
                             >Оплата</button>
                           </div>
                           <div class="custom-control mb-md-0 mb-2 pl-0">

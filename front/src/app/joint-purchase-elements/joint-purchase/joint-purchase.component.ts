@@ -8,6 +8,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { Subscription } from 'rxjs';
 import {ModalJoinToJointPurchaseComponent} from '../../modals/modal-join-to-joint-purchase/modal-join-to-joint-purchase.component';
 import { ModalRequestEventComponent } from '../../modals/modal-request-event/modal-request-event.component';
+import { ModalRequestPaymentComponent } from '../../modals/modal-request-payment/modal-request-payment.component';
 import {UploadFileService} from '../../upload-file.service';
 import {JointPurchaseHistoryService} from '../../joint-purchase-history.service';
 import {CommentModel} from '../comment-elements/comment-model';
@@ -775,6 +776,21 @@ export class JointPurchaseComponent implements OnInit {
 
     modalRef.componentInstance.purchaseInfo = this.purchaseInfo;
     modalRef.componentInstance.fakeUser = false;
+    modalRef.componentInstance.request_id = request_id;
+
+    modalRef.result.then(async (purchaseInfo) => {
+      if (purchaseInfo) {
+        await this.loadAdditionalInfo(purchaseInfo);
+      }
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+  async showModalRequestPayment(request_id) {
+    const modalRef = this.modalService.open(ModalRequestPaymentComponent);
+
+    modalRef.componentInstance.purchaseInfo = this.purchaseInfo;
     modalRef.componentInstance.request_id = request_id;
 
     modalRef.result.then(async (purchaseInfo) => {
