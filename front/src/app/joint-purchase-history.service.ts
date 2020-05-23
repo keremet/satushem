@@ -30,7 +30,7 @@ export class JointPurchaseHistoryService {
   ];
 
   public readonly participantActivity = [
-    'requests.joint', 'requests.detached'
+    'requests.joint', 'requests.detached', 'requests.payment', 'requests.issue'
   ];
 
   public readonly blackListActivity = [
@@ -185,22 +185,45 @@ export class JointPurchaseHistoryService {
 
   private async parseParticipantActivity(item: any): Promise<Array<TextBlock>> {
     const parameter = item['parameter'];
-    const {user: userId} = item['value'];
+    const login = item['login'];
+    const amount = item['amount'];
+    const req_date = item['req_date'];
 
-    const user = await this.getUser(userId);
+   // const user = await this.getUser(userId);
     if (parameter === 'requests.joint') {
       return [
         { text: 'Пользователь ', bold: false},
-        { text: `${user['login']}`, bold: true},
-        { text: ' присоединился к закупке', bold: false}
+        { text: `${login}`, bold: true},
+        { text: ' создал заявку на ', bold: false},
+        { text: `${amount}`, bold: true},
       ];
-    } else if (parameter === 'requests.detached') {
+    } else if (parameter === 'requests.payment') {
+      return [
+        { text: 'Пользователь ', bold: false},
+        { text: `${login}`, bold: true},
+        { text: ' оплатил ', bold: false},
+        { text: `${amount}`, bold: true},
+        { text: ' ₽ по заявке от ', bold: false},
+        { text: `${req_date}`, bold: true},
+      ];
+    } else if (parameter === 'requests.issue') {
+      return [
+        { text: 'Пользователь ', bold: false},
+        { text: `${login}`, bold: true},
+        { text: ' получил ', bold: false},
+        { text: `${amount}`, bold: true},
+        { text: ' по заявке от ', bold: false},
+        { text: `${req_date}`, bold: true},
+      ];
+    }
+    
+    /* else if (parameter === 'requests.detached') {
       return [
         { text: 'Пользователь ', bold: false},
         { text: `${user['login']}`, bold: true},
         { text: ' отказался от участия в закупке', bold: false}
       ];
-    }
+    }*/
   }
 
   private async parseBlackListActivity(item: any): Promise<Array<TextBlock>> {

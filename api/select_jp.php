@@ -32,11 +32,13 @@ function select_jp($db, $id) {
 	$stmt->execute(array($id));
 	if( $row = $stmt->fetch() ) {
 		$stmtP = $db->prepare(
-			"SELECT TRIM(amount)+0 amount, member_id, id
-			 ,  (SELECT IFNULL(SUM(p.value), 0) FROM payment p WHERE p.request_id = r.id ) paid
-			 ,  (SELECT TRIM(IFNULL(SUM(i.amount), 0))+0 FROM issue i WHERE i.request_id = r.id ) sent
-       ,  (SELECT TRIM(GREATEST(r.amount - IFNULL(SUM(i.amount), 0), 0))+0 FROM issue i WHERE i.request_id = r.id ) not_sent
+			"SELECT TRIM(r.amount)+0 amount, r.member_id, r.id
+			 ,  (SELECT IFNULL(SUM(p.value), 0) FROM payment p WHERE p.request_id = r.id) paid
+       ,  (SELECT TRIM(GREATEST(r.amount*ps.price - IFNULL(SUM(p.value), 0), 0))+0 FROM payment p WHERE p.request_id = r.id) not_paid
+			 ,  (SELECT TRIM(IFNULL(SUM(i.amount), 0))+0 FROM issue i WHERE i.request_id = r.id) sent
+       ,  (SELECT TRIM(GREATEST(r.amount - IFNULL(SUM(i.amount), 0), 0))+0 FROM issue i WHERE i.request_id = r.id) not_sent
 			 FROM request r
+         JOIN purchase ps ON ps.id = r.purchase_id
 			 WHERE purchase_id = ?
 			 ORDER BY d;"
 		);
@@ -44,6 +46,7 @@ function select_jp($db, $id) {
 		$requests = array();
 		while( $rowP = $stmtP->fetch() ) {
 			$requests[] = array('paid' => $rowP['paid']
+                      , 'not_paid' => $rowP['not_paid']
                       /*, 'delivered' => false*/
                       , 'sent' => $rowP['sent']
                       , 'not_sent' => $rowP['not_sent']
@@ -68,6 +71,35 @@ function select_jp($db, $id) {
 			//$stats['sent'] = $rowStat['sent'];
 		}
 
+    $stmtH = $db->prepare(
+       "SELECT DATE_FORMAT(a.d, '%d.%m.%Y') d, TRIM(a.amount)+0 amount, m.login, a.parameter, DATE_FORMAT(a.req_date, '%d.%m.%Y') req_date
+        FROM (
+          SELECT d, amount, member_id, 'requests.joint' parameter, null req_date
+          FROM request
+          WHERE purchase_id = ?
+          UNION ALL
+          SELECT p.d, p.value, r.member_id, 'requests.payment' parameter, r.d
+          FROM request r
+            JOIN payment p ON p.request_id = r.id
+          WHERE r.purchase_id = ?
+          UNION ALL
+          SELECT i.d, i.amount, r.member_id, 'requests.issue' parameter, r.d
+          FROM request r
+            JOIN issue i ON i.request_id = r.id
+          WHERE r.purchase_id = ?
+        ) a
+          JOIN member m ON m.id = a.member_id
+        ORDER BY a.d desc"
+    );
+		$stmtH->execute(array($id, $id, $id));
+    $history = array();
+    while( $rowH = $stmtH->fetch() ) {
+       $history[] = array('parameter' => $rowH['parameter']
+                         , 'login' => $rowH['login']
+                         , 'date' => $rowH['d']
+                         , 'req_date' => $rowH['req_date']
+                         , 'amount' => ("requests.payment" == $rowH['parameter'])?$rowH['amount']:($rowH['amount']." ".$row['unit_name']));
+    }
 		return array(
 			'_id' => $row['id']
 			, 'black_list' => array()
@@ -86,10 +118,9 @@ function select_jp($db, $id) {
 			, 'state' => (int)$row['state_id']
 			, 'payment_type' => (int)$row['payment_method_id']
 			, 'payment_info' => $row['payment_info']
-			, 'history' => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
+			, 'history' => $history
 			, 'requests' => $requests
 			, '__v' => 0
-			, 'recent'  => array(array('_id' => 1, 'parameter' => 'state', 'value' => 0, 'date' => '2019-09-24T20:09:49.723Z'))
 			, 'volume' => $row['amount']
 			, 'min_volume' => $row['min_volume']
 			, 'remaining_volume' => $row['amount']

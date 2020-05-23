@@ -447,7 +447,7 @@
                 <div *ngIf="history">
                   <div class="list-group">
                     <div class="list-group-item" *ngFor="let item of visibleHistory">
-                      <h5>{{ item.date | date:'dd.MM.yyyy HH:mm' }}</h5>
+                      <h5>{{ item.date }}</h5>
                       <p>
                         <span
                           *ngFor="let block of item.blocks"
