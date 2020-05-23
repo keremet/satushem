@@ -35,6 +35,7 @@ function select_jp($db, $id) {
 			"SELECT TRIM(amount)+0 amount, member_id, id
 			 ,  (SELECT IFNULL(SUM(p.value), 0) FROM payment p WHERE p.request_id = r.id ) paid
 			 ,  (SELECT TRIM(IFNULL(SUM(i.amount), 0))+0 FROM issue i WHERE i.request_id = r.id ) sent
+       ,  (SELECT TRIM(GREATEST(r.amount - IFNULL(SUM(i.amount), 0), 0))+0 FROM issue i WHERE i.request_id = r.id ) not_sent
 			 FROM request r
 			 WHERE purchase_id = ?
 			 ORDER BY d;"
@@ -42,7 +43,13 @@ function select_jp($db, $id) {
 		$stmtP->execute(array($id));
 		$requests = array();
 		while( $rowP = $stmtP->fetch() ) {
-			$requests[] = array('paid' => $rowP['paid'], 'delivered' => false, 'sent' => $rowP['sent'], 'volume' => $rowP['amount'], '_id' => $rowP['id'], 'user' => $rowP['member_id']);
+			$requests[] = array('paid' => $rowP['paid']
+                      /*, 'delivered' => false*/
+                      , 'sent' => $rowP['sent']
+                      , 'not_sent' => $rowP['not_sent']
+                      , 'volume' => $rowP['amount']
+                      , '_id' => $rowP['id']
+                      , 'user' => $rowP['member_id']);
 		}
 
 		$stats = array('paid' => 0, 'not_paid' => 0, 'paid_and_sent' => 0, 'paid_and_not_sent' => 0, 'not_paid_and_sent' => 0, 'not_paid_and_not_sent' => 0, 'sent' => 0, 'not_sent' => 0);

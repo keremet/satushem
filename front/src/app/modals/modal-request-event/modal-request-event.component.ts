@@ -16,6 +16,9 @@ export class ModalRequestEventComponent implements OnInit {
   @Input('request_id')
   request_id = 0;
 
+  @Input('not_sent')
+  not_sent = 0;
+
   volume: FormControl;
 
   form: FormGroup;
@@ -32,7 +35,7 @@ export class ModalRequestEventComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.volume = new FormControl(this.purchaseInfo['min_volume']);
+    this.volume = new FormControl(this.not_sent);
     this.eventdate = new FormControl('', Validators.required);
     this.form = this.builder.group({
       'volume': this.volume,
