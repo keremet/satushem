@@ -16,6 +16,9 @@ export class ModalRequestPaymentComponent implements OnInit {
   @Input('request_id')
   request_id = 0;
 
+  @Input('not_paid')
+  not_paid = 0;
+
   volume: FormControl;
 
   form: FormGroup;
@@ -32,7 +35,7 @@ export class ModalRequestPaymentComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.volume = new FormControl(this.purchaseInfo['min_volume']);
+    this.volume = new FormControl(this.not_paid);
     const now = new Date();
     const d = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
     this.eventdate = new FormControl(d);

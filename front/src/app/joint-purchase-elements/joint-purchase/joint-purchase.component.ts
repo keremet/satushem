@@ -787,11 +787,12 @@ export class JointPurchaseComponent implements OnInit {
     });
   }
 
-  async showModalRequestPayment(request_id) {
+  async showModalRequestPayment(request_id, not_paid) {
     const modalRef = this.modalService.open(ModalRequestPaymentComponent);
 
     modalRef.componentInstance.purchaseInfo = this.purchaseInfo;
     modalRef.componentInstance.request_id = request_id;
+    modalRef.componentInstance.not_paid = not_paid;
 
     modalRef.result.then(async (purchaseInfo) => {
       if (purchaseInfo) {
