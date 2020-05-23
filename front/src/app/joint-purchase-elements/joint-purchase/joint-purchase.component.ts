@@ -775,7 +775,6 @@ export class JointPurchaseComponent implements OnInit {
     const modalRef = this.modalService.open(ModalRequestEventComponent);
 
     modalRef.componentInstance.purchaseInfo = this.purchaseInfo;
-    modalRef.componentInstance.fakeUser = false;
     modalRef.componentInstance.request_id = request_id;
 
     modalRef.result.then(async (purchaseInfo) => {

@@ -20,7 +20,7 @@
           name="volume"
           id="volume"
           class="form-control text-modal"
-          [ngClass]="volume.errors ? 'is-invalid': 'is-valid'"
+          [ngClass]="'is-valid'"
           formControlName="volume"
           required
         >
@@ -28,9 +28,6 @@
           <span class="input-group-text">{{ measurementUnit }}</span>
           <span class="input-group-text">{{ cost | fixedFloat: 2 }} ₽</span>
         </div>
-      </div>
-      <div class="invalid-feedback d-block" *ngIf="volume.errors && volume.errors.max">
-        Осталось выдать: {{ maximum }} {{ measurementUnit }}
       </div>
     </div>
 

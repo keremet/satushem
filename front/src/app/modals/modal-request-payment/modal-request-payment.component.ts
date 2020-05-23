@@ -49,7 +49,7 @@ export class ModalRequestPaymentComponent implements OnInit {
 
     try {
       const volume = Number.parseFloat(this.volume.value);
-	  const {day, month, year} = this.eventdate.value;
+      const {day, month, year} = this.eventdate.value;
       let resp = await this.rest.addPayment(this.request_id, volume, year*10000 + month*100 + day);
       this
         .data
