@@ -36,7 +36,9 @@ export class ModalRequestEventComponent implements OnInit {
 
   ngOnInit() {
     this.volume = new FormControl(this.not_sent);
-    this.eventdate = new FormControl('', Validators.required);
+    const now = new Date();
+    const d = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+    this.eventdate = new FormControl(d);
     this.form = this.builder.group({
       'volume': this.volume,
       'eventdate': this.eventdate
