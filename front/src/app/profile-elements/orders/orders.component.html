@@ -24,18 +24,18 @@
 
     <div>
       <div class="img-good">
-        <a [routerLink]="['/purchase', order.purchase._id]">
-          <img [src]="order.purchase.picture" class="img-image-good">
+        <a [routerLink]="['/purchase', order.purchase_id]">
+          <img [src]="order.purchase_picture" class="img-image-good">
         </a>
       </div>
 
       <div class="desc-good">
-        <a class="links" [routerLink]="['/purchase', order.purchase._id]">
-          <h5>{{order.purchase.name}}</h5>
+        <a class="links" [routerLink]="['/purchase', order.purchase_id]">
+          <h5>{{order.purchase_name}}</h5>
         </a>
         <p class="mb-1">Количество: {{ order.volume }} {{order.unit}}</p>
         <div class="price">
-          {{order.price * order.volume | fixedFloat: 2}} ₽
+          {{order.sum}} ₽
         </div>
         <p class="mb-1">
           <span *ngIf="order.paid" class="badge badge-success"><b>Платеж подтвержден</b></span>

@@ -27,22 +27,7 @@ export class OrdersComponent implements OnInit {
 
   async fetchOrdersInfo() {
     const respPurchases = await this.rest.getPurchaseOrders();
-    const purchases = respPurchases['data']['purchases'];
-    this.purchaseOrders = purchases
-      .map(purchase => {
-        const index = purchase['requests']
-          .findIndex(request => request['user'] === this.data.user['id']);
-        const orderInfo = purchase['requests'][index];
-        return {
-          purchase: purchase,
-          volume: orderInfo['volume'],
-          paid: orderInfo['paid'],
-          delivered: orderInfo['delivered'],
-          sent: orderInfo['sent'],
-          price: purchase['price_per_unit'],
-          unit: purchase['measurement_unit']['name']
-        };
-      });
+    this.purchaseOrders = respPurchases['data']['orders'];
   }
 
   async updateDeliveryStatus(order: any, status: boolean) {
