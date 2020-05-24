@@ -138,7 +138,7 @@ export class RestApiService {
   updatePassword(body: any) {
     return this
       .http
-      .put(`${API_URL}/api/accounts/profile/security`, body, {
+      .put(`${API_URL}/update_passwd.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();

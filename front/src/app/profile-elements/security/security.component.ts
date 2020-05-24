@@ -47,15 +47,20 @@ export class SecurityComponent implements OnInit {
   async update() {
     try {
       if (this.validate()) {
-        await this.rest.updatePassword({
+        const resp = await this.rest.updatePassword({
           password: this.password,
           old_password: this.old_password,
           confirmation_password: this.confirmation_password
         });
 
-        this
-          .data
-          .success('Информация обновлена');
+        if (resp['meta']['success']) 
+          this
+            .data
+            .success('Информация обновлена');
+        else
+           this
+            .data
+            .error(resp['meta']['message']);
       }
     } catch (error) {
       this
