@@ -8,6 +8,7 @@ import {ToastyModule} from 'ngx-toasty';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
+import {ModalRegistrationComponent} from './modals/modal-registration/modal-registration.component';
 import {RestApiService} from './rest-api.service';
 import {DataService} from './data.service';
 import {LoginPopupService} from './login-popup.service';
@@ -60,6 +61,7 @@ import { PrettyUserNamePipe } from './pipes/pretty-user-name.pipe';
   declarations: [
     AppComponent,
 
+    ModalRegistrationComponent,
     ModalLoginComponent,
     ProfileComponent,
     SettingsComponent,
@@ -113,6 +115,7 @@ import { PrettyUserNamePipe } from './pipes/pretty-user-name.pipe';
   bootstrap: [AppComponent],
   entryComponents: [
     ModalLoginComponent,
+    ModalRegistrationComponent,
     ModalAddJointPurchaseComponent,
     ModalJoinToJointPurchaseComponent,
     ModalRequestEventComponent,

@@ -15,6 +15,7 @@ import {CommentModel} from '../comment-elements/comment-model';
 import {CommentSettings} from '../comment-elements/comment-settings';
 import {SearchFieldService} from '../../search-field.service';
 import {ModalLoginComponent} from '../../modals/modal-login/modal-login.component';
+import {ModalRegistrationComponent} from '../../modals/modal-registration/modal-registration.component';
 import {subscriptionLogsToBeFn} from 'rxjs/internal/testing/TestScheduler';
 
 @Injectable()
@@ -932,6 +933,17 @@ export class JointPurchaseComponent implements OnInit {
 
   get today(): string {
     return this.data.currentDay;
+  }
+
+  async fastSignUp() {
+    try {
+      const signUpRef = this.modalService.open(ModalRegistrationComponent);
+      await signUpRef.result;
+
+      await this.fastLogIn();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async fastLogIn() {

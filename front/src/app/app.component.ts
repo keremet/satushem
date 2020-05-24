@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {ModalLoginComponent} from './modals/modal-login/modal-login.component';
+import {ModalRegistrationComponent} from './modals/modal-registration/modal-registration.component';
 
 import {DataService} from './data.service';
 import {SearchService} from './search.service';
@@ -87,6 +88,21 @@ export class AppComponent implements OnInit, OnDestroy {
       .result
       .then(async () => {
         await this.data.refreshPage();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  async openModalRegistration() {
+    const modalRef = this
+      .modalService
+      .open(ModalRegistrationComponent);
+
+    modalRef
+      .result
+      .then(async () => {
+        await this.openModalLogin();
       })
       .catch(error => {
         console.log(error);
