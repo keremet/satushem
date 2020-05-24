@@ -16,24 +16,6 @@ export class SettingsComponent implements OnInit {
     this.data.setTitle('Настройки - Профиль');
   }
 
-  validate(settings) {
-    if (!settings.email) {
-      this
-        .data
-        .addToast('Введите e-mail', '', 'error');
-      return false;
-    }
-
-    if (!settings.phone) {
-      this
-        .data
-        .addToast('Введите номер телефона', '', 'error');
-      return false;
-    }
-
-    return true;
-  }
-
   async loadProfile() {
     await this
       .data
@@ -43,28 +25,20 @@ export class SettingsComponent implements OnInit {
   }
 
   async update() {
-    if (this.validate(this.currentSettings)) {
-      try {
-        await this
-          .rest
-          .updateUserProfile({
-            first_name: this.currentSettings.first_name,
-            last_name: this.currentSettings.last_name,
-            phone: this.currentSettings.phone,
-            email: this.currentSettings.email,
-            city: this.currentSettings.city['_id']
-          });
+    try {
+      await this
+        .rest
+        .updateUserProfile(this.currentSettings.visible_name, this.currentSettings.contacts);
 
-        await this.loadProfile();
+      await this.loadProfile();
 
-        this
-          .data
-          .success('Информация обновлена');
-      } catch (error) {
-        this
-          .data
-          .error(error['message']);
-      }
+      this
+        .data
+        .success('Информация обновлена');
+    } catch (error) {
+      this
+        .data
+        .error(error['message']);
     }
   }
 

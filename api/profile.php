@@ -20,7 +20,7 @@
  */
 include('headers.php');
 include('connect.php');
-$stmt = $db->prepare("SELECT m.id, m.login, m.contacts, m.address
+$stmt = $db->prepare("SELECT m.id, m.login, m.contacts, m.address, m.visible_name
 					  FROM token t
 					    JOIN member m ON m.id = t.member_id
 					  WHERE t.id = ?");
@@ -32,7 +32,8 @@ if( $row = $stmt->fetch() ) {
 			, 'data' => array('user' => array('isSeller' => false
                                       , 'id' => $row['id']
                                       , 'login' => $row['login']
-                                      , 'email' => $row['contacts']
+                                      , 'visible_name' => $row['visible_name']
+                                      , 'contacts' => $row['contacts']
                                       , 'address' => $row['address']
                                       , 'phone' => ''
                                       , 'card' => array()

@@ -27,21 +27,10 @@
               <h5 class="card-title">{{ data.user.login }}</h5>
             </div>
             <hr>
-            <div *ngIf="data.user.first_name">
-              <div class="user-info">Имя: {{ data.user.first_name }}</div>
+            <div *ngIf="data.user.visible_name">
+              <div class="user-info">ФИО: {{ data.user.visible_name }}</div>
               <hr>
             </div>
-            <div *ngIf="data.user.last_name">
-              <div class="user-info">Фамилия: {{ data.user.last_name }}</div>
-              <hr>
-            </div>
-            <div class="user-info">E-mail: {{ data.user.email }}</div>
-            <hr>
-            <div *ngIf="data.user.phone">
-              <div class="user-info">Телефон: +{{ data.user.phone }}</div>
-              <hr>
-            </div>
-
 
             <ul>
               <li [class.selected]="isTabSet(1)" (click)="setTab(1)" routerLink="orders">

@@ -82,10 +82,10 @@ export class RestApiService {
       .toPromise();
   }
 
-  updateUserProfile(body) {
+  updateUserProfile(visible_name, contacts) {
     return this
       .http
-      .post(`${API_URL}/api/accounts/profile`, body, {
+      .get(`${API_URL}/update_profile.php?visible_name=${visible_name}&contacts=${contacts}`, {
         headers: this.getHeaders()
       })
       .toPromise();
