@@ -10,48 +10,22 @@ import {RestApiService} from '../../rest-api.service';
 })
 export class AddressComponent implements OnInit {
 
-  address: any = {
-    addr1: '',
-    addr2: '',
-    country: '',
-    postalCode: ''
-  };
+  address = "";
 
   constructor(private rest: RestApiService, private data: DataService) { }
 
   ngOnInit() {
-    Object.assign(this.address, this.data.user.address);
+    this.address = this.data.user.address;
     this.data.setTitle('Адрес - Профиль');
-  }
-
-  validate(): boolean {
-    const re = /^\d+$/;
-    if (this.address.postalCode.trim().match(re)) {
-      return true;
-    } else {
-      this
-        .data
-        .addToast('Неверный почтовый индекс', '', 'error');
-    }
-
-    return false;
   }
 
   async update() {
     try {
-      if (this.validate()) {
-        await this.rest.updateAddress({
-          addr1: this.address.addr1,
-          addr2: this.address.addr2,
-          city: this.address.city,
-          country: this.address.country,
-          postalCode: this.address.postalCode
-        });
+      await this.rest.updateAddress(this.address);
 
-        this
-          .data
-          .success('Информация обновлена');
-      }
+      this
+        .data
+        .success('Информация обновлена');
     } catch (error) {
       this
         .data

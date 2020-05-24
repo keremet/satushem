@@ -155,10 +155,10 @@ export class RestApiService {
       .toPromise();
   }
 
-  updateAddress(body: any) {
+  updateAddress(address) {
     return this
       .http
-      .put(`${API_URL}/api/accounts/profile/address`, body, {
+      .get(`${API_URL}/update_address.php?newaddress=${address}`, {
         headers: this.getHeaders()
       })
       .toPromise();

@@ -40,6 +40,7 @@ CREATE TABLE `member` (
   `password` text COLLATE utf8_unicode_ci NOT NULL,
   `visible_name` text COLLATE utf8_unicode_ci,
   `contacts` text COLLATE utf8_unicode_ci,
+  `address` text COLLATE utf8_unicode_ci,
   `who_add_id` int(11),
   `photo` text COLLATE utf8_unicode_ci,
    CONSTRAINT `member__who_add_id` FOREIGN KEY (`who_add_id`) REFERENCES `member` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
