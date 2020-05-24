@@ -9,53 +9,12 @@
   <h4>Мои заказы</h4>
 </div>
 
-<div *ngIf="orders.length === 0 && purchaseOrders.length === 0">
+<div *ngIf="purchaseOrders.length === 0">
   <div class="text-center">
     <h5>У вас еще нет заказов</h5>
     <img height="100px" src="assets/img/box.svg"/>
   </div>
 </div>
-
-<ul *ngIf="orders.length !== 0" class="list-group orders-list">
-  <li
-    class="list-group-item"
-    *ngFor="let order of orders"
-  >
-
-    <div>
-      <div class="img-good">
-        <a [routerLink]="['/good', order.good._id]">
-          <img [src]="order.good.picture" class="img-image-good">
-        </a>
-      </div>
-
-      <div class="desc-good">
-        <a class="links" [routerLink]="['/good', order.good._id]">
-          <h5>{{order.good.name}}</h5>
-        </a>
-        <p>Количество: {{ order.quantity | fixedFloat: 0 }}</p>
-        Цена:
-        <div class="price">
-          {{order.price * order.quantity}} ₽
-        </div>
-        <div *ngIf="order.status === 0">
-          <p>Статус<span class="badge badge-primary ml-2">продавец обрабатывает заказ</span></p>
-        </div>
-        <div *ngIf="order.status === 1">
-          <p>Статус<span class="badge badge-warning ml-2">товар доставлен</span></p>
-          <button
-            type="button"
-            class="btn btn-main"
-            (click)="updateObtainedStatus(order)"
-          >Товар получен</button>
-        </div>
-        <div *ngIf="order.status === 2">
-          <p>Статус<span class="badge badge-success ml-2">товар получен</span></p>
-        </div>
-      </div>
-    </div>
-  </li>
-</ul>
 
 <ul *ngIf="purchaseOrders.length !== 0" class="list-group orders-list">
   <li

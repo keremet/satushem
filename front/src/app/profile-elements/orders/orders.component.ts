@@ -10,8 +10,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class OrdersComponent implements OnInit {
 
-  orders = [];
-
   purchaseOrders = [];
 
   constructor(
