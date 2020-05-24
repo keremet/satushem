@@ -37,15 +37,9 @@
         <div class="price">
           {{order.sum}} ₽
         </div>
-        <p class="mb-1">
-          <span *ngIf="order.paid" class="badge badge-success"><b>Платеж подтвержден</b></span>
-          <span *ngIf="!order.paid" class="badge badge-warning"><b>Платеж ожидает подтверждения организатора</b></span>
-        </p>
-        <p class="mb-1">
-          <span *ngIf="order.sent" class="badge badge-success"><b>Товар выдан организатором</b></span>
-          <span *ngIf="!order.sent" class="badge badge-warning"><b>Организатор обрабатывает заказ</b></span>
-        </p>
-        <div class="custom-control custom-checkbox">
+        <p class="mb-1">Оплачено: {{ order.paid }} ₽</p>
+        <p class="mb-1">Отправлено: {{ order.sent }} {{order.unit}}</p>
+        <!--div class="custom-control custom-checkbox">
           <input
             type="checkbox"
             class="custom-control-input"
@@ -56,7 +50,7 @@
           >
           <label class="custom-control-label" for="deliveryStatus_{{i}}"
           >Товар доставлен</label>
-        </div>
+        </div-->
       </div>
     </div>
   </li>

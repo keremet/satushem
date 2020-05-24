@@ -22,6 +22,8 @@ include('connect.php');
 
 $stmt = $db->prepare("SELECT r.purchase_id, p.img purchase_picture, p.name purchase_name, TRIM(r.amount)+0 volume, u.name unit
    , TRIM(r.amount*p.price)+0 sum
+   , (SELECT TRIM(IFNULL(SUM(pmt.value), 0))+0 FROM payment pmt WHERE pmt.request_id = r.id) paid
+   , (SELECT TRIM(IFNULL(SUM(i.amount), 0))+0 FROM issue i WHERE i.request_id = r.id) sent
   FROM token t
     JOIN request r ON r.member_id=t.member_id
     JOIN purchase p ON p.id = r.purchase_id
@@ -37,9 +39,8 @@ if( $stmt->execute(array($h['Authorization'])) ) {
                        , 'volume' => $row['volume']
                        , 'unit' => $row['unit']
                        , 'sum' => $row['sum']
-                       , 'paid' => 0
-                       , 'sent' => 0
-                       , 'delivered' => 0
+                       , 'paid' => $row['paid']
+                       , 'sent' => $row['sent']
                        );
   };
   echo json_encode(

@@ -30,7 +30,7 @@ export class OrdersComponent implements OnInit {
     this.purchaseOrders = respPurchases['data']['orders'];
   }
 
-  async updateDeliveryStatus(order: any, status: boolean) {
+/*  async updateDeliveryStatus(order: any, status: boolean) {
     try {
       await this.rest.updateDeliveryPurchase(
         order['purchase']['_id'],
@@ -48,21 +48,5 @@ export class OrdersComponent implements OnInit {
         .data
         .error(error['message']);
     }
-  }
-
-  async updateObtainedStatus(order: any) {
-    try {
-      await this.rest.updateOrderStatusObtained(order._id);
-
-      this
-        .data
-        .success('Информация обновлена');
-
-      await this.ngOnInit();
-    } catch (error) {
-      this
-        .data
-        .error(error['message']);
-    }
-  }
+  } */
 }

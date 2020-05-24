@@ -423,18 +423,6 @@ export class RestApiService {
       .toPromise();
   }
 
-  updateOrderStatusObtained(id: string) {
-    const body = {
-      id: id
-    };
-    return this
-      .http
-      .put(`${API_URL}/api/orders/status/obtained`, body, {
-        headers: this.getHeaders()
-      })
-      .toPromise();
-  }
-
   getAllGoods(page: number, size: number) {
     return this
       .http
@@ -591,7 +579,7 @@ export class RestApiService {
       .toPromise();
   }
 
-  updateDeliveryPurchase(id: string, userId: string, state: boolean) {
+ /* updateDeliveryPurchase(id: string, userId: string, state: boolean) {
     const body = {
       id: id,
       user_id: userId,
@@ -604,7 +592,7 @@ export class RestApiService {
         headers: this.getHeaders()
       })
       .toPromise();
-  }
+  } */
 
   getUserPurchases() {
     return this
