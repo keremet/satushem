@@ -52,10 +52,10 @@ export class RestApiService {
       .toPromise();
   }
 
-  signupUser(body: any) {
+  signupUser(login, password) {
     return this
       .http
-      .post(`${API_URL}/api/accounts/signup`, body)
+      .get(`${API_URL}/add_user.php?login=${login}&password=${password}`)
       .toPromise();
   }
 

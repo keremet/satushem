@@ -48,9 +48,6 @@ export class ModalRegistrationComponent implements OnInit {
   ngOnInit() {
     this.form = this.builder.group({
       'login': this.login,
-      'email': this.email,
-      'phone': this.phone,
-      'city': this.city,
       'passwords': this.passwordForm
     });
   }
@@ -82,13 +79,7 @@ export class ModalRegistrationComponent implements OnInit {
     try {
         await this
           .rest
-          .signupUser({
-            login: this.login.value,
-            email: this.email.value,
-            phone: '7' + this.phone.value,
-            city: this.city.value['_id'],
-            password: this.password.value
-          });
+          .signupUser(this.login.value, this.password.value);
 
         this
           .data

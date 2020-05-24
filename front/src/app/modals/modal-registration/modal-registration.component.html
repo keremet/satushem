@@ -25,49 +25,6 @@
         Введите логин
       </div>
     </div>
-    <div class="form-group">
-      <label class="form-control-label" for="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        class="form-control"
-        [ngClass]="email.errors ? 'is-invalid': 'is-valid'"
-        formControlName="email"
-        required
-      >
-      <div class="invalid-feedback" [hidden]="error !== 'EMAIL ALREADY EXISTS'">
-        Пользователь с таким e-mail уже есть
-      </div>
-      <div class="invalid-feedback" [hidden]="!(email.errors && email.errors.required)">
-        Введите e-mail
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-control-label" for="phone">Телефон</label>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text">+7</span>
-        </div>
-        <input
-          type="text"
-          id="phone"
-          name="phone"
-          mask='9999999999'
-          class="form-control"
-          [ngClass]="phone.errors ? 'is-invalid': 'is-valid'"
-          formControlName="phone"
-          required
-        >
-        <div class="invalid-feedback" [hidden]="error !== 'PHONE ALREADY EXISTS'">
-          Пользователь с таким номером телефона уже есть
-        </div>
-        <div class="invalid-feedback" [hidden]="!(phone.errors && phone.errors.required)">
-          Введите телефон
-        </div>
-      </div>
-
-    </div>
     <div class="form-group" formGroupName="passwords">
       <label class="form-control-label" for="password">Пароль</label>
       <input

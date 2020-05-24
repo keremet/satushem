@@ -5,7 +5,6 @@ import {DataService} from '../../data.service';
 import {Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ModalRegistrationComponent} from '../modal-registration/modal-registration.component';
-import {ModalResetPasswordComponent} from '../modal-reset-password/modal-reset-password.component';
 
 @Component({
   selector: 'app-modal-login',
@@ -69,21 +68,6 @@ export class ModalLoginComponent implements OnInit {
         await this
           .router
           .navigate(['/']);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
-  async openModalReset() {
-    this.dismiss();
-    const modalRef = this
-      .modalService
-      .open(ModalResetPasswordComponent);
-
-    modalRef
-      .result
-      .then(async () => {
       })
       .catch(error => {
         console.log(error);
