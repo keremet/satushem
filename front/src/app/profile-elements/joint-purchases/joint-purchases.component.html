@@ -14,7 +14,7 @@
               {{purchase.name}}
             </h5>
             <div class="col-12 col-md-5">
-              <p class="mb-1">Дата завершения приема заказов: {{purchase.date | russianLocaleDate}}</p>
+              <p class="mb-1">Дата завершения приема заказов: {{purchase.date}}</p>
               <p class="mb-1">Состояние:
                 <span *ngIf="purchase.state === 0">открыта</span>
                 <span *ngIf="purchase.state === 1"><b>сбор заказов закончен</b></span>

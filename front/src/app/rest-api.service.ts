@@ -606,10 +606,10 @@ export class RestApiService {
       .toPromise();
   }
 
-  getUserPurchases(userId: string) {
+  getUserPurchases() {
     return this
       .http
-      .get(`${API_URL}/api/jointpurchases/owner`, {
+      .get(`${API_URL}/get_my_jps.php`, {
         headers: this.getHeaders()
       })
       .toPromise();
