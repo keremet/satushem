@@ -18,9 +18,28 @@ npm install
 sudo npm install -g @angular/cli
 /usr/local/bin/ng  build --prod
 
+
 2. Настройка сервера
-Установка на сервер необходимых пакетов
-sudo apt install apache2 mariadb-server php libapache2-mod-php php-mysql
+2.1 База данных
+Установка mariadb
+sudo apt install mariadb-server
+
+Создание базы данных. Пароль должен совпадать с паролем в satushem/api/connect.php (последний параметр PDO)
+echo "CREATE DATABASE satushem; GRANT ALL PRIVILEGES ON satushem.* TO 'satushem'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION; FLUSH PRIVILEGES;" | sudo mysql -u root
+
+Создать таблицы новой БД и заполнить их. В каталоге satushem/db выполнить команду
+mysql -u satushem -ppassword satushem < init.sql
+
+Создать хотя бы одну категорию закупок, например Молоко.
+echo "insert into category(name) values('Молоко');" | mysql -u satushem -ppassword satushem 
+
+Создать учетку
+echo "insert into member(login, password, visible_name) values ('user1', '1', 'Первый пользователь');" | mysql -u satushem -ppassword satushem 
+
+2.2 Веб-сервер
+2.2а Если веб-сервер apache
+Установка необходимых пакетов
+sudo apt install apache2 php libapache2-mod-php php-mysql
 
 В файле /etc/php/7.4/apache2/php.ini установить параметр short_open_tag = On
 
@@ -38,27 +57,6 @@ sudo a2enmod rewrite
 Перезапустить апач, чтобы изменения применились
 sudo systemctl restart apache2
 
-Создание базы данных. Пароль должен совпадать с паролем в satushem/api/connect.php (последний параметр PDO)
-echo "CREATE DATABASE satushem; GRANT ALL PRIVILEGES ON satushem.* TO 'satushem'@'localhost' IDENTIFIED BY 'password' WITH GRANT OPTION; FLUSH PRIVILEGES;" | sudo mysql -u root
-
-Создать таблицы новой БД и заполнить их. В каталоге satushem/db выполнить команду
-mysql -u satushem -ppassword satushem < init.sql
-
-Создать хотя бы одну категорию закупок, например Молоко.
-echo "insert into category(name) values('Молоко');" | mysql -u satushem -ppassword satushem 
-
-Создать учетку
-echo "insert into member(login, password, visible_name) values ('user1', '1', 'Первый пользователь');" | mysql -u satushem -ppassword satushem 
-
-В файле api/connect.php заменить значение константы ROOT_URL с http://newsatushem.ru на адрес вашего сайта.
-Скопировать каталог api в корневой каталог сайта
-
-Скопировать содержимое каталога satushem/front/dist/Satushem (результат компиляции фронтовой части) в корневой каталог сайта. В нашем примере это /var/www/html.
-
-В корневом каталоге сайта создать каталог img для сохранения изображений и установить на него права 777.
-sudo mkdir /var/www/html/img
-sudo chmod 777 /var/www/html/img
-
 Создать в корневом каталоге сайта файл .htaccess с содержимым
 RewriteEngine On
 # If an existing asset or directory is requested go to it as it is
@@ -68,4 +66,40 @@ RewriteRule ^ - [L]
 
 # If the requested resource doesn't exist, use index.html
 RewriteRule ^ /index.html
+
+2.2б Если веб-сервер nginx
+Установка необходимых пакетов
+sudo apt install php-fpm php-mysql nginx
+
+В файле /etc/php/7.4/fpm/php.ini установить параметр short_open_tag = On
+Применить изменения
+sudo service php7.4-fpm reload
+
+В конфигурационном файле сайта (например, /etc/nginx/sites-available/default) включить поддержку php - добавить в секцию server
+
+location ~ \.php$ {
+    include snippets/fastcgi-php.conf;
+    fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+}
+
+В той же секции исправить правилo обработки запросов "location /" на 
+location / {
+    try_files $uri $uri/ /index.html?$args;
+}
+
+Проверить корректность конфига
+sudo nginx -t
+
+Применить изменения
+sudo service nginx reload
+
+2.3 Заполнение корневого каталога сайта
+Скопировать содержимое каталога satushem/front/dist/Satushem (результат компиляции фронтовой части) в корневой каталог сайта. В нашем примере это /var/www/html.
+
+В файле api/connect.php заменить значение константы ROOT_URL с http://newsatushem.ru на адрес вашего сайта.
+Скопировать каталог api в корневой каталог сайта
+
+В корневом каталоге сайта создать каталог img для сохранения изображений и установить на него права 777
+sudo mkdir /var/www/html/img
+sudo chmod 777 /var/www/html/img
 
