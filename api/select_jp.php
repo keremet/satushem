@@ -105,7 +105,7 @@ function select_jp($db, $id) {
 			, 'black_list' => array()
 			, 'is_public' => (1 == $row['is_public'])
 			, 'name' => $row['name']
-			, 'picture' => ($row['img'] != "") ? "http://newsatushem.ru" . $row['img'] : ""
+			, 'picture' => ($row['img'] != "") ? ROOT_URL . $row['img'] : ""
 			, 'description' => $row['description']
 			, 'category' => array('_id' => $row['category_id'], 'name' => $row['category_name'])
 			, 'creator' => array('id' => $row['creator_id'], 'login' => $row['creator_login'])

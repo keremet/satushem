@@ -27,4 +27,6 @@ try {
 	print "Ошибка подключения к БД<br/>";
 	die();
 }
+
+define('ROOT_URL',  "http://newsatushem.ru");
 ?>

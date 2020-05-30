@@ -20,7 +20,7 @@
 include('headers.php');
 
 $f = "/img/" . $_FILES['image']['name'];
-if (!move_uploaded_file($_FILES['image']['tmp_name'], "/var/www/satushem" . $f))
+if (!move_uploaded_file($_FILES['image']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . $f))
 	$f = '';
 
 echo json_encode(

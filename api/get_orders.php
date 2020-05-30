@@ -34,7 +34,7 @@ if( $stmt->execute(array($h['Authorization'])) ) {
   $order_arr = array();
   while( $row = $stmt->fetch() ) {
   	$order_arr[] = array('purchase_id' => $row['purchase_id']
-                       , 'purchase_picture' => ($row['purchase_picture']!="")?"http://newsatushem.ru".$row['purchase_picture']:""
+                       , 'purchase_picture' => ($row['purchase_picture']!="")?ROOT_URL.$row['purchase_picture']:""
                        , 'purchase_name' => $row['purchase_name']
                        , 'volume' => $row['volume']
                        , 'unit' => $row['unit']
