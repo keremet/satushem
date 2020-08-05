@@ -55,20 +55,24 @@ function select_jp($db, $id) {
                       , 'user' => $rowP['member_id']);
 		}
 
-		$stats = array('paid' => 0, 'not_paid' => 0, 'paid_and_sent' => 0, 'paid_and_not_sent' => 0, 'not_paid_and_sent' => 0, 'not_paid_and_not_sent' => 0, 'sent' => 0, 'not_sent' => 0);
+		$stats = array('paid' => 0, 'not_paid' => 0, 'paid_and_sent' => 0, 'paid_and_not_sent' => 0, 'not_paid_and_sent' => 0, 'not_paid_and_not_sent' => 0, 'not_sent' => 0);
 		$stmtStat = $db->prepare(
 			"SELECT TRIM(ordered)+0 ordered, (SELECT TRIM(p.amount - a.ordered)+0 FROM purchase p WHERE p.id = ?) remaining
+				, (SELECT TRIM(IFNULL(sum(i.amount), 0))+0
+				   FROM request r
+					  JOIN issue i ON r.id = i.request_id
+				   WHERE r.purchase_id = ?) sent
 			 FROM (
 			   SELECT IFNULL(sum(amount), 0) ordered
 			   FROM request
 			   WHERE purchase_id = ?
 			 ) a"
 		);
-		$stmtStat->execute(array($id, $id));
+		$stmtStat->execute(array($id, $id, $id));
 		if( $rowStat = $stmtStat->fetch() ){
 			$stats['ordered'] = $rowStat['ordered'];
 			$stats['remaining'] = $rowStat['remaining'];
-			//$stats['sent'] = $rowStat['sent'];
+			$stats['sent'] = $rowStat['sent'];
 		}
 
     $stmtH = $db->prepare(
