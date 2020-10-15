@@ -23,6 +23,12 @@ function select_jp($db, $id) {
 			, p.creator_id, cr.login creator_login
 			, p.unit_id, unit.name unit_name
 			, p.description, p.issue_place, p.payment_method_id, p.state_id, p.is_public, p.payment_info, p.img
+			, (SELECT TRIM(IFNULL(SUM(a.value), 0))+0 FROM request r 
+				JOIN payment a ON a.request_id=r.id
+				WHERE r.purchase_id=p.id) paid
+			, (SELECT TRIM(IFNULL(SUM(i.amount), 0))+0 FROM request r 
+			    JOIN issue i ON i.request_id=r.id
+			    WHERE r.purchase_id=p.id) sent 
 		 FROM purchase p
 			JOIN category c ON c.id = p.category_id
 			JOIN member cr ON cr.id = p.creator_id
@@ -55,7 +61,14 @@ function select_jp($db, $id) {
                       , 'user' => $rowP['member_id']);
 		}
 
-		$stats = array('paid' => 0, 'not_paid' => 0, 'paid_and_sent' => 0, 'paid_and_not_sent' => 0, 'not_paid_and_sent' => 0, 'not_paid_and_not_sent' => 0, 'sent' => 0, 'not_sent' => 0);
+		$stats = array('paid' => $row['paid']
+						, 'not_paid' => 0
+						, 'paid_and_sent' => 0
+						, 'paid_and_not_sent' => 0
+						, 'not_paid_and_sent' => 0
+						, 'not_paid_and_not_sent' => 0
+						, 'sent' => $row['sent']
+						, 'not_sent' => 0);
 		$stmtStat = $db->prepare(
 			"SELECT TRIM(ordered)+0 ordered, (SELECT TRIM(p.amount - a.ordered)+0 FROM purchase p WHERE p.id = ?) remaining
 			 FROM (
