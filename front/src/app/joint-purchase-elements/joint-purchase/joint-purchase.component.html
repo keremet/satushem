@@ -585,57 +585,26 @@
                 <table class="table table-sm table-hover">
                   <tbody>
                   <tr>
-                    <td><div class="pl-0 d-inline-block">Осталось</div></td>
+                    <td><div class="pl-0 d-inline-block">Свободно</div></td>
                     <td>{{purchaseInfo.stats.remaining}} {{measurementUnit}}</td>
-                    <td>{{purchaseInfo.stats.remaining * pricePerUnit | fixedFloat: 2}} ₽</td>
                   </tr>
                   <tr>
                     <td><div class="pl-0 d-inline-block">Заказано</div></td>
                     <td>{{purchaseInfo.stats.ordered}} {{measurementUnit}}</td>
-                    <td>{{purchaseInfo.stats.ordered * pricePerUnit | fixedFloat: 2}} ₽</td>
                   </tr>
 
                   <tr>
-                    <td><div class="pl-2 d-inline-block">из них отправлено</div></td>
+                    <td><div class="pl-2 d-inline-block">Выдано</div></td>
                     <td>{{purchaseInfo.stats.sent}} {{measurementUnit}}</td>
-                    <td>{{purchaseInfo.stats.sent * pricePerUnit | fixedFloat: 2}} ₽</td>
                   </tr>
                   <tr>
-                    <td><div class="pl-2 d-inline-block">из них <b>не</b> отправлено</div></td>
+                    <td><div class="pl-2 d-inline-block">Осталось выдать</div></td>
                     <td>{{purchaseInfo.stats.not_sent}} {{measurementUnit}}</td>
-                    <td>{{purchaseInfo.stats.not_sent * pricePerUnit | fixedFloat: 2}} ₽</td>
                   </tr>
 
                   <tr>
-                    <td><div class="pl-2 d-inline-block">из них оплачено</div></td>
-                    <td>{{purchaseInfo.stats.paid}} {{measurementUnit}}</td>
-                    <td>{{purchaseInfo.stats.paid * pricePerUnit | fixedFloat: 2}} ₽</td>
-                  </tr>
-                  <tr>
-                    <td><div class="pl-4 d-inline-block">из них отправлено</div></td>
-                    <td>{{purchaseInfo.stats.paid_and_sent}} {{measurementUnit}}</td>
-                    <td>{{purchaseInfo.stats.paid_and_sent * pricePerUnit | fixedFloat: 2}} ₽</td>
-                  </tr>
-                  <tr>
-                    <td><div class="pl-4 d-inline-block">из них <b>не</b> отправлено</div></td>
-                    <td>{{purchaseInfo.stats.paid_and_not_sent}} {{measurementUnit}}</td>
-                    <td>{{purchaseInfo.stats.paid_and_not_sent * pricePerUnit | fixedFloat: 2}} ₽</td>
-                  </tr>
-
-                  <tr>
-                    <td><div class="pl-2 d-inline-block">из них не оплачено</div></td>
-                    <td>{{purchaseInfo.stats.not_paid}} {{measurementUnit}}</td>
-                    <td>{{purchaseInfo.stats.not_paid * pricePerUnit | fixedFloat: 2}} ₽</td>
-                  </tr>
-                  <tr>
-                    <td><div class="pl-4 d-inline-block">из них отправлено</div></td>
-                    <td>{{purchaseInfo.stats.not_paid_and_sent}} {{measurementUnit}}</td>
-                    <td>{{purchaseInfo.stats.not_paid_and_sent * pricePerUnit | fixedFloat: 2}} ₽</td>
-                  </tr>
-                  <tr>
-                    <td><div class="pl-4 d-inline-block">из них <b>не</b> отправлено</div></td>
-                    <td>{{purchaseInfo.stats.not_paid_and_not_sent}} {{measurementUnit}}</td>
-                    <td>{{purchaseInfo.stats.not_paid_and_not_sent * pricePerUnit | fixedFloat: 2}} ₽</td>
+                    <td><div class="pl-2 d-inline-block">Получено</div></td>
+                    <td>{{purchaseInfo.stats.paid}} ₽</td>
                   </tr>
                   </tbody>
                 </table>
