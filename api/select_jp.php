@@ -62,11 +62,6 @@ function select_jp($db, $id) {
 		}
 
 		$stats = array('paid' => $row['paid']
-						, 'not_paid' => 0
-						, 'paid_and_sent' => 0
-						, 'paid_and_not_sent' => 0
-						, 'not_paid_and_sent' => 0
-						, 'not_paid_and_not_sent' => 0
 						, 'sent' => $row['sent']
 						, 'not_sent' => 0);
 		$stmtStat = $db->prepare(
