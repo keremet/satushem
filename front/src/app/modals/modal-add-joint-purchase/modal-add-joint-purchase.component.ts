@@ -43,6 +43,8 @@ export class ModalAddJointPurchaseComponent implements OnInit {
 
   isPublic = new FormControl(true);
 
+  isMultiGood = new FormControl(false);
+
   pictureUrl: string = null;
 
   picturePath = new FormControl('');
@@ -78,7 +80,8 @@ export class ModalAddJointPurchaseComponent implements OnInit {
         'paymentType': this.paymentType,
         'paymentInfo': this.paymentInfo
       }, { validator: this.paymentValidator }),
-      'isPublic': this.isPublic
+      'isPublic': this.isPublic,
+      'isMultiGood': this.isMultiGood
     });
 
     if (this.good) {
@@ -190,7 +193,8 @@ export class ModalAddJointPurchaseComponent implements OnInit {
         state: 0,
         payment_type: this.paymentType.value,
         payment_info: this.paymentInfo.value,
-        is_public: this.isPublic.value ? 1 : 0
+        is_public: this.isPublic.value ? 1 : 0,
+        is_multi_good: this.isMultiGood.value ? 1 : 0
       };
 
       if (this.good) {

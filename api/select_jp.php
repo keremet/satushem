@@ -22,7 +22,7 @@ function select_jp($db, $id) {
 		"SELECT p.id, p.name, p.category_id, c.name category_name, p.price, TRIM(p.amount)+0 amount, TRIM(p.min_volume)+0 min_volume, DATE_FORMAT(deadline, '%d.%m.%Y') deadline
 			, p.creator_id, cr.login creator_login
 			, p.unit_id, unit.name unit_name
-			, p.description, p.issue_place, p.payment_method_id, p.state_id, p.is_public, p.payment_info, p.img
+			, p.description, p.issue_place, p.payment_method_id, p.state_id, p.is_public, p.is_multi_good, p.payment_info, p.img
 			, (SELECT TRIM(IFNULL(SUM(a.value), 0))+0 FROM request r 
 				JOIN payment a ON a.request_id=r.id
 				WHERE r.purchase_id=p.id) paid
@@ -112,6 +112,7 @@ function select_jp($db, $id) {
 			'_id' => $row['id']
 			, 'black_list' => array()
 			, 'is_public' => (1 == $row['is_public'])
+			, 'is_multi_good' => (1 == $row['is_multi_good'])
 			, 'name' => $row['name']
 			, 'picture' => ($row['img'] != "") ? ROOT_URL . $row['img'] : ""
 			, 'description' => $row['description']

@@ -211,6 +211,12 @@
                      role="tab">Описание</a>
                 </li>
 
+                <li class="nav-item p-b-10" *ngIf="purchaseInfo.is_multi_good">
+                  <a class="nav-link tabs" [class.active]="additionalTabPane === 'goods'" data-toggle="tab"
+                     (click)="switchTab('goods')"
+                     role="tab">Товары</a>
+                </li>
+
                 <li class="nav-item p-b-10" *ngIf="isCreator">
                   <a class="nav-link tabs" [class.active]="additionalTabPane === 'requests'" data-toggle="tab"
                      (click)="switchTab('requests')"
@@ -342,6 +348,26 @@
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div class="tab-content p-t-43" *ngIf="additionalTabPane === 'goods'">
+                <!--div *ngIf="history"-->
+                  <!--div class="list-group"-->
+                    <!--div class="list-group-item" *ngFor="let item of visibleHistory">
+                      <h5>{{ item.date }}</h5>
+                      <p>
+                        <span
+                          *ngFor="let block of item.blocks"
+                          [ngClass]="{'font-weight-bold': block.bold}"
+                        >{{block.text}}</span>
+                      </p>
+                    </div-->
+                    <button
+                      type="button"
+                      class="btn btn-main ml-auto mr-auto mt-2"
+                    >Загрузить из CSV</button>
+                  <!--/div-->
+                <!--/div-->
               </div>
 
               <div class="tab-content p-t-43" *ngIf="additionalTabPane === 'requests'">
