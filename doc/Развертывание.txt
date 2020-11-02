@@ -41,8 +41,6 @@ echo "insert into member(login, password, visible_name) values ('user1', '1', '�
 Установка необходимых пакетов
 sudo apt install apache2 php libapache2-mod-php php-mysql
 
-В файле /etc/php/7.4/apache2/php.ini установить параметр short_open_tag = On
-
 Включить модуль rewrite
 sudo a2enmod rewrite
 
