@@ -7,8 +7,8 @@ sudo apt install git npm
 git clone https://github.com/keremet/satushem
 cd satushem/front
 
-Если требуется открытая регистрация, перейти на ветку openreg
-git checkout openreg
+По умолчанию репозиторий находится на ветке openreg, то есть доступна открытая регистрация. Если открытая регистрация не нужна, следует перейти на ветку master
+git checkout master
 
 Заменить ссылку на API в файле src/environments/environment.prod.ts на свою.
 
