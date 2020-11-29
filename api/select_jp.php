@@ -61,6 +61,21 @@ function select_jp($db, $id) {
                       , 'user' => $rowP['member_id']);
 		}
 
+		$stmtG = $db->prepare(
+			"SELECT g.id, g.name, g.price, u.name u_name
+			 FROM purchase_goods g
+			   JOIN unit u on u.id = g.unit_id
+			 WHERE g.purchase_id = ?"
+		);
+		$stmtG->execute(array($id));
+		$purchase_goods = array();
+		while( $rowG = $stmtG->fetch() ) {
+			$purchase_goods[] = array('id' => $rowG['id']
+                      , 'name' => $rowG['name']
+                      , 'price' => $rowG['price']
+                      , 'u_name' => $rowG['u_name']);
+		}
+
 		$stats = array('paid' => $row['paid']
 						, 'sent' => $row['sent']
 						, 'not_sent' => 0);
@@ -129,6 +144,7 @@ function select_jp($db, $id) {
 			, 'payment_info' => $row['payment_info']
 			, 'history' => $history
 			, 'requests' => $requests
+			, 'purchase_goods' => $purchase_goods
 			, '__v' => 0
 			, 'volume' => $row['amount']
 			, 'min_volume' => $row['min_volume']

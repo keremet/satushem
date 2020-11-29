@@ -16,7 +16,8 @@ import {CommentSettings} from '../comment-elements/comment-settings';
 import {SearchFieldService} from '../../search-field.service';
 import {ModalLoginComponent} from '../../modals/modal-login/modal-login.component';
 import {ModalRegistrationComponent} from '../../modals/modal-registration/modal-registration.component';
-import {subscriptionLogsToBeFn} from 'rxjs/internal/testing/TestScheduler';
+import { FileUploader } from 'ng2-file-upload';
+import {environment} from '../../../environments/environment';
 
 @Injectable()
 export class DateNativeAdapter extends NgbDateAdapter<string> {
@@ -78,6 +79,8 @@ export class JointPurchaseComponent implements OnInit {
     paid: {}
   };
 
+  uploader:FileUploader;
+
   constructor(
     private route: ActivatedRoute,
     private rest: RestApiService,
@@ -107,6 +110,7 @@ export class JointPurchaseComponent implements OnInit {
   }
 
   async initialize() {
+    this.uploader = new FileUploader({ url: environment.apiUrl + "/upload_purchase_goods.php?purchase_id=" + this.purchaseId, removeAfterUpload: false, autoUpload: true });
     const resp = await this.rest.getJointPurchaseById(this.purchaseId);
     await this.loadAdditionalInfo(resp['data']['purchase']);
   }

@@ -57,6 +57,8 @@ import { ScrollToModule } from '@nicky-lenaers/ngx-scroll-to';
 import { NgbDatePipe } from './pipes/ngb-date.pipe';
 import { PrettyUserNamePipe } from './pipes/pretty-user-name.pipe';
 
+import { FileUploadModule } from 'ng2-file-upload';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -107,7 +109,8 @@ import { PrettyUserNamePipe } from './pipes/pretty-user-name.pipe';
     ClickOutsideModule,
     SliderModule,
     NgxSpinnerModule,
-    ScrollToModule.forRoot()
+    ScrollToModule.forRoot(),
+    FileUploadModule
   ],
   providers: [
     RestApiService, DataService, LoginPopupService, AuthGuardService

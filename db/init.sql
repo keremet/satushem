@@ -120,6 +120,16 @@ CREATE TABLE `payment` (
    CONSTRAINT `payment__request_id` FOREIGN KEY (`request_id`) REFERENCES `request` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `purchase_goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `purchase_id` int(11) NOT NULL,
+  `name` text COLLATE utf8_unicode_ci NOT NULL,
+  `price` decimal(20, 2) NOT NULL,
+  `unit_id` int(11) NOT NULL,
+  CONSTRAINT `purchase_goods__purchase_id` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `purchase_goods__unit_id` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 INSERT INTO `payment_method` (`id`, `name`) VALUES
 (1, 'Предоплата напрямую организатору'),

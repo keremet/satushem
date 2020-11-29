@@ -351,23 +351,35 @@
               </div>
 
               <div class="tab-content p-t-43" *ngIf="additionalTabPane === 'goods'">
-                <!--div *ngIf="history"-->
-                  <!--div class="list-group"-->
-                    <!--div class="list-group-item" *ngFor="let item of visibleHistory">
-                      <h5>{{ item.date }}</h5>
-                      <p>
-                        <span
-                          *ngFor="let block of item.blocks"
-                          [ngClass]="{'font-weight-bold': block.bold}"
-                        >{{block.text}}</span>
-                      </p>
-                    </div-->
-                    <button
-                      type="button"
-                      class="btn btn-main ml-auto mr-auto mt-2"
-                    >Загрузить из CSV</button>
-                  <!--/div-->
-                <!--/div-->
+                <div *ngIf="purchaseInfo.purchase_goods.length === 0" class="text-center"
+                >Товары еще не добавлены</div>
+                <div *ngIf="purchaseInfo.purchase_goods.length > 0">
+                  <div class="list-group">
+                    <div class="list-group-item" *ngFor="let purchase_good of purchaseInfo.purchase_goods; let i = index">
+                      <div class="row">
+                        <div class="col-12 col-md-3">
+                          {{purchase_good.name}} {{purchase_good.price}}  р / {{purchase_good.u_name}}
+                        </div>
+
+                        <div class="col-12 col-md-2 justify-content-md-end">
+                          <div class="d-inline-flex flex-md-column flex-row">
+                            <button
+                              type="button"
+                              class="btn btn-detach mr-2 mr-md-0"
+                              ngbPopover="Удалить товар"
+                              triggers="mouseenter:mouseleave"
+                            >
+                              <i class="fa fa-times"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <label for="file">Загрузить из CSV</label><br /> 
+                <input type="file" id="file" ng2FileSelect accept=".csv" [uploader]="uploader" />
               </div>
 
               <div class="tab-content p-t-43" *ngIf="additionalTabPane === 'requests'">
