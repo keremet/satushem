@@ -30,8 +30,8 @@ $stmt = $db->prepare(
      WHERE id = ?
    )"
 );
-$h = getallheaders();
-if( $stmt->execute(array($_GET['newaddress'], $h['Authorization'])) ) {
+$h = array_change_key_case(getallheaders());
+if( $stmt->execute(array($_GET['newaddress'], $h['authorization'])) ) {
 
   echo json_encode(
     array('meta' => array('code' => 200, 'success' => true))

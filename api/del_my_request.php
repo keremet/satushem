@@ -21,9 +21,9 @@ include('headers.php');
 include('connect.php');
 include('select_jp.php');
 $input = json_decode(file_get_contents('php://input'), true); 
-$h = getallheaders();
+$h = array_change_key_case(getallheaders());
 $stmtD = $db->prepare("DELETE FROM request WHERE purchase_id = ? and member_id = (select t.member_id from token t WHERE t.id = ?)");
-if( ! $stmtD->execute(array($input['purchase_id'], $h['Authorization']))) {
+if( ! $stmtD->execute(array($input['purchase_id'], $h['authorization']))) {
 	$errInfo = $stmt->errorInfo();
 	http_response_code(500);
 	die( json_encode(

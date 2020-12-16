@@ -29,10 +29,10 @@ $stmt = $db->prepare("INSERT INTO purchase(name, category_id, state_id, payment_
 					  SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, STR_TO_DATE(?, '%Y%m%d'), t.member_id
 					  FROM token t
 					  WHERE t.id = ?");
-$h = getallheaders();
+$h = array_change_key_case(getallheaders());
 if( $stmt->execute(array($input['name'], $input['category_id'], $input['state'], $input['payment_type'], $input['payment_info']
 					, $input['measurement_unit_id'], $input['price_per_unit'], $input['volume'], $input['min_volume'], $input['description']
-					, $input['address'], $input['is_public'], $input['is_multi_good'], $input['picture'], $input['date'], $h['Authorization'])) ) {
+					, $input['address'], $input['is_public'], $input['is_multi_good'], $input['picture'], $input['date'], $h['authorization'])) ) {
 	echo json_encode(
 		array('meta' => array('code' => 200, 'success' => true, 'message' => 'PURCHASE ADDED')
 			, 'data' => array('purchase' => array('_id' => $db->lastInsertId())))

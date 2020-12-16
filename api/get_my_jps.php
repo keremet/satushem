@@ -28,8 +28,8 @@ $stmt = $db->prepare(
    WHERE t.id = ?
    ORDER BY p.state_id, p.deadline, p.name, p.id DESC"
 );
-$h = getallheaders();
-if( $stmt->execute(array($h['Authorization'])) ) {
+$h = array_change_key_case(getallheaders());
+if( $stmt->execute(array($h['authorization'])) ) {
   $purchases = array();
   while( $row = $stmt->fetch() ) {
     $purchases[] = array('_id' => $row['id']

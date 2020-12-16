@@ -24,7 +24,6 @@ $input = json_decode(file_get_contents('php://input'), true);
 
 $stmt = $db->prepare("INSERT INTO request(member_id, purchase_id, amount)
 					  VALUES (?, ?, ?)");
-$h = getallheaders();
 if( $stmt->execute(array($input['member_id'], $input['purchase_id'], $input['volume'])) ) {
 	$jp = select_jp($db, $input['purchase_id']);
 	echo json_encode(

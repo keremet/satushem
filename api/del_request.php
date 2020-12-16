@@ -35,7 +35,6 @@ if( !$purchase_id )
 }
 
 $stmt = $db->prepare("DELETE FROM request WHERE id = ?");
-$h = getallheaders();
 if( $stmt->execute(array($input['id'])) ) {
 	$jp = select_jp($db, $purchase_id);
 	echo json_encode(

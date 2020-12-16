@@ -24,8 +24,8 @@ $stmt = $db->prepare("SELECT m.id, m.login, m.contacts, m.address, m.visible_nam
 					  FROM token t
 					    JOIN member m ON m.id = t.member_id
 					  WHERE t.id = ?");
-$h = getallheaders();
-$stmt->execute(array($h['Authorization']));
+$h = array_change_key_case(getallheaders());
+$stmt->execute(array($h['authorization']));
 if( $row = $stmt->fetch() ) {
 	echo json_encode(
 		array('meta' => array('code' => 200, 'success' => true, 'message' => 'User successfully founded')

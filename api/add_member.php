@@ -23,8 +23,8 @@ $stmt = $db->prepare("INSERT INTO member(login, password, visible_name, who_add_
 					  SELECT ?, ?, ?, member_id
 					  FROM token t
 					  WHERE t.id = ?");
-$h = getallheaders();
-if( $stmt->execute(array($_GET['login'], $_GET['passwd'], $_GET['visible_name'], $h['Authorization'])) ) {
+$h = array_change_key_case(getallheaders());
+if( $stmt->execute(array($_GET['login'], $_GET['passwd'], $_GET['visible_name'], $h['authorization'])) ) {
 	echo json_encode(
 		array('meta' => array('code' => 200, 'success' => true, 'message' => 'Member successfully added')
 			, 'data' => array('member' => array('_id' => $db->lastInsertId(), 'login' => $_GET['login'], 'visible_name' => $_GET['visible_name'])))

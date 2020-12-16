@@ -29,8 +29,8 @@ $stmt = $db->prepare("SELECT r.purchase_id, p.img purchase_picture, p.name purch
     JOIN purchase p ON p.id = r.purchase_id
     JOIN unit u on u.id = p.unit_id
   WHERE t.id = ?");
-$h = getallheaders();
-if( $stmt->execute(array($h['Authorization'])) ) {
+$h = array_change_key_case(getallheaders());
+if( $stmt->execute(array($h['authorization'])) ) {
   $order_arr = array();
   while( $row = $stmt->fetch() ) {
   	$order_arr[] = array('purchase_id' => $row['purchase_id']

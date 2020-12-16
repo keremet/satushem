@@ -22,7 +22,7 @@ include('headers.php');
 include('connect.php');
 
 $input = json_decode(file_get_contents('php://input'), true);
-$h = getallheaders();
+$h = array_change_key_case(getallheaders());
 
 $stmtS = $db->prepare(
   "SELECT 1
@@ -34,7 +34,7 @@ $stmtS = $db->prepare(
    ) AND password = ?"
 );
 
-if( $stmtS->execute(array($h['Authorization'], $input['old_password'])) ) {
+if( $stmtS->execute(array($h['authorization'], $input['old_password'])) ) {
   if( !$stmtS->fetch() ) {
     echo json_encode(
       array('meta' => array('code' => 500, 'success' => false, 'message' => 'Старый пароль задан неверно')
@@ -61,7 +61,7 @@ $stmtU = $db->prepare(
      WHERE id = ?
    )"
 );
-if( $stmtU->execute(array($input['password'], $h['Authorization'])) ) {
+if( $stmtU->execute(array($input['password'], $h['authorization'])) ) {
   echo json_encode(
     array('meta' => array('code' => 200, 'success' => true))
   );
