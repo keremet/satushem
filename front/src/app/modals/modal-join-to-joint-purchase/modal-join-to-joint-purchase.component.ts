@@ -16,6 +16,9 @@ export class ModalJoinToJointPurchaseComponent implements OnInit {
   @Input('fakeUser')
   fakeUser = false;
 
+  @Input('purchase_good_id')
+  purchase_good_id = null;
+
   volume: FormControl;
 
   userLogin: FormControl;

@@ -96,14 +96,26 @@ CREATE TABLE `token` (
   CONSTRAINT `token__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `purchase_goods` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `purchase_id` int(11) NOT NULL,
+  `name` text COLLATE utf8_unicode_ci NOT NULL,
+  `price` decimal(20, 2) NOT NULL,
+  `unit_id` int(11) NOT NULL,
+  CONSTRAINT `purchase_goods__purchase_id` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `purchase_goods__unit_id` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `request` (
   `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `purchase_id` int(11) NOT NULL,
   `member_id` int(11) NOT NULL,
+  `purchase_good_id` int(11),
   `d` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `amount` decimal(30, 10) NOT NULL,
   CONSTRAINT `request__purchase_id` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `request__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+  CONSTRAINT `request__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `request__purchase_good_id` FOREIGN KEY (`purchase_good_id`) REFERENCES `purchase_goods` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `issue` (
@@ -118,16 +130,6 @@ CREATE TABLE `payment` (
   `d` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `value` decimal(20, 2) NOT NULL,
    CONSTRAINT `payment__request_id` FOREIGN KEY (`request_id`) REFERENCES `request` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `purchase_goods` (
-  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `purchase_id` int(11) NOT NULL,
-  `name` text COLLATE utf8_unicode_ci NOT NULL,
-  `price` decimal(20, 2) NOT NULL,
-  `unit_id` int(11) NOT NULL,
-  CONSTRAINT `purchase_goods__purchase_id` FOREIGN KEY (`purchase_id`) REFERENCES `purchase` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `purchase_goods__unit_id` FOREIGN KEY (`unit_id`) REFERENCES `unit` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 

@@ -141,8 +141,8 @@
               <button type="button" class="btn btn-detach ml-1 mt-3" (click)="disableEditMode('date')">Отмена</button>
             </div>
 
-            <p class="card-text" *ngIf="!isParticipant && isOpened && isLoggedIn && !isBanned">
-              <button class="btn btn-main" (click)="joinToPurchase()" *ngIf="haveEnoughRemainingVolume">
+            <p class="card-text" *ngIf="!purchaseInfo.is_multi_good && !isParticipant && isOpened && isLoggedIn && !isBanned">
+              <button class="btn btn-main" (click)="joinToPurchase(null)" *ngIf="haveEnoughRemainingVolume">
                 Присоединиться к закупке
               </button>
               <span *ngIf="!haveEnoughRemainingVolume" class="text-danger">
@@ -361,6 +361,16 @@
                           {{purchase_good.name}} {{purchase_good.price}}  р / {{purchase_good.u_name}}
                         </div>
 
+                        <button class="btn btn-main ml-auto mr-auto mt-2" (click)="joinToPurchase(purchase_good.id)">
+                          Присоединиться к закупке
+                        </button>
+
+                        <button
+                          type="button"
+                          class="btn btn-main ml-auto mr-auto mt-2"
+                          (click)="joinToPurchase(purchase_good.id, true)"
+                        >Добавить заявку</button>
+
                         <div class="col-12 col-md-2 justify-content-md-end">
                           <div class="d-inline-flex flex-md-column flex-row">
                             <button
@@ -476,9 +486,10 @@
                   </div>
                 </div>
                 <button
+                  *ngIf="!purchaseInfo.is_multi_good"
                   type="button"
                   class="btn btn-main ml-auto mr-auto mt-2"
-                  (click)="joinToPurchase(true)"
+                  (click)="joinToPurchase(null, true)"
                 >Добавить заявку</button>
               </div>
 
