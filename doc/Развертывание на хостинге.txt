@@ -1,0 +1,34 @@
+1. База данных
+В БД сайта выполнить скрипт db/init.sql
+
+Создать хотя бы одну категорию закупок, например Молоко.
+insert into category(name) values('Молоко');
+
+Создать учетку
+insert into member(login, password, visible_name) values ('user1', '1', 'Первый пользователь');
+
+2. Компиляция фронтовой части (тестировалась на Ubuntu 20.04)
+sudo apt install git npm
+git clone https://github.com/keremet/satushem
+cd satushem/front
+
+По умолчанию репозиторий находится на ветке openreg, то есть доступна открытая регистрация. Если открытая регистрация не нужна, следует перейти на ветку master
+git checkout master
+
+Заменить ссылку на API в файле src/environments/environment.prod.ts на свою.
+
+В файле src/app/app.component.html заменить ссылку https://vk.com/orv_org_ru на ссылку на свою группу в ВК.
+
+npm install
+sudo npm install -g @angular/cli
+/usr/local/bin/ng  build --prod
+
+3. Заполнение корневого каталога сайта
+Скопировать в корневой каталог сайта файл doc/.htaccess
+
+Скопировать содержимое каталога satushem/front/dist/Satushem (результат компиляции фронтовой части) в корневой каталог сайта.
+
+В файле api/connect.php заменить значение константы ROOT_URL с http://newsatushem.ru на адрес вашего сайта, прописать параметры подключения к базе данных.
+Скопировать каталог api в корневой каталог сайта
+
+В корневом каталоге сайта создать каталог img для сохранения изображений и установить на него права 777
