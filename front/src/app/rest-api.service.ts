@@ -519,7 +519,7 @@ export class RestApiService {
   updatePurchaseInfo(id: string, field: string, value: any) {
     return this
       .http
-      .put(`${API_URL}/update_jp.php?id=${id}&prop=${field}&value=${value}`, {
+      .get(`${API_URL}/update_jp.php?id=${id}&prop=${field}&value=${value}`, {
         headers: this.getHeaders()
       })
       .toPromise();
