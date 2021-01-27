@@ -175,7 +175,10 @@
         </div>
 
         <div class="form-group">
-          <label for="volume">Количество товара</label>
+          <label for="volume">
+            <span *ngIf="!this.isMultiGood.value">Количество товара</span>
+            <span *ngIf="this.isMultiGood.value">Требуемая сумма заказов</span>
+          </label>
           <input
             type="text"
             [dropSpecialCharacters]="false"
@@ -189,10 +192,8 @@
             required
           >
           <div class="invalid-feedback" [hidden]="!(volume.errors && volume.errors.required)">
-            Введите количество товара
-          </div>
-          <div class="invalid-feedback" [hidden]="!(volume.errors && volume.errors.max)" *ngIf="good">
-            Максимальное количество товара: {{good.volume}}
+            <span *ngIf="!this.isMultiGood.value">Введите количество товара</span>
+            <span *ngIf="this.isMultiGood.value">Введите требуемую сумму заказов</span>
           </div>
         </div>
 
@@ -216,7 +217,7 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" *ngIf="this.isMultiGood.value ? 0 : 1">
           <label for="measurement_unit">Единица измерения</label>
           <app-measurement-unit-chooser
             id="measurement_unit"
@@ -228,7 +229,7 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" *ngIf="this.isMultiGood.value ? 0 : 1">
           <label for="price">Цена за единицу измерения</label>
           <div class="input-group">
             <input
@@ -238,7 +239,7 @@
               id="price"
               class="form-control text-modal"
               placeholder="10"
-              [ngClass]="pricePerUnit.errors ? 'is-invalid': 'is-valid'"
+              [ngClass]="(pricePerUnit.errors && !this.isMultiGood.value) ? 'is-invalid': 'is-valid'"
               formControlName="pricePerUnit"
               required
               [readonly]="good"
@@ -247,9 +248,10 @@
               <span class="input-group-text">Итого: </span>
               <span class="input-group-text">{{ total | fixedFloat: 2 }} ₽</span>
             </div>
-            <div class="invalid-feedback" [hidden]="!(pricePerUnit.errors && pricePerUnit.errors.required)">
+            <div class="invalid-feedback" [hidden]="!((pricePerUnit.errors && pricePerUnit.errors.required) || (!this.isMultiGood.value))">
               Укажите цену за единицу измерения
             </div>
+
           </div>
         </div>
 
@@ -274,12 +276,14 @@
           <div
             class="custom-control custom-checkbox"
           >
-            <input
+            <input 
               type="checkbox"
               class="custom-control-input"
               id="isMultiGood"
               formControlName="isMultiGood"
+              (change)="MultiGoodHideInputs()"
             >
+
             <label
               class="custom-control-label"
               for="isMultiGood"
