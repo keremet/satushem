@@ -142,7 +142,8 @@ INSERT INTO `state` (`id`, `name`) VALUES
 (1, 'Сбор заказов завершен'),
 (2, 'Закрыта');
 
-INSERT INTO `unit` (`name`) VALUES
-('кг'),
-('л'),
-('шт');
+INSERT INTO `unit` (`id`, `name`) VALUES
+(1, 'кг'),
+(2, 'л'),
+(3, 'шт'),
+(4, '₽');

@@ -223,4 +223,10 @@ export class ModalAddJointPurchaseComponent implements OnInit {
         .addToast('Ошибка', message, 'error');
     }
   }
+
+  async MultiGoodHideInputs() {
+    this.measurementUnit.setValue({"_id":"4","name":"₽"});
+    this.pricePerUnit.clearValidators();
+    this.pricePerUnit.updateValueAndValidity();
+  }
 }

@@ -50,7 +50,7 @@
               <button type="button" class="btn btn-detach ml-1" (click)="disableEditMode('name')">Отмена</button>
             </div>
 
-            <h5 *ngIf="!editMode.price_per_unit">
+            <h5 *ngIf="!editMode.price_per_unit && !purchaseInfo.is_multi_good">
               {{ purchaseInfo.price_per_unit }} ₽/{{ measurementUnit }}
               <label *ngIf="isCreator && !isGoodPurchase" (click)="editMode.price_per_unit = true" class="btn-edit">
                 изменить
@@ -76,13 +76,18 @@
             </div>
 
             <h5 *ngIf="!editMode.volume">
-              Количество товара: {{ purchaseInfo.volume }} {{ measurementUnit }}
+              <span *ngIf="!purchaseInfo.is_multi_good">Количество товара</span>
+              <span *ngIf="purchaseInfo.is_multi_good">Требуемая сумма заказов</span>
+              : {{ purchaseInfo.volume }} {{ measurementUnit }}
               <label *ngIf="isCreator" (click)="editMode.volume = true" class="btn-edit">
                 изменить
               </label>
             </h5>
             <div *ngIf="editMode.volume" class="form-group">
-              <label for="volume">Количество товара</label>
+              <label for="volume">
+                <span *ngIf="!purchaseInfo.is_multi_good">Количество товара</span>
+                <span *ngIf="purchaseInfo.is_multi_good">Требуемая сумма заказов</span>
+              </label>
               <input
                 id="volume"
                 type="text"
@@ -414,7 +419,10 @@
 						  </a>
                         </div>
                         <div class="col-12 col-md-3" *ngIf="request.edit_volume_flg">
-						  <label for="request_volume">Количество товара</label>
+						  <label for="request_volume">
+                <span *ngIf="!purchaseInfo.is_multi_good">Количество товара</span>
+                <span *ngIf="purchaseInfo.is_multi_good">Требуемая сумма заказов</span>
+              </label>
                           <input
                             id="request_volume"
                             type="text"
