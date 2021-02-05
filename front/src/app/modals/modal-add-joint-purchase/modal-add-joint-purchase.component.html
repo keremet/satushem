@@ -175,6 +175,25 @@
         </div>
 
         <div class="form-group">
+          <div
+            class="custom-control custom-checkbox"
+          >
+            <input 
+              type="checkbox"
+              class="custom-control-input"
+              id="isMultiGood"
+              formControlName="isMultiGood"
+              (change)="MultiGoodHideInputs()"
+            >
+
+            <label
+              class="custom-control-label"
+              for="isMultiGood"
+            >Многотоварная закупка</label>
+          </div>
+        </div>
+
+        <div class="form-group">
           <label for="volume">
             <span *ngIf="!this.isMultiGood.value">Количество товара</span>
             <span *ngIf="this.isMultiGood.value">Требуемая сумма заказов</span>
@@ -269,25 +288,6 @@
               class="custom-control-label"
               for="isPublic"
             >Закупка отображается в поисковой выдаче</label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div
-            class="custom-control custom-checkbox"
-          >
-            <input 
-              type="checkbox"
-              class="custom-control-input"
-              id="isMultiGood"
-              formControlName="isMultiGood"
-              (change)="MultiGoodHideInputs()"
-            >
-
-            <label
-              class="custom-control-label"
-              for="isMultiGood"
-            >Многотоварная закупка</label>
           </div>
         </div>
       </div>
