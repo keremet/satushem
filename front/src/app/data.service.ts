@@ -99,13 +99,6 @@ export class DataService {
           .getUserProfile();
         this.user = profile_data['data'].user;
         this.observableUser.next(this.user);
-
-        if (this.user.isSeller) {
-          const storeData = await this
-            .rest
-            .getUserStores();
-          this.stores = storeData['data'].stores;
-        }
       }
     } catch (error) {
       this.error(error);

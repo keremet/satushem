@@ -45,9 +45,6 @@
               <li [class.selected]="isTabSet(4)" (click)="setTab(4)" routerLink="address">
                 Адрес доставки
               </li>
-              <li *ngIf="data.user.isSeller" [class.selected]="isTabSet(5)" (click)="setTab(5)" routerLink="stores">
-                Мои магазины
-              </li>
               <li [class.selected]="isTabSet(6)" (click)="setTab(6)" routerLink="purchases">
                 Мои совместные закупки
               </li>
