@@ -36,15 +36,6 @@ export class RestApiService {
       .toPromise();
   }
 
-  put(link: string, body: any) {
-    return this
-      .http
-      .put(link, body, {
-        headers: this.getHeaders()
-      })
-      .toPromise();
-  }
-
   loginUser(body: any) {
     return this
       .http
@@ -94,7 +85,7 @@ export class RestApiService {
   updatePassword(body: any) {
     return this
       .http
-      .put(`${API_URL}/update_passwd.php`, body, {
+      .post(`${API_URL}/update_passwd.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -123,7 +114,7 @@ export class RestApiService {
   updateAvatar(body: any) {
     return this
       .http
-      .put(`${API_URL}/api/accounts/profile/avatar`, body, {
+      .post(`${API_URL}/api/accounts/profile/avatar`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -248,7 +239,7 @@ export class RestApiService {
 
     return this
       .http
-      .put(`${API_URL}/add_my_request.php`, body, {
+      .post(`${API_URL}/add_my_request.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -263,7 +254,7 @@ export class RestApiService {
 
     return this
       .http
-      .put(`${API_URL}/add_request.php`, body, {
+      .post(`${API_URL}/add_request.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -276,20 +267,21 @@ export class RestApiService {
 
     return this
       .http
-      .put(`${API_URL}/del_request.php`, body, {
+      .post(`${API_URL}/del_request.php`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
   }
 
   detachFromPurchase(id: string) {
+    const body = {
+      purchase_id: id
+    };
+  
     return this
       .http
-      .request('DELETE', `${API_URL}/del_my_request.php`, {
-        headers: this.getHeaders(),
-        body: {
-          purchase_id: id
-        }
+      .post(`${API_URL}/del_my_request.php`, body, {
+        headers: this.getHeaders()
       })
       .toPromise();
   }
@@ -303,7 +295,7 @@ export class RestApiService {
 
     return this
       .http
-      .put(`${API_URL}/api/jointpurchases/deliveries/update`, body, {
+      .post(`${API_URL}/api/jointpurchases/deliveries/update`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -335,7 +327,7 @@ export class RestApiService {
 
     return this
       .http
-      .put(`${API_URL}/api/jointpurchases/black_list`, body, {
+      .post(`${API_URL}/api/jointpurchases/black_list`, body, {
         headers: this.getHeaders()
       })
       .toPromise();
@@ -349,7 +341,7 @@ export class RestApiService {
 
     return this
       .http
-      .request('DELETE', `${API_URL}/api/jointpurchases/black_list`, {
+      .request('POST', `${API_URL}/api/jointpurchases/black_list`, {
         headers: this.getHeaders(),
         body: body
       })
