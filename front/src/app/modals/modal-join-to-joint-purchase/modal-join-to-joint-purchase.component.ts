@@ -41,11 +41,13 @@ export class ModalJoinToJointPurchaseComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.volume = new FormControl(this.purchaseInfo['min_volume'], Validators.compose([
-      Validators.required,
-      Validators.min(this.purchaseInfo['min_volume']),
-      Validators.max(this.purchaseInfo['remaining_volume'])
-    ]));
+    this.volume = this.purchaseInfo.is_multi_good ?
+      new FormControl('1') :
+      new FormControl(this.purchaseInfo['min_volume'], Validators.compose([
+        Validators.required,
+        Validators.min(this.purchaseInfo['min_volume']),
+        Validators.max(this.purchaseInfo['remaining_volume'])
+      ]));
 
     if (this.fakeUser) {
       this.userLogin = new FormControl('', Validators.required);
@@ -73,6 +75,9 @@ export class ModalJoinToJointPurchaseComponent implements OnInit {
   }
 
   volumeValidate(control) {
+    if (this.purchaseInfo.is_multi_good)
+      return null;
+
     const volume = Number.parseFloat(control.value);
     const errors = {};
 

@@ -30,10 +30,10 @@
           <span class="input-group-text">{{ cost | fixedFloat: 2 }} ₽</span>
         </div>
       </div>
-      <div class="invalid-feedback d-block" *ngIf="volume.errors && volume.errors.min">
+      <div class="invalid-feedback d-block" *ngIf="!purchaseInfo.is_multi_good && volume.errors && volume.errors.min">
         Минимальный объем заказа: {{ minimum }} {{ measurementUnit }}
       </div>
-      <div class="invalid-feedback d-block" *ngIf="volume.errors && volume.errors.max">
+      <div class="invalid-feedback d-block" *ngIf="!purchaseInfo.is_multi_good && volume.errors && volume.errors.max">
         Максимальный объем заказа: {{ maximum }} {{ measurementUnit }}
       </div>
     </div>
