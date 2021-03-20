@@ -22,6 +22,9 @@ export class ModalJoinToJointPurchaseComponent implements OnInit {
   @Input('measurement_unit_name')
   measurement_unit_name = null;
 
+  @Input('price_per_unit')
+  price_per_unit = null;
+
   volume: FormControl;
 
   userLogin: FormControl;
@@ -65,7 +68,8 @@ export class ModalJoinToJointPurchaseComponent implements OnInit {
   }
 
   get cost(): number {
-    return this.volume.value * this.purchaseInfo['price_per_unit'];
+    return this.volume.value *
+        (this.purchaseInfo.is_multi_good ? this.price_per_unit : this.purchaseInfo['price_per_unit']);
   }
 
   volumeValidate(control) {
@@ -92,7 +96,7 @@ export class ModalJoinToJointPurchaseComponent implements OnInit {
   }
 
   get measurementUnit(): string {
-    return (this.purchaseInfo.is_multi_good) ? this.measurement_unit_name : this.purchaseInfo['measurement_unit']['name'];
+    return this.purchaseInfo.is_multi_good ? this.measurement_unit_name : this.purchaseInfo['measurement_unit']['name'];
   }
 
   async joinToPurchase() {
