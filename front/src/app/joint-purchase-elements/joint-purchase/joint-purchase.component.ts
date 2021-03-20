@@ -761,12 +761,13 @@ export class JointPurchaseComponent implements OnInit {
     }
   }
 
-  async joinToPurchase(purchase_good_id, fakeUser: boolean = false) {
+  async joinToPurchase(purchase_good_id, measurement_unit_name, fakeUser: boolean = false) {
     const modalRef = this.modalService.open(ModalJoinToJointPurchaseComponent);
 
     modalRef.componentInstance.purchaseInfo = this.purchaseInfo;
     modalRef.componentInstance.fakeUser = fakeUser;
     modalRef.componentInstance.purchase_good_id = purchase_good_id;
+    modalRef.componentInstance.measurement_unit_name = measurement_unit_name;
 
     modalRef.result.then(async (purchaseInfo) => {
       if (purchaseInfo) {

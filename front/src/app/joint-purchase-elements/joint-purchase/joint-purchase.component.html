@@ -366,14 +366,14 @@
                           {{purchase_good.name}} {{purchase_good.price}}  р / {{purchase_good.u_name}}
                         </div>
 
-                        <button class="btn btn-main ml-auto mr-auto mt-2" (click)="joinToPurchase(purchase_good.id)">
+                        <button class="btn btn-main ml-auto mr-auto mt-2" (click)="joinToPurchase(purchase_good.id, purchase_good.u_name)">
                           Присоединиться к закупке
                         </button>
 
                         <button
                           type="button"
                           class="btn btn-main ml-auto mr-auto mt-2"
-                          (click)="joinToPurchase(purchase_good.id, true)"
+                          (click)="joinToPurchase(purchase_good.id, purchase_good.u_name, true)"
                         >Добавить заявку</button>
 
                         <div class="col-12 col-md-2 justify-content-md-end">

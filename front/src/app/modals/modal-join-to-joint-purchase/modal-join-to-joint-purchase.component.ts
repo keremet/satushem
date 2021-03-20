@@ -19,6 +19,9 @@ export class ModalJoinToJointPurchaseComponent implements OnInit {
   @Input('purchase_good_id')
   purchase_good_id = null;
 
+  @Input('measurement_unit_name')
+  measurement_unit_name = null;
+
   volume: FormControl;
 
   userLogin: FormControl;
@@ -89,7 +92,7 @@ export class ModalJoinToJointPurchaseComponent implements OnInit {
   }
 
   get measurementUnit(): string {
-    return this.purchaseInfo['measurement_unit']['name'];
+    return (this.purchaseInfo.is_multi_good) ? this.measurement_unit_name : this.purchaseInfo['measurement_unit']['name'];
   }
 
   async joinToPurchase() {
