@@ -114,12 +114,12 @@ export class ModalJoinToJointPurchaseComponent implements OnInit {
 
       let resp = null;
       if (this.fakeUser) {
-        resp = await this.rest.addRequest(purchaseId, userId, volume);
+        resp = await this.rest.addRequest(purchaseId, userId, volume, this.purchase_good_id);
         this
           .data
           .addToast('Заявка добавлена', '', 'success');
       } else {
-        resp = await this.rest.joinToPurchase(purchaseId, volume);
+        resp = await this.rest.joinToPurchase(purchaseId, volume, this.purchase_good_id);
         this
           .data
           .addToast('Вы присоединены к закупке', '', 'success');

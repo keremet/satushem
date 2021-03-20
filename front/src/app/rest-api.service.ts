@@ -231,10 +231,11 @@ export class RestApiService {
       .toPromise();
   }
 
-  joinToPurchase(id: string, volume: number) {
+  joinToPurchase(id: string, volume: number, purchase_good_id: number) {
     const body = {
       purchase_id: id,
-      volume: volume
+      volume: volume,
+      purchase_good_id: purchase_good_id
     };
 
     return this
@@ -245,11 +246,12 @@ export class RestApiService {
       .toPromise();
   }
 
-  addRequest(id: string, memberId: number, volume: number) {
+  addRequest(id: string, memberId: number, volume: number, purchase_good_id: number) {
     const body = {
       purchase_id: id,
       volume: volume,
-      member_id: memberId
+      member_id: memberId,
+      purchase_good_id: purchase_good_id
     };
 
     return this

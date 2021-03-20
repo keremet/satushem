@@ -22,12 +22,12 @@ include('connect.php');
 include('select_jp.php');
 $input = json_decode(file_get_contents('php://input'), true); 
 
-$stmt = $db->prepare("INSERT INTO request(member_id, purchase_id, amount)
-					  SELECT t.member_id, ?, ?
+$stmt = $db->prepare("INSERT INTO request(member_id, purchase_id, amount, purchase_good_id)
+					  SELECT t.member_id, ?, ?, ?
 					  FROM token t
 					  WHERE t.id = ?");
 $h = array_change_key_case(getallheaders());
-if( $stmt->execute(array($input['purchase_id'], $input['volume'], $h['authorization'])) ) {
+if( $stmt->execute(array($input['purchase_id'], $input['volume'], $input['purchase_good_id'], $h['authorization'])) ) {
 	$jp = select_jp($db, $input['purchase_id']);
 	echo json_encode(
 		array('meta' => array('code' => 200, 'success' => true, 'message' => 'JOINT')
