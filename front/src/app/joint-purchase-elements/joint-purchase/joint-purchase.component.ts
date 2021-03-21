@@ -247,13 +247,16 @@ export class JointPurchaseComponent implements OnInit {
               .findIndex(pg => pg['id'] === request['purchase_good_id']);
             if (-1 === index) {
               data['cost'] = 0;
+              data['price'] = 0;
               data['u_name'] = '';
             } else {
+              data['price'] = this.purchaseInfo['purchase_goods'][index]['price'];
               data['cost'] = request['volume'] * this.purchaseInfo['purchase_goods'][index]['price'];
               data['u_name'] = this.purchaseInfo['purchase_goods'][index]['u_name'];
               data['good_name'] = this.purchaseInfo['purchase_goods'][index]['name'];
             }
           } else {
+            data['price'] = this.purchaseInfo['price_per_unit'];
             data['cost'] = request['volume'] * this.purchaseInfo['price_per_unit'];
             data['u_name'] = this.purchaseInfo['measurement_unit']['name'];
           }
@@ -795,12 +798,11 @@ export class JointPurchaseComponent implements OnInit {
     });
   }
 
-  async showModalRequestEvent(request_id, not_sent) {
+  async showModalRequestEvent(request) {
     const modalRef = this.modalService.open(ModalRequestEventComponent);
 
     modalRef.componentInstance.purchaseInfo = this.purchaseInfo;
-    modalRef.componentInstance.request_id = request_id;
-    modalRef.componentInstance.not_sent = not_sent;
+    modalRef.componentInstance.request = request;
 
     modalRef.result.then(async (purchaseInfo) => {
       if (purchaseInfo) {

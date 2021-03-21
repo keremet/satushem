@@ -13,11 +13,8 @@ export class ModalRequestEventComponent implements OnInit {
   @Input('purchaseInfo')
   purchaseInfo: any;
 
-  @Input('request_id')
-  request_id = 0;
-
-  @Input('not_sent')
-  not_sent = 0;
+  @Input('request')
+  request: any;
 
   volume: FormControl;
 
@@ -35,7 +32,7 @@ export class ModalRequestEventComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.volume = new FormControl(this.not_sent);
+    this.volume = new FormControl(this.request['not_sent']);
     const now = new Date();
     const d = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
     this.eventdate = new FormControl(d);
@@ -50,11 +47,11 @@ export class ModalRequestEventComponent implements OnInit {
   }
 
   get cost(): number {
-    return this.volume.value * this.purchaseInfo['price_per_unit'];
+    return this.volume.value * this.request['price'];
   }
 
   get measurementUnit(): string {
-    return this.purchaseInfo['measurement_unit']['name'];
+    return this.request['u_name'];
   }
 
   async addEvent() {
@@ -63,7 +60,7 @@ export class ModalRequestEventComponent implements OnInit {
     try {
       const volume = Number.parseFloat(this.volume.value);
       const {day, month, year} = this.eventdate.value;
-      let resp = await this.rest.addIssue(this.request_id, volume, year*10000 + month*100 + day);
+      let resp = await this.rest.addIssue(this.request['_id'], volume, year*10000 + month*100 + day);
       this
         .data
         .addToast('Выдача зарегистрирована', '', 'success');
