@@ -38,7 +38,7 @@ function select_jp($db, $id) {
 	$stmt->execute(array($id));
 	if( $row = $stmt->fetch() ) {
 		$stmtP = $db->prepare(
-			"SELECT TRIM(r.amount)+0 amount, r.member_id, r.id
+			"SELECT TRIM(r.amount)+0 amount, r.member_id, r.id, r.purchase_good_id
 			 ,  (SELECT IFNULL(SUM(p.value), 0) FROM payment p WHERE p.request_id = r.id) paid
        ,  (SELECT TRIM(GREATEST(r.amount*ps.price - IFNULL(SUM(p.value), 0), 0))+0 FROM payment p WHERE p.request_id = r.id) not_paid
 			 ,  (SELECT TRIM(IFNULL(SUM(i.amount), 0))+0 FROM issue i WHERE i.request_id = r.id) sent
@@ -58,6 +58,7 @@ function select_jp($db, $id) {
                       , 'not_sent' => $rowP['not_sent']
                       , 'volume' => $rowP['amount']
                       , '_id' => $rowP['id']
+                      , 'purchase_good_id' => $rowP['purchase_good_id']
                       , 'user' => $rowP['member_id']);
 		}
 

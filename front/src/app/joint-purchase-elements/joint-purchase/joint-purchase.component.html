@@ -406,9 +406,12 @@
                       <div class="row">
                         <div class="col-12 col-md-3">
                           {{request.user | prettyUserName}}
+                          <div class="custom-control mb-md-0 mb-2 pl-0" *ngIf="purchaseInfo.is_multi_good">
+                            {{request.good_name}}
+                          </div>
                         </div>
                         <div class="col-12 col-md-3" *ngIf="!request.edit_volume_flg">
-                          {{ request.volume }} / {{ request.sent }} {{ measurementUnit }}
+                          {{ request.volume }} / {{ request.sent }} {{ request.u_name }}
                           ({{ request.cost | fixedFloat: 2 }} / {{ request.paid }}  ₽)
 						  <a
 							href="javascript:void(0)"
@@ -419,10 +422,7 @@
 						  </a>
                         </div>
                         <div class="col-12 col-md-3" *ngIf="request.edit_volume_flg">
-						  <label for="request_volume">
-                <span *ngIf="!purchaseInfo.is_multi_good">Количество товара</span>
-                <span *ngIf="purchaseInfo.is_multi_good">Требуемая сумма заказов</span>
-              </label>
+                          <label for="request_volume">Количество товара</label>
                           <input
                             id="request_volume"
                             type="text"

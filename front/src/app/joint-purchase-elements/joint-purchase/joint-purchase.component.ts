@@ -241,7 +241,23 @@ export class JointPurchaseComponent implements OnInit {
             data['user'] = resp['data']['user'];
           }
 
-          data['cost'] = request['volume'] * this.purchaseInfo['price_per_unit'];
+          if (this.purchaseInfo.is_multi_good) {
+            const index = this
+              .purchaseInfo['purchase_goods']
+              .findIndex(pg => pg['id'] === request['purchase_good_id']);
+            if (-1 === index) {
+              data['cost'] = 0;
+              data['u_name'] = '';
+            } else {
+              data['cost'] = request['volume'] * this.purchaseInfo['purchase_goods'][index]['price'];
+              data['u_name'] = this.purchaseInfo['purchase_goods'][index]['u_name'];
+              data['good_name'] = this.purchaseInfo['purchase_goods'][index]['name'];
+            }
+          } else {
+            data['cost'] = request['volume'] * this.purchaseInfo['price_per_unit'];
+            data['u_name'] = this.purchaseInfo['measurement_unit']['name'];
+          }
+          
           return data;
       }));
 
