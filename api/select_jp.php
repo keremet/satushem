@@ -40,13 +40,14 @@ function select_jp($db, $id) {
 		$stmtP = $db->prepare(
 			"SELECT TRIM(r.amount)+0 amount, r.member_id, r.id, r.purchase_good_id
 			 ,  (SELECT IFNULL(SUM(p.value), 0) FROM payment p WHERE p.request_id = r.id) paid
-       ,  (SELECT TRIM(GREATEST(r.amount*ps.price - IFNULL(SUM(p.value), 0), 0))+0 FROM payment p WHERE p.request_id = r.id) not_paid
+       ,  (SELECT TRIM(GREATEST(r.amount*IFNULL(pg.price, ps.price) - IFNULL(SUM(p.value), 0), 0))+0 FROM payment p WHERE p.request_id = r.id) not_paid
 			 ,  (SELECT TRIM(IFNULL(SUM(i.amount), 0))+0 FROM issue i WHERE i.request_id = r.id) sent
        ,  (SELECT TRIM(GREATEST(r.amount - IFNULL(SUM(i.amount), 0), 0))+0 FROM issue i WHERE i.request_id = r.id) not_sent
 			 FROM request r
-         JOIN purchase ps ON ps.id = r.purchase_id
-			 WHERE purchase_id = ?
-			 ORDER BY d;"
+			 JOIN purchase ps ON ps.id = r.purchase_id
+			 LEFT JOIN purchase_goods pg ON pg.id = r.purchase_good_id
+			 WHERE r.purchase_id = ?
+			 ORDER BY d"
 		);
 		$stmtP->execute(array($id));
 		$requests = array();
