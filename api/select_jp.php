@@ -80,14 +80,25 @@ function select_jp($db, $id) {
 		$stats = array('paid' => $row['paid']
 						, 'sent' => $row['sent']
 						, 'not_sent' => 0);
-		$stmtStat = $db->prepare(
+		$stmtStat = (1 == $row['is_multi_good']) ?
+			$db->prepare(
+			"SELECT TRIM(ordered)+0 ordered, (SELECT TRIM(p.amount - a.ordered)+0 FROM purchase p WHERE p.id = ?) remaining
+			 FROM (
+			   SELECT IFNULL(sum(r.amount*pg.price), 0) ordered
+			   FROM request r
+			     JOIN purchase_goods pg on pg.id = r.purchase_good_id
+			   WHERE r.purchase_id = ?
+			 ) a"
+		    )
+		    :
+		    $db->prepare(
 			"SELECT TRIM(ordered)+0 ordered, (SELECT TRIM(p.amount - a.ordered)+0 FROM purchase p WHERE p.id = ?) remaining
 			 FROM (
 			   SELECT IFNULL(sum(amount), 0) ordered
 			   FROM request
 			   WHERE purchase_id = ?
 			 ) a"
-		);
+		    );
 		$stmtStat->execute(array($id, $id));
 		if( $rowStat = $stmtStat->fetch() ){
 			$stats['ordered'] = $rowStat['ordered'];
