@@ -108,33 +108,37 @@ function select_jp($db, $id) {
 		}
 
     $stmtH = $db->prepare(
-       "SELECT DATE_FORMAT(a.d, '%d.%m.%Y') d, TRIM(a.amount)+0 amount, m.login, a.parameter, DATE_FORMAT(a.req_date, '%d.%m.%Y') req_date
+       "SELECT DATE_FORMAT(a.d, '%d.%m.%Y') d, a.amount, m.login, a.parameter, DATE_FORMAT(a.req_date, '%d.%m.%Y') req_date
         FROM (
-          SELECT d, amount, member_id, 'requests.joint' parameter, null req_date
-          FROM request
-          WHERE purchase_id = ?
+		  SELECT r.d, CONCAT(CONVERT(TRIM(r.amount)+0, CHAR), ' ', IFNULL(pg.name, '" . $row['unit_name'] . "')) amount, r.member_id, 'requests.joint' parameter, null req_date
+          FROM request r
+		    LEFT JOIN purchase_goods pg ON pg.id = r.purchase_good_id
+          WHERE r.purchase_id = ?
           UNION ALL
-          SELECT p.d, p.value, r.member_id, 'requests.payment' parameter, r.d
+          SELECT p.d, CONVERT(TRIM(p.value)+0, CHAR) COLLATE utf8_unicode_ci, r.member_id, 'requests.payment' parameter, r.d
           FROM request r
             JOIN payment p ON p.request_id = r.id
           WHERE r.purchase_id = ?
           UNION ALL
-          SELECT i.d, i.amount, r.member_id, 'requests.issue' parameter, r.d
+          SELECT i.d, CONCAT(CONVERT(TRIM(i.amount)+0, CHAR), ' ', IFNULL(pg.name, '" . $row['unit_name'] . "')), r.member_id, 'requests.issue' parameter, r.d
           FROM request r
             JOIN issue i ON i.request_id = r.id
+			LEFT JOIN purchase_goods pg ON pg.id = r.purchase_good_id
           WHERE r.purchase_id = ?
         ) a
           JOIN member m ON m.id = a.member_id
         ORDER BY a.d desc"
     );
-		$stmtH->execute(array($id, $id, $id));
+	if(!$stmtH->execute(array($id, $id, $id))) {
+		print_r($stmtH->errorInfo());
+	};
     $history = array();
     while( $rowH = $stmtH->fetch() ) {
        $history[] = array('parameter' => $rowH['parameter']
                          , 'login' => $rowH['login']
                          , 'date' => $rowH['d']
                          , 'req_date' => $rowH['req_date']
-                         , 'amount' => ("requests.payment" == $rowH['parameter'])?$rowH['amount']:($rowH['amount']." ".$row['unit_name']));
+                         , 'amount' => $rowH['amount']);
     }
 		return array(
 			'_id' => $row['id']
