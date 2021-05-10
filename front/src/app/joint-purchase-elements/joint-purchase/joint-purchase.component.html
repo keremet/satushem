@@ -395,9 +395,11 @@
                     </div>
                   </div>
                 </div>
-
-                <label for="file">Загрузить из CSV</label><br /> 
-                <input type="file" id="file" ng2FileSelect accept=".csv" [uploader]="uploader" />
+                
+                <div *ngIf="isCreator">
+                  <label for="file">Загрузить из CSV</label><br /> 
+                  <input type="file" id="file" ng2FileSelect accept=".csv" [uploader]="uploader" />
+                </div>
               </div>
 
               <div class="tab-content p-t-43" *ngIf="additionalTabPane === 'requests'">
