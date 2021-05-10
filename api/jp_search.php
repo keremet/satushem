@@ -30,7 +30,14 @@ $flt = (isset($filter['category'])?" AND category_id=?":"")
 
 $stmt = $db->prepare(
 	"SELECT p.id, p.name, TRIM(p.amount)+0 amount, p.unit_id, unit.name unit_name, p.price, DATE_FORMAT(deadline, '%d.%m.%Y') deadline, p.img, p.description, p.state_id,
-	 (SELECT TRIM(p.amount - IFNULL(sum(r.amount), 0))+0 FROM request r WHERE r.purchase_id = p.id) remaining
+     IF(p.is_multi_good=1,
+        (SELECT TRIM(p.amount - IFNULL(sum(r.amount*pg.price), 0))+0 ordered
+			FROM request r
+				JOIN purchase_goods pg on pg.id = r.purchase_good_id
+			WHERE r.purchase_id = 1),
+	    (SELECT TRIM(p.amount - IFNULL(sum(r.amount), 0))+0 FROM request r WHERE r.purchase_id = p.id)
+     ) remaining,
+	 p.is_multi_good
 	 FROM purchase p
 		JOIN unit on unit.id = p.unit_id
 	 WHERE is_public = 1
@@ -55,6 +62,7 @@ while( $row = $stmt->fetch() ) {
 				, 'state' => (int)$row['state_id']
 				, 'volume' => $row['amount']
 				, 'remaining_volume' => $row['remaining']
+				, 'is_multi_good' => (1 == $row['is_multi_good'])
 	);
 };
 

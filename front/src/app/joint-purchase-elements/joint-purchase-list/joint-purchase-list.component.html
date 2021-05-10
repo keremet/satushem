@@ -12,7 +12,7 @@
     <div class="row">
       <div class="col-12 col-md-7">
         <p>{{purchase.description}}</p>
-        <div class="card-price">
+        <div class="card-price" *ngIf="!purchase.is_multi_good">
           {{ purchase.price_per_unit | fixedFloat: 2 }} ₽/{{measurementUnit}}
         </div>
         <p *ngIf="purchase.state === 1" class="text-danger">Прием заказов завершен</p>
