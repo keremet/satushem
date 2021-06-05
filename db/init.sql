@@ -132,6 +132,16 @@ CREATE TABLE `payment` (
    CONSTRAINT `payment__request_id` FOREIGN KEY (`request_id`) REFERENCES `request` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `replenishment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `member_id` int(11) NOT NULL,
+  `value` decimal(20, 2) NOT NULL,
+  `date_change` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `add_member_id` int(11) NOT NULL,
+  CONSTRAINT `replenishment__member_id` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `replenishment__add_member_id` FOREIGN KEY (`add_member_id`) REFERENCES `member` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 INSERT INTO `payment_method` (`id`, `name`) VALUES
 (1, 'Предоплата напрямую организатору'),

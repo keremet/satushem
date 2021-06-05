@@ -82,6 +82,15 @@ export class RestApiService {
       .toPromise();
   }
 
+  replenishment(user_id, value) {
+    return this
+      .http
+      .get(`${API_URL}/add_replenishment.php?user_id=${user_id}&value=${value}`, {
+        headers: this.getHeaders()
+      })
+      .toPromise();
+  }
+
   updatePassword(body: any) {
     return this
       .http

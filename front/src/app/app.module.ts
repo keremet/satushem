@@ -16,6 +16,7 @@ import {AuthGuardService} from './auth-guard.service';
 import {ModalLoginComponent} from './modals/modal-login/modal-login.component';
 import {ProfileComponent} from './profile-elements/profile/profile.component';
 import {SettingsComponent} from './profile-elements/settings/settings.component';
+import {ReplenishmentComponent} from './profile-elements/replenishment/replenishment.component';
 import {OrdersComponent} from './profile-elements/orders/orders.component';
 import {AddressComponent} from './profile-elements/address/address.component';
 import {SecurityComponent} from './profile-elements/security/security.component';
@@ -67,6 +68,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     ModalLoginComponent,
     ProfileComponent,
     SettingsComponent,
+    ReplenishmentComponent,
     OrdersComponent,
     AddressComponent,
     SecurityComponent,
